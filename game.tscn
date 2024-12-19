@@ -1,0 +1,156 @@
+[gd_scene load_steps=22 format=4 uid="uid://bwbdtfwl1b3qo"]
+
+[ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
+[ext_resource type="Script" path="res://game.gd" id="1_wu4la"]
+[ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://wheat_sheet.png" id="2_wfkkd"]
+[ext_resource type="Texture2D" uid="uid://ywwjhnwtppkw" path="res://bull.png" id="3_p12mw"]
+[ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://vampire.png" id="4_igo6k"]
+[ext_resource type="Script" path="res://player.gd" id="5_poi4w"]
+[ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://wheat_block.tscn" id="6_wsy42"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydfnf"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urfmn"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7uog8"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsox8"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7woq"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_57iau"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wap4s"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icxy6"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66mto"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkllf"]
+atlas = ExtResource("4_igo6k")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0b6hk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6tbpn")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ydfnf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urfmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7uog8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nsox8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7woq")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_57iau")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wap4s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icxy6")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66mto")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkllf")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ykb3o"]
+scenes/1/scene = ExtResource("6_wsy42")
+
+[sub_resource type="TileSet" id="TileSet_tw16u"]
+sources/0 = SubResource("TileSetScenesCollectionSource_ykb3o")
+
+[node name="game" type="Node2D" node_paths=PackedStringArray("field", "player")]
+script = ExtResource("1_wu4la")
+field = NodePath("Field")
+player = NodePath("Player")
+
+[node name="res" type="Node2D" parent="."]
+
+[node name="Reference" type="Sprite2D" parent="res"]
+position = Vector2(-205, 175)
+texture = ExtResource("1_gwt3q")
+
+[node name="WheatSheet" type="Sprite2D" parent="res"]
+position = Vector2(-47, 77)
+texture = ExtResource("2_wfkkd")
+
+[node name="Bull" type="Sprite2D" parent="res"]
+position = Vector2(-71, 107)
+texture = ExtResource("3_p12mw")
+
+[node name="Vampire" type="Sprite2D" parent="res"]
+position = Vector2(-52, 24)
+texture = ExtResource("4_igo6k")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+z_index = 1
+position = Vector2(104, 120)
+script = ExtResource("5_poi4w")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+position = Vector2(0, -3)
+sprite_frames = SubResource("SpriteFrames_0b6hk")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.800779
+
+[node name="Field" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+position = Vector2(16, 32)
+tile_map_data = PackedByteArray("AAABAAIAAAAAAAAAAQABAAMAAAAAAAAAAQABAAQAAAAAAAAAAQABAAUAAAAAAAAAAQABAAYAAAAAAAAAAQABAAcAAAAAAAAAAQABAAgAAAAAAAAAAQABAAkAAAAAAAAAAQABAAoAAAAAAAAAAQABAAsAAAAAAAAAAQACAAIAAAAAAAAAAQACAAMAAAAAAAAAAQACAAQAAAAAAAAAAQACAAUAAAAAAAAAAQACAAYAAAAAAAAAAQACAAcAAAAAAAAAAQACAAgAAAAAAAAAAQACAAkAAAAAAAAAAQACAAoAAAAAAAAAAQACAAsAAAAAAAAAAQADAAIAAAAAAAAAAQADAAMAAAAAAAAAAQADAAQAAAAAAAAAAQADAAUAAAAAAAAAAQADAAYAAAAAAAAAAQADAAcAAAAAAAAAAQADAAgAAAAAAAAAAQADAAkAAAAAAAAAAQADAAoAAAAAAAAAAQADAAsAAAAAAAAAAQAEAAIAAAAAAAAAAQAEAAMAAAAAAAAAAQAEAAQAAAAAAAAAAQAEAAUAAAAAAAAAAQAEAAYAAAAAAAAAAQAEAAcAAAAAAAAAAQAEAAgAAAAAAAAAAQAEAAkAAAAAAAAAAQAEAAoAAAAAAAAAAQAEAAsAAAAAAAAAAQAFAAIAAAAAAAAAAQAFAAMAAAAAAAAAAQAFAAQAAAAAAAAAAQAFAAYAAAAAAAAAAQAFAAcAAAAAAAAAAQAFAAgAAAAAAAAAAQAFAAkAAAAAAAAAAQAFAAoAAAAAAAAAAQAFAAsAAAAAAAAAAQAGAAIAAAAAAAAAAQAGAAMAAAAAAAAAAQAGAAQAAAAAAAAAAQAGAAUAAAAAAAAAAQAGAAYAAAAAAAAAAQAGAAgAAAAAAAAAAQAGAAkAAAAAAAAAAQAGAAoAAAAAAAAAAQAGAAsAAAAAAAAAAQAHAAIAAAAAAAAAAQAHAAMAAAAAAAAAAQAHAAQAAAAAAAAAAQAHAAUAAAAAAAAAAQAHAAYAAAAAAAAAAQAHAAcAAAAAAAAAAQAHAAgAAAAAAAAAAQAHAAkAAAAAAAAAAQAHAAoAAAAAAAAAAQAHAAsAAAAAAAAAAQAIAAIAAAAAAAAAAQAIAAMAAAAAAAAAAQAIAAQAAAAAAAAAAQAIAAUAAAAAAAAAAQAIAAYAAAAAAAAAAQAIAAcAAAAAAAAAAQAIAAgAAAAAAAAAAQAIAAkAAAAAAAAAAQAIAAoAAAAAAAAAAQAIAAsAAAAAAAAAAQAJAAIAAAAAAAAAAQAJAAMAAAAAAAAAAQAJAAQAAAAAAAAAAQAJAAUAAAAAAAAAAQAJAAYAAAAAAAAAAQAJAAcAAAAAAAAAAQAJAAgAAAAAAAAAAQAJAAkAAAAAAAAAAQAJAAoAAAAAAAAAAQAJAAsAAAAAAAAAAQAKAAIAAAAAAAAAAQAKAAMAAAAAAAAAAQAKAAQAAAAAAAAAAQAKAAUAAAAAAAAAAQAKAAYAAAAAAAAAAQAKAAcAAAAAAAAAAQAKAAgAAAAAAAAAAQAKAAkAAAAAAAAAAQAKAAoAAAAAAAAAAQAKAAsAAAAAAAAAAQAAAAEAAAAAAAAAAQAAAAIAAAAAAAAAAQAAAAMAAAAAAAAAAQAAAAQAAAAAAAAAAQAAAAUAAAAAAAAAAQAAAAYAAAAAAAAAAQAAAAcAAAAAAAAAAQAAAAgAAAAAAAAAAQAAAAkAAAAAAAAAAQAAAAoAAAAAAAAAAQAAAAsAAAAAAAAAAQABAAAAAAAAAAAAAQACAAAAAAAAAAAAAQACAAEAAAAAAAAAAQADAAAAAAAAAAAAAQADAAEAAAAAAAAAAQAEAAAAAAAAAAAAAQAEAAEAAAAAAAAAAQAFAAAAAAAAAAAAAQAFAAEAAAAAAAAAAQAGAAAAAAAAAAAAAQAGAAEAAAAAAAAAAQAGAAcAAAAAAAAAAQAHAAAAAAAAAAAAAQAHAAEAAAAAAAAAAQAIAAAAAAAAAAAAAQAIAAEAAAAAAAAAAQAJAAAAAAAAAAAAAQAJAAEAAAAAAAAAAQAKAAAAAAAAAAAAAQAKAAEAAAAAAAAAAQABAAEAAAAAAAAAAQAAAAAAAAAAAAAAAQAFAAUAAAAAAAAAAQA=")
+tile_set = SubResource("TileSet_tw16u")

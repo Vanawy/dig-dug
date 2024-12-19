@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://cqgr6xj8wqldo"
+path="res://.godot/imported/wheat_variants.aseprite-915e12dd8568fc69e15af4b8ee2e9f0c.res"
+
+[deps]
+
+source_file="res://wheat_variants.aseprite"
+dest_files=["res://.godot/imported/wheat_variants.aseprite-915e12dd8568fc69e15af4b8ee2e9f0c.res"]
+
+[params]
+

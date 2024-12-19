@@ -1,0 +1,18 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://cxrciic0ix0l4"]
+
+[ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://wheat_sheet.png" id="1_yf2yu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_llh32"]
+texture = ExtResource("1_yf2yu")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+
+[resource]
+sources/2 = SubResource("TileSetAtlasSource_llh32")

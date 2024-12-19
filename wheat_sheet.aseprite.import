@@ -1,0 +1,16 @@
+[remap]
+
+importer="aseprite_wizard.plugin.static-texture"
+type="AtlasTexture"
+uid="uid://buo12mulg0ydc"
+path="res://.godot/imported/wheat_sheet.aseprite-252a4097974fb3b6347984025c1b7aae.res"
+
+[deps]
+
+source_file="res://wheat_sheet.aseprite"
+dest_files=["res://.godot/imported/wheat_sheet.aseprite-252a4097974fb3b6347984025c1b7aae.res"]
+
+[params]
+
+exclude_layers_pattern=""
+only_visible_layers=false

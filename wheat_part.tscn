@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://kpahxsscvbxs"]
+
+[ext_resource type="Texture2D" uid="uid://b3jxg7o8xokjc" path="res://wheat_variants.png" id="1_jeb7r"]
+[ext_resource type="Script" path="res://wheat_part.gd" id="1_uo7pg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pg7hj"]
+atlas = ExtResource("1_jeb7r")
+region = Rect2(4, 7, 2, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqxu"]
+atlas = ExtResource("1_jeb7r")
+region = Rect2(1, 7, 2, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qaer"]
+atlas = ExtResource("1_jeb7r")
+region = Rect2(7, 7, 2, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvi8k"]
+atlas = ExtResource("1_jeb7r")
+region = Rect2(10, 7, 2, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v05bg"]
+atlas = ExtResource("1_jeb7r")
+region = Rect2(13, 7, 2, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f4a5a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pg7hj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhqxu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qaer")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvi8k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v05bg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_uo7pg")
+sprite = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -4)
+sprite_frames = SubResource("SpriteFrames_f4a5a")
