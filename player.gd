@@ -1,6 +1,15 @@
 extends CharacterBody2D
 class_name Player
 
+@export var scythe_animation: AnimationPlayer
+
+
+func dig(_direction: Game.Direction) -> void:
+	scythe_animation.play("dig")
+	await scythe_animation.animation_finished
+	scythe_animation.play("idle")
+
+
 
 #const SPEED = 32.0
 #

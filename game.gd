@@ -96,22 +96,26 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 		Direction.UP, Direction.DOWN:
 			if block.down and pos_dif.y > DIG_OFFSET:
 				block.down = false
+				player.dig(direction)
 				var n := get_block_at_coords(block_coords + Vector2i.DOWN)
 				if is_instance_valid(n):
 					n.up = false
 			if block.up and pos_dif.y < -DIG_OFFSET:
 				block.up = false
+				player.dig(direction)
 				var n := get_block_at_coords(block_coords + Vector2i.UP)
 				if is_instance_valid(n):
 					n.down = false
 		Direction.LEFT, Direction.RIGHT:
 			if block.right and pos_dif.x > DIG_OFFSET:
 				block.right = false
+				player.dig(direction)
 				var n := get_block_at_coords(block_coords + Vector2i.RIGHT)
 				if is_instance_valid(n):
 					n.left = false
 			if block.left and pos_dif.x < -DIG_OFFSET:
 				block.left = false
+				player.dig(direction)
 				var n := get_block_at_coords(block_coords + Vector2i.LEFT)
 				if is_instance_valid(n):
 					n.right = false

@@ -14,6 +14,7 @@ config/name="dig dug"
 config/tags=PackedStringArray("20_games_challange")
 run/main_scene="res://game.tscn"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.0974964, 0.22974, 0.366024, 1)
 config/icon="res://icon.svg"
 
 [autoload]
@@ -26,7 +27,6 @@ window/size/viewport_width=816
 window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
-window/stretch/scale_mode="integer"
 
 [editor_plugins]
 
@@ -37,3 +37,4 @@ enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.0974964, 0.22974, 0.366024, 1)

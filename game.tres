@@ -6,7 +6,7 @@ constant = 0.3
 
 [resource]
 code = "shader_type canvas_item;
-render_mode blend_mix;
+render_mode blend_add;
 
 
 
@@ -22,8 +22,8 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-158.952, 68.2724)
 mode = 1
+modes/blend = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(380, 160)
 nodes/fragment/3/node = SubResource("VisualShaderNodeFloatConstant_p0yrp")

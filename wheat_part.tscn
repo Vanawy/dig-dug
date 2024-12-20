@@ -46,6 +46,21 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_eijmd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_o242q"]
 resource_name = "wind"
 loop_mode = 2
@@ -62,21 +77,6 @@ tracks/0/keys = {
 "values": [-0.113446, 0.113446]
 }
 
-[sub_resource type="Animation" id="Animation_eijmd"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u804p"]
 _data = {
 &"RESET": SubResource("Animation_eijmd"),
@@ -84,6 +84,7 @@ _data = {
 }
 
 [node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite", "animation")]
+y_sort_enabled = true
 script = ExtResource("1_uo7pg")
 sprite = NodePath("AnimatedSprite2D")
 animation = NodePath("AnimationPlayer")
