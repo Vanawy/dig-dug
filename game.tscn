@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=26 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://vampire.png" id="4_igo6k"]
 [ext_resource type="Script" uid="uid://c71swver3v5hg" path="res://player.gd" id="5_poi4w"]
 [ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://wheat_block.tscn" id="6_wsy42"]
+[ext_resource type="Shader" uid="uid://bgopyyminohta" path="res://game.tres" id="8_j5wjh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
 atlas = ExtResource("4_igo6k")
@@ -114,6 +115,22 @@ scenes/1/scene = ExtResource("6_wsy42")
 [sub_resource type="TileSet" id="TileSet_tw16u"]
 sources/0 = SubResource("TileSetScenesCollectionSource_ykb3o")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vef74"]
+shader = ExtResource("8_j5wjh")
+
+[sub_resource type="Gradient" id="Gradient_eow3j"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75)
+colors = PackedColorArray(1, 1, 1, 1, 0.75, 0.75, 0.75, 1, 0.5, 0.5, 0.5, 1, 0.25, 0.25, 0.25, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j5wjh"]
+gradient = SubResource("Gradient_eow3j")
+width = 176
+height = 192
+fill_to = Vector2(0, 1)
+
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player")]
 script = ExtResource("1_wu4la")
 field = NodePath("Field")
@@ -158,3 +175,9 @@ tile_set = SubResource("TileSet_tw16u")
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 zoom = Vector2(3, 3)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_vef74")
+position = Vector2(16, 32)
+texture = SubResource("GradientTexture2D_j5wjh")
+centered = false

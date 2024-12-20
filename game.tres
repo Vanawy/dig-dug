@@ -1,0 +1,31 @@
+[gd_resource type="VisualShader" load_steps=2 format=3 uid="uid://bgopyyminohta"]
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_p0yrp"]
+output_port_for_preview = 0
+constant = 0.3
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+
+void fragment() {
+// FloatConstant:3
+	float n_out3p0 = 0.300000;
+
+
+// Output:0
+	COLOR.a = n_out3p0;
+
+
+}
+"
+graph_offset = Vector2(-158.952, 68.2724)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(380, 160)
+nodes/fragment/3/node = SubResource("VisualShaderNodeFloatConstant_p0yrp")
+nodes/fragment/3/position = Vector2(40, 240)
+nodes/fragment/connections = PackedInt32Array(3, 0, 0, 1)

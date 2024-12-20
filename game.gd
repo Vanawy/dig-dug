@@ -1,13 +1,15 @@
 extends Node2D
+class_name Game
 
 enum Direction {NONE, UP, DOWN, LEFT, RIGHT}
 
 var direction: Direction = Direction.NONE
 
+const FIELD_CENTER: Vector2i = Vector2i(6,7)
 
-const PLAYER_SPEED = 32
+const PLAYER_SPEED: int = 32
 
-const DIG_OFFSET = 4
+const DIG_OFFSET: float = 4
 
 @export var field: TileMapLayer
 @export var player: Player
@@ -21,7 +23,7 @@ var target_coords: Vector2i = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	target_coords = Vector2i(6,7)
+	target_coords = FIELD_CENTER
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

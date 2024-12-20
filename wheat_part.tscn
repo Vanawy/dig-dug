@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://kpahxsscvbxs"]
+[gd_scene load_steps=12 format=3 uid="uid://kpahxsscvbxs"]
 
 [ext_resource type="Texture2D" uid="uid://b3jxg7o8xokjc" path="res://wheat_variants.png" id="1_jeb7r"]
 [ext_resource type="Script" uid="uid://c1ki0bap7pbr5" path="res://wheat_part.gd" id="1_uo7pg"]
@@ -46,10 +46,54 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite")]
+[sub_resource type="Animation" id="Animation_o242q"]
+resource_name = "wind"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.113446, 0.113446]
+}
+
+[sub_resource type="Animation" id="Animation_eijmd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u804p"]
+_data = {
+&"RESET": SubResource("Animation_eijmd"),
+&"wind": SubResource("Animation_o242q")
+}
+
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("sprite", "animation")]
 script = ExtResource("1_uo7pg")
 sprite = NodePath("AnimatedSprite2D")
+animation = NodePath("AnimationPlayer")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_f4a5a")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_u804p")
+}
+autoplay = "wind"

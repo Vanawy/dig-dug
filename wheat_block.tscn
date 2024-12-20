@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://co7upfeaq8e5w"]
+[gd_scene load_steps=14 format=3 uid="uid://co7upfeaq8e5w"]
 
 [ext_resource type="Script" uid="uid://bsaeqicad5dlm" path="res://wheat_block.gd" id="1_4iwym"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://wheat_sheet.png" id="2_lhof2"]
+[ext_resource type="Texture2D" uid="uid://det35oga5utbx" path="res://wheat.png" id="2_o35ox"]
 [ext_resource type="PackedScene" uid="uid://kpahxsscvbxs" path="res://wheat_part.tscn" id="4_sge4t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u242n"]
@@ -56,7 +57,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kri6b")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }]
@@ -64,20 +65,27 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7d4w5"]
 size = Vector2(16, 16)
 
-[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line")]
+[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line", "parts", "parts_to_remove")]
 y_sort_enabled = true
 position = Vector2(-8, -8)
 script = ExtResource("1_4iwym")
 sprite = NodePath("Good/Bg")
 debug_line = NodePath("Line2D")
+parts = NodePath("Good/Parts")
+parts_to_remove = {
+0: NodePath("Good/Parts/mid"),
+1: NodePath("Good/Parts/up"),
+2: NodePath("Good/Parts/down"),
+3: NodePath("Good/Parts/left"),
+4: NodePath("Good/Parts/right")
+}
 
 [node name="Bad" type="Node2D" parent="."]
 z_index = -1
 
 [node name="Bg" type="Sprite2D" parent="Bad"]
 position = Vector2(8, 8)
-texture = ExtResource("2_lhof2")
-region_enabled = true
+texture = ExtResource("2_o35ox")
 region_rect = Rect2(32, 32, 16, 16)
 
 [node name="Good" type="Node2D" parent="."]
@@ -90,51 +98,59 @@ sprite_frames = SubResource("SpriteFrames_otxsm")
 [node name="Parts" type="Node2D" parent="Good"]
 y_sort_enabled = true
 
-[node name="Node2D" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(2, 16)
-frame = 2
+[node name="up" type="Node2D" parent="Good/Parts"]
 
-[node name="Node2D6" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(12, 11)
-
-[node name="Node2D7" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(15, 8)
-frame = 2
-
-[node name="Node2D8" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(14, 1)
-
-[node name="Node2D9" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+[node name="Node2D9" parent="Good/Parts/up" instance=ExtResource("4_sge4t")]
 position = Vector2(8, 3)
 frame = 1
 
-[node name="Node2D2" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(5, 15)
-frame = 1
-
-[node name="Node2D3" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(9, 12)
-frame = 1
-
-[node name="Node2D4" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(6, 8)
-frame = 1
-
-[node name="Node2D5" parent="Good/Parts" instance=ExtResource("4_sge4t")]
-position = Vector2(2, 9)
-frame = 1
-
-[node name="Node2D10" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+[node name="Node2D10" parent="Good/Parts/up" instance=ExtResource("4_sge4t")]
 position = Vector2(11, 2)
 frame = 3
 
+[node name="right" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+position = Vector2(15, 8)
+frame = 2
+
+[node name="down" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+position = Vector2(5, 15)
+frame = 1
+
+[node name="left" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+position = Vector2(2, 9)
+frame = 1
+
+[node name="mid" type="Node2D" parent="Good/Parts"]
+
+[node name="Node2D6" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+position = Vector2(12, 11)
+
+[node name="Node2D3" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+position = Vector2(9, 12)
+frame = 1
+
+[node name="Node2D4" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+position = Vector2(6, 8)
+frame = 1
+
+[node name="keep" type="Node2D" parent="Good/Parts"]
+
+[node name="Node2D" parent="Good/Parts/keep" instance=ExtResource("4_sge4t")]
+position = Vector2(2, 16)
+frame = 2
+
+[node name="Node2D8" parent="Good/Parts/keep" instance=ExtResource("4_sge4t")]
+position = Vector2(14, 1)
+
 [node name="Hitbox" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(8, 8)
 shape = SubResource("RectangleShape2D_7d4w5")
 
 [node name="Line2D" type="Line2D" parent="."]
+visible = false
 points = PackedVector2Array(0, 0, 16, 0, 16, 16, 0, 16)
 closed = true
 width = 1.0

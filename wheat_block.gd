@@ -1,7 +1,6 @@
 extends Node2D
 class_name WheatBlock
 
-
 var up: bool = true:
 	set(v):
 		up = v
@@ -21,6 +20,9 @@ var right: bool = true:
 
 @export var sprite: AnimatedSprite2D
 @export var debug_line: Line2D
+@export var parts: Node2D
+
+@export var parts_to_remove: Dictionary[Game.Direction, Node2D] = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -38,6 +40,16 @@ func update_sprite() -> void:
 	queue_redraw()
 	
 	var count_intact_sides = int(up) + int(down) + int(left) + int(right)
+	if count_intact_sides < 4:
+		remove_parts(Game.Direction.NONE)
+	if not up:
+		remove_parts(Game.Direction.UP)
+	if not down:
+		remove_parts(Game.Direction.DOWN)
+	if not left:
+		remove_parts(Game.Direction.LEFT)
+	if not right:
+		remove_parts(Game.Direction.RIGHT)
 	
 	match count_intact_sides:
 		0: 
@@ -82,7 +94,10 @@ func update_sprite() -> void:
 			if not left:
 				sprite.rotation = 0
 			
-	
+func remove_parts(dir: Game.Direction) -> void:
+	if parts_to_remove.has(dir):
+		(parts_to_remove.get(dir) as Node2D).queue_free()
+		parts_to_remove.erase(dir)
 	
 func _draw() -> void:
 	if not Global.draw_debug:
