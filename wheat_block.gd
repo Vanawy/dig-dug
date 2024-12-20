@@ -20,11 +20,15 @@ var right: bool = true:
 		update_sprite()
 
 @export var sprite: AnimatedSprite2D
-
+@export var debug_line: Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	debug_line.visible = Global.draw_debug
+	Global.draw_debug_toggled.connect(func(v):
+		queue_redraw()
+		debug_line.visible = v
+	)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -81,6 +85,8 @@ func update_sprite() -> void:
 	
 	
 func _draw() -> void:
+	if not Global.draw_debug:
+		return
 	draw_set_transform(Vector2(8,8))
 	draw_circle(Vector2.UP * 3, 2, Color.GREEN if up else Color.RED)
 	draw_circle(Vector2.DOWN * 3, 2, Color.GREEN if down else Color.RED)

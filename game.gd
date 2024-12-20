@@ -11,10 +11,17 @@ const DIG_OFFSET = 4
 
 @export var field: TileMapLayer
 @export var player: Player
+@export var skip_intro: bool = true
+
+var is_player_intro_done: bool = false
+
+
+var target_coords: Vector2i = Vector2.ZERO
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	target_coords = Vector2i(6,7)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -22,28 +29,43 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	var player_tilemap_pos := field.local_to_map(to_local(player.global_position))
+	var player_corrds := field.local_to_map(to_local(player.global_position))
 	
-	destroy_current_block(player_tilemap_pos)
+	if not is_player_intro_done:
+		direction = Direction.DOWN
+		if player_corrds == target_coords:
+			is_player_intro_done = true
+			direction = Direction.NONE
+	
+	
+	destroy_current_block(player_corrds)
 	
 	match direction:
 		Direction.UP, Direction.DOWN:
 			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE
 			if direction == Direction.DOWN:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
-			var neighbor_coords := field.get_neighbor_cell(player_tilemap_pos, k)
-			move_player_to_target(neighbor_coords, PLAYER_SPEED * delta)
+			if is_player_intro_done:
+				target_coords = field.get_neighbor_cell(player_corrds, k)
+			move_player_to_target(PLAYER_SPEED * delta)
 
 		Direction.LEFT, Direction.RIGHT:
 			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE
 			if direction == Direction.RIGHT:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
-			var neighbor_coords := field.get_neighbor_cell(player_tilemap_pos, k)
-			move_player_to_target(neighbor_coords, PLAYER_SPEED * delta)
-	
+			if is_player_intro_done:
+				target_coords = field.get_neighbor_cell(player_corrds, k)
+			move_player_to_target(PLAYER_SPEED * delta)
+		
+		Direction.NONE:
+			if is_player_intro_done:
+				target_coords = player_corrds
 		
 # Move player along grid tilemap grid throug tiles centers
-func move_player_to_target(target_coords, speed) -> void:
+func move_player_to_target(speed) -> void:
+	if skip_intro and not is_player_intro_done:
+		speed *= 10
+	
 	var target_pos := field.map_to_local(target_coords)
 	match direction:
 		Direction.UP, Direction.DOWN:
@@ -72,13 +94,25 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 		Direction.UP, Direction.DOWN:
 			if block.down and pos_dif.y > DIG_OFFSET:
 				block.down = false
+				var n := get_block_at_coords(block_coords + Vector2i.DOWN)
+				if is_instance_valid(n):
+					n.up = false
 			if block.up and pos_dif.y < -DIG_OFFSET:
 				block.up = false
+				var n := get_block_at_coords(block_coords + Vector2i.UP)
+				if is_instance_valid(n):
+					n.down = false
 		Direction.LEFT, Direction.RIGHT:
 			if block.right and pos_dif.x > DIG_OFFSET:
 				block.right = false
+				var n := get_block_at_coords(block_coords + Vector2i.RIGHT)
+				if is_instance_valid(n):
+					n.left = false
 			if block.left and pos_dif.x < -DIG_OFFSET:
 				block.left = false
+				var n := get_block_at_coords(block_coords + Vector2i.LEFT)
+				if is_instance_valid(n):
+					n.right = false
 		
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
@@ -104,22 +138,29 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_up"):
-		direction = Direction.UP
-	if event.is_action_pressed("ui_down"):
-		direction = Direction.DOWN
-	if event.is_action_pressed("ui_right"):
-		direction = Direction.RIGHT
-	if event.is_action_pressed("ui_left"):
-		direction = Direction.LEFT
-		
-	if event.is_action_released("ui_up") and direction == Direction.UP \
-		or event.is_action_released("ui_down") and direction == Direction.DOWN \
-		or event.is_action_released("ui_right") and direction == Direction.RIGHT \
-		or event.is_action_released("ui_left") and direction == Direction.LEFT:
-
-		direction = Direction.NONE
 	
+	if is_player_intro_done:
+		if event.is_action_pressed("ui_up"):
+			direction = Direction.UP
+		if event.is_action_pressed("ui_down"):
+			direction = Direction.DOWN
+		if event.is_action_pressed("ui_right"):
+			direction = Direction.RIGHT
+		if event.is_action_pressed("ui_left"):
+			direction = Direction.LEFT
+			
+		if event.is_action_released("ui_up") and direction == Direction.UP \
+			or event.is_action_released("ui_down") and direction == Direction.DOWN \
+			or event.is_action_released("ui_right") and direction == Direction.RIGHT \
+			or event.is_action_released("ui_left") and direction == Direction.LEFT:
+
+			direction = Direction.NONE
+	
+	if event.as_text() == 'F2' and event.is_pressed():
+		get_tree().reload_current_scene()
+		
+	if event.as_text() == 'F3' and event.is_pressed():
+		Global.draw_debug = !Global.draw_debug
 		
 	
 	

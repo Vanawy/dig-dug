@@ -11,14 +11,19 @@ config_version=5
 [application]
 
 config/name="dig dug"
+config/tags=PackedStringArray("20_games_challange")
 run/main_scene="res://game.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*res://global.gd"
 
 [display]
 
-window/size/viewport_width=272
-window/size/viewport_height=240
+window/size/viewport_width=816
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
 window/stretch/scale_mode="integer"

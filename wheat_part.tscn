@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://kpahxsscvbxs"]
 
 [ext_resource type="Texture2D" uid="uid://b3jxg7o8xokjc" path="res://wheat_variants.png" id="1_jeb7r"]
-[ext_resource type="Script" path="res://wheat_part.gd" id="1_uo7pg"]
+[ext_resource type="Script" uid="uid://c1ki0bap7pbr5" path="res://wheat_part.gd" id="1_uo7pg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pg7hj"]
 atlas = ExtResource("1_jeb7r")

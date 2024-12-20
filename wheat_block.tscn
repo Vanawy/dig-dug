@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://co7upfeaq8e5w"]
 
-[ext_resource type="Script" path="res://wheat_block.gd" id="1_4iwym"]
+[ext_resource type="Script" uid="uid://bsaeqicad5dlm" path="res://wheat_block.gd" id="1_4iwym"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://wheat_sheet.png" id="2_lhof2"]
 [ext_resource type="PackedScene" uid="uid://kpahxsscvbxs" path="res://wheat_part.tscn" id="4_sge4t"]
 
@@ -64,11 +64,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7d4w5"]
 size = Vector2(16, 16)
 
-[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite")]
+[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line")]
 y_sort_enabled = true
 position = Vector2(-8, -8)
 script = ExtResource("1_4iwym")
 sprite = NodePath("Good/Bg")
+debug_line = NodePath("Line2D")
 
 [node name="Bad" type="Node2D" parent="."]
 z_index = -1
