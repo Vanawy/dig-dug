@@ -32,6 +32,11 @@ window/stretch/aspect="keep_width"
 
 enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
+[layer_names]
+
+2d_physics/layer_1="Walls"
+2d_physics/layer_8="wheat"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

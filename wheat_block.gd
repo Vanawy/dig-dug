@@ -24,6 +24,8 @@ var right: bool = true:
 
 @export var parts_to_remove: Dictionary[Game.Direction, Node2D] = {}
 
+var cut_direction: Game.Direction = Game.Direction.NONE
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	debug_line.visible = Global.draw_debug
@@ -96,7 +98,13 @@ func update_sprite() -> void:
 			
 func remove_parts(dir: Game.Direction) -> void:
 	if parts_to_remove.has(dir):
-		(parts_to_remove.get(dir) as Node2D).queue_free()
+		var part: Node2D = parts_to_remove.get(dir) as Node2D
+		if part is WheatPart:
+			(part as WheatPart).cut(cut_direction)
+		else:
+			for child in part.get_children():
+				if child is WheatPart:
+					(child as WheatPart).cut(cut_direction)
 		parts_to_remove.erase(dir)
 	
 func _draw() -> void:
