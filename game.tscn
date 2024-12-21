@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=45 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -429,6 +429,10 @@ particles_anim_h_frames = 2
 particles_anim_v_frames = 1
 particles_anim_loop = true
 
+[sub_resource type="Curve" id="Curve_7sc4i"]
+_data = [Vector2(0.759162, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
 radius = 6.0
 
@@ -548,6 +552,7 @@ one_shot = true
 
 [node name="AttackParticles" type="CPUParticles2D" parent="Player"]
 material = SubResource("CanvasItemMaterial_80cx4")
+emitting = false
 amount = 3
 lifetime = 0.4
 explosiveness = 0.7
@@ -562,6 +567,7 @@ linear_accel_min = -4497.95
 linear_accel_max = -4497.95
 angle_min = -10.0
 angle_max = -10.0
+scale_amount_curve = SubResource("Curve_7sc4i")
 anim_speed_min = 5.0
 anim_speed_max = 5.0
 anim_offset_max = 0.2
