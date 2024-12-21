@@ -60,13 +60,15 @@ func _physics_process(delta: float) -> void:
 			move_player_to_target(PLAYER_SPEED * delta)
 		
 		Direction.NONE:
-			if is_player_intro_done:
-				target_coords = player_corrds
+			player.change_direction(Direction.NONE)
+			
 		
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
 	if skip_intro and not is_player_intro_done:
 		speed *= 10
+		
+	var old_player_pos = player.position
 	
 	var target_pos := field.map_to_local(target_coords)
 	match direction:
@@ -82,7 +84,18 @@ func move_player_to_target(speed) -> void:
 			else:
 				player.position.x = move_toward(player.position.x, target_pos.x, speed)
 	
-
+	var actual_direction := Direction.NONE
+	if player.position.x > old_player_pos.x:
+		actual_direction = Direction.RIGHT
+	elif player.position.x < old_player_pos.x:
+		actual_direction = Direction.LEFT
+	elif player.position.y > old_player_pos.y:
+		actual_direction = Direction.DOWN
+	elif player.position.y < old_player_pos.y:
+		actual_direction = Direction.UP
+	
+	player.change_direction(actual_direction)
+		
 func destroy_current_block(block_coords: Vector2i) -> void:
 	
 	var block: WheatBlock = get_block_at_coords(block_coords)

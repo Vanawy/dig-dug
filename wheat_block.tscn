@@ -84,6 +84,7 @@ parts_to_remove = {
 z_index = -1
 
 [node name="Bg" type="Sprite2D" parent="Bad"]
+z_index = -10
 position = Vector2(8, 8)
 texture = ExtResource("2_o35ox")
 region_rect = Rect2(32, 32, 16, 16)
@@ -92,7 +93,7 @@ region_rect = Rect2(32, 32, 16, 16)
 y_sort_enabled = true
 
 [node name="Bg" type="AnimatedSprite2D" parent="Good"]
-z_index = -1
+z_index = -5
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_otxsm")
 
@@ -106,35 +107,40 @@ y_sort_enabled = true
 position = Vector2(8, 3)
 frame = 1
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="Node2D10" parent="Good/Parts/up" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(11, 2)
 frame = 3
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="right" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(15, 8)
 frame = 2
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="down" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(5, 15)
 frame = 1
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="left" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(2, 9)
 frame = 1
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="mid" type="Node2D" parent="Good/Parts"]
@@ -143,21 +149,24 @@ y_sort_enabled = true
 [node name="Node2D6" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(12, 11)
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="Node2D3" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(9, 12)
 frame = 1
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="Node2D4" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(6, 8)
 frame = 1
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="keep" type="Node2D" parent="Good/Parts"]
@@ -167,13 +176,15 @@ y_sort_enabled = true
 position = Vector2(2, 16)
 frame = 2
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="Node2D8" parent="Good/Parts/keep" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(14, 1)
 sprites = {
-0: NodePath("SpriteContainer/wheat")
+0: NodePath("SpriteContainer/wheat"),
+1: NodePath("SpriteContainer/corn")
 }
 
 [node name="Hitbox" type="Area2D" parent="."]
