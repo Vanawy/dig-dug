@@ -19,6 +19,7 @@ func change_direction(dir: Game.Direction) -> void:
 		Game.Direction.NONE, Game.Direction.UP, Game.Direction.DOWN:
 			#sprite.flip_h = false
 			sprite.play("idle")
+			scythe_pivot.scale.x = 1
 		Game.Direction.LEFT:
 			sprite.flip_h = false
 			scythe_pivot.scale.x = 1
@@ -30,9 +31,9 @@ func change_direction(dir: Game.Direction) -> void:
 			
 	match dir:
 		Game.Direction.UP:
-			scythe_pivot.rotation = -PI/2
-		Game.Direction.DOWN:
 			scythe_pivot.rotation = PI/2
+		Game.Direction.DOWN:
+			scythe_pivot.rotation = -PI/2
 		Game.Direction.NONE:
 			pass
 		_:
