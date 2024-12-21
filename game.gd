@@ -161,7 +161,7 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	
-	if is_player_intro_done:
+	if is_player_intro_done and not player.is_dead:
 		if event.is_action_pressed("ui_up"):
 			direction = Direction.UP
 		if event.is_action_pressed("ui_down"):
@@ -177,6 +177,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			or event.is_action_released("ui_left") and direction == Direction.LEFT:
 
 			direction = Direction.NONE
+			
+		if event.is_action_pressed("ui_accept"):
+			player.attack()
 	
 	if event.as_text() == 'F2' and event.is_pressed():
 		get_tree().reload_current_scene()

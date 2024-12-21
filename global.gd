@@ -3,7 +3,7 @@ enum Direction {NONE, UP, DOWN, LEFT, RIGHT}
 
 signal draw_debug_toggled(v: bool)
 
-var draw_debug: bool = true:
+var draw_debug: bool = false:
 	set(v):
 		draw_debug = v
 		draw_debug_toggled.emit(v)

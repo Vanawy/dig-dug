@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=44 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://bgopyyminohta" path="res://game.tres" id="8_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="10_hve3p"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://impact1.png" id="12_lc2xo"]
+[ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="13_7sc4i"]
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="13_215e1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
@@ -422,8 +423,19 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_mfdv2"]
 radius = 4.0
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_80cx4"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
 radius = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_215e1"]
+font_size = 10
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
 
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player")]
 y_sort_enabled = true
@@ -469,29 +481,31 @@ centered = false
 
 [node name="Details" type="TileMapLayer" parent="."]
 z_index = -1
-tile_map_data = PackedByteArray("AAAOAAEAAAAGAAIAAAAPAAAAAAAHAAEAAAAPAAEAAAAHAAEAAAAPAAIAAAAGAAIAAAAQAAEAAAAHAAEAAAAQAAIAAAAHAAEAAAAQAAMAAAAHAAEAAAARAAIAAAALAAEAAAANAAAAAAAGAAEAAAAOAP//AAAHAAAAAAAOAAAAAAAHAAEAAAAPAAMAAAAGAAAAAAAQAAQAAAAHAAEAAAARAAMAAAALAAEAAAAOAAQAAAAGAAEAAAAPAAQAAAAHAAEAAAAPAAUAAAAGAAIAAAAQAAUAAAAHAAEAAAAQAAYAAAAHAAEAAAARAAUAAAALAAEAAAARAAQAAAALAAEAAAAPAAcAAAAGAAEAAAAQAAcAAAAHAAEAAAAQAAgAAAAGAAIAAAARAAcAAAAKAAAAAAARAAgAAAAHAAEAAAARAAkAAAAKAAIAAAASAAgAAAALAAEAAAAPAAYAAAAGAAEAAAAQAAAAAAAHAAEAAAAAAA4AAAAIAAUAAAABAA4AAAAJAAMAAAACAA4AAAAJAAMAAAADAA4AAAAJAAMAAAAEAA4AAAAJAAMAAAAFAA4AAAAJAAMAAAAGAA4AAAAJAAMAAAAHAA4AAAAJAAMAAAAIAA4AAAAJAAMAAAAJAA4AAAAJAAMAAAAKAA4AAAAJAAMAAAALAA4AAAAJAAMAAAAMAA4AAAAKAAUAAAAMAA0AAAAKAAQAAAAMAAwAAAAKAAQAAAAMAAsAAAAKAAQAAAAMAAoAAAAKAAQAAAAMAAkAAAAKAAQAAAAMAAgAAAAKAAQAAAAMAAcAAAAKAAQAAAAMAAYAAAAKAAQAAAAMAAUAAAAKAAQAAAAMAAQAAAAKAAQAAAAMAAMAAAAKAAQAAAAMAAIAAAAKAAQAAAAAAAkAAAAIAAQAAAAAAAgAAAAIAAQAAAAAAAcAAAAIAAQAAAAAAAYAAAAIAAQAAAAAAAoAAAAIAAQAAAAAAAsAAAAIAAQAAAAAAAwAAAAIAAQAAAAAAA0AAAAIAAQAAAAAAAUAAAAIAAQAAAAAAAQAAAAIAAQAAAAAAAMAAAAIAAQAAAAAAAIAAAAIAAQAAAAAAAEAAAAIAAMAAAAMAAEAAAAKAAMAAAALAAEAAAAJAAMAAAAKAAEAAAAJAAMAAAAJAAEAAAAJAAMAAAAIAAEAAAAJAAMAAAAHAAEAAAAIAAYAAAAFAAEAAAAKAAYAAAAEAAEAAAAJAAMAAAADAAEAAAAJAAMAAAACAAEAAAAJAAMAAAABAAEAAAAJAAMAAAAOAAUAAAALAAcAAAAPAAwAAAAAAAYAAAAQAAsAAAACAAUAAAAQAAoAAAACAAQAAAARAAoAAAADAAQAAAARAAwAAAADAAYAAAAQAAwAAAABAAcAAAARAAsAAAADAAUAAAAPAAsAAAAAAAUAAAAPAAoAAAAAAAQAAAAPAA8AAAAIAAgAAAAPAA4AAAAIAAcAAAAOAAoAAAAIAAMAAAAOAAsAAAAIAAQAAAAOAAwAAAAIAAQAAAAOAA0AAAAIAAUAAAAPAA0AAAAKAAYAAAA=")
+tile_map_data = PackedByteArray("AAAOAAEAAAAGAAIAAAAPAAAAAAAHAAEAAAAPAAEAAAAHAAEAAAAPAAIAAAAGAAIAAAAQAAEAAAAHAAEAAAAQAAIAAAAHAAEAAAAQAAMAAAAHAAEAAAARAAIAAAALAAEAAAANAAAAAAAGAAEAAAAOAP//AAAHAAAAAAAOAAAAAAAHAAEAAAAPAAMAAAAGAAAAAAAQAAQAAAAHAAEAAAARAAMAAAALAAEAAAAOAAQAAAAGAAEAAAAPAAQAAAAHAAEAAAAPAAUAAAAGAAIAAAAQAAUAAAAHAAEAAAAQAAYAAAAHAAEAAAARAAUAAAALAAEAAAARAAQAAAALAAEAAAAPAAcAAAAGAAEAAAAQAAcAAAAHAAEAAAAQAAgAAAAGAAIAAAARAAcAAAAKAAAAAAARAAgAAAAHAAEAAAARAAkAAAAKAAIAAAASAAgAAAALAAEAAAAPAAYAAAAGAAEAAAAQAAAAAAAHAAEAAAAAAA4AAAAIAAUAAAABAA4AAAAJAAMAAAACAA4AAAAJAAMAAAADAA4AAAAJAAMAAAAEAA4AAAAJAAMAAAAFAA4AAAAJAAMAAAAGAA4AAAAJAAMAAAAHAA4AAAAJAAMAAAAIAA4AAAAJAAMAAAAJAA4AAAAJAAMAAAAKAA4AAAAJAAMAAAALAA4AAAAJAAMAAAAMAA4AAAAKAAUAAAAMAA0AAAAKAAQAAAAMAAwAAAAKAAQAAAAMAAsAAAAKAAQAAAAMAAoAAAAKAAQAAAAMAAkAAAAKAAQAAAAMAAgAAAAKAAQAAAAMAAcAAAAKAAQAAAAMAAYAAAAKAAQAAAAMAAUAAAAKAAQAAAAMAAQAAAAKAAQAAAAMAAMAAAAKAAQAAAAMAAIAAAAKAAQAAAAAAAkAAAAIAAQAAAAAAAgAAAAIAAQAAAAAAAcAAAAIAAQAAAAAAAYAAAAIAAQAAAAAAAoAAAAIAAQAAAAAAAsAAAAIAAQAAAAAAAwAAAAIAAQAAAAAAA0AAAAIAAQAAAAAAAUAAAAIAAQAAAAAAAQAAAAIAAQAAAAAAAMAAAAIAAQAAAAAAAIAAAAIAAQAAAAAAAEAAAAIAAMAAAAMAAEAAAAKAAMAAAALAAEAAAAJAAMAAAAKAAEAAAAJAAMAAAAJAAEAAAAJAAMAAAAIAAEAAAAJAAMAAAAHAAEAAAAIAAYAAAAFAAEAAAAKAAYAAAAEAAEAAAAJAAMAAAADAAEAAAAJAAMAAAACAAEAAAAJAAMAAAABAAEAAAAJAAMAAAAOAAUAAAALAAcAAAAPAAwAAAAAAAYAAAAQAAsAAAADAAUAAAAQAAoAAAABAAQAAAARAAoAAAADAAQAAAARAAwAAAADAAYAAAAQAAwAAAABAAcAAAARAAsAAAABAAUAAAAPAAsAAAAAAAUAAAAPAAoAAAAAAAQAAAAPAA8AAAAIAAgAAAAPAA4AAAAIAAcAAAAOAAoAAAAIAAMAAAAOAAsAAAAIAAQAAAAOAAwAAAAIAAQAAAAOAA0AAAAIAAUAAAAPAA0AAAAKAAYAAAA=")
 tile_set = SubResource("TileSet_lc2xo")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 zoom = Vector2(3, 3)
 
-[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("scythe_animation", "sprite", "scythe_pivot", "rays")]
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles")]
 y_sort_enabled = true
 position = Vector2(24, 8)
 collision_layer = 8
 collision_mask = 3
 motion_mode = 1
 script = ExtResource("5_poi4w")
+rays = {
+1: NodePath("Rays/RayUp"),
+2: NodePath("Rays/RayDown"),
+3: NodePath("Rays/RayLeft"),
+4: NodePath("Rays/RayRight")
+}
 scythe_animation = NodePath("ScythePivot/Scythe/AnimationPlayer")
 sprite = NodePath("AnimatedSprite2D")
 scythe_pivot = NodePath("ScythePivot")
-rays = {
-1: NodePath("RayUp"),
-2: NodePath("RayDown"),
-3: NodePath("RayLeft"),
-4: NodePath("RayRight")
-}
+attack_lock = NodePath("AttackLock")
+attack_particles = NodePath("AttackParticles")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(0, -4)
@@ -527,33 +541,62 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_mfdv2")
 
-[node name="RayRight" type="RayCast2D" parent="Player"]
+[node name="AttackLock" type="Timer" parent="Player"]
+process_callback = 0
+wait_time = 0.4
+one_shot = true
+
+[node name="AttackParticles" type="CPUParticles2D" parent="Player"]
+material = SubResource("CanvasItemMaterial_80cx4")
+amount = 3
+lifetime = 0.4
+explosiveness = 0.7
+lifetime_randomness = 0.1
+local_coords = true
+texture = ExtResource("13_7sc4i")
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 350.0
+initial_velocity_max = 500.0
+linear_accel_min = -4497.95
+linear_accel_max = -4497.95
+angle_min = -10.0
+angle_max = -10.0
+anim_speed_min = 5.0
+anim_speed_max = 5.0
+anim_offset_max = 0.2
+
+[node name="Rays" type="Node2D" parent="Player"]
+
+[node name="RayRight" type="RayCast2D" parent="Player/Rays"]
 target_position = Vector2(32, 0)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="RayLeft" type="RayCast2D" parent="Player"]
+[node name="RayLeft" type="RayCast2D" parent="Player/Rays"]
 target_position = Vector2(-32, 0)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="RayUp" type="RayCast2D" parent="Player"]
+[node name="RayUp" type="RayCast2D" parent="Player/Rays"]
 target_position = Vector2(0, -32)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="RayDown" type="RayCast2D" parent="Player"]
+[node name="RayDown" type="RayCast2D" parent="Player/Rays"]
 target_position = Vector2(0, 32)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("hitbox")]
+[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator")]
 y_sort_enabled = true
 position = Vector2(136, 120)
 collision_layer = 2
 collision_mask = 8
 script = ExtResource("13_215e1")
 hitbox = NodePath("Hitbox")
+stun_lock = NodePath("StunLock")
+stun_indicator = NodePath("StunIndicator")
 
 [node name="Sprite" type="Sprite2D" parent="Enemy"]
 position = Vector2(0, -4)
@@ -565,3 +608,21 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Hitbox"]
 shape = SubResource("CircleShape2D_lc2xo")
+
+[node name="StunIndicator" type="Node2D" parent="Enemy"]
+visible = false
+
+[node name="Label" type="Label" parent="Enemy/StunIndicator"]
+offset_left = -20.0
+offset_top = -25.0
+offset_right = 23.0
+offset_bottom = -2.0
+size_flags_horizontal = 4
+text = "stunned"
+label_settings = SubResource("LabelSettings_215e1")
+horizontal_alignment = 1
+
+[node name="StunLock" type="Timer" parent="Enemy"]
+process_callback = 0
+wait_time = 0.7
+one_shot = true

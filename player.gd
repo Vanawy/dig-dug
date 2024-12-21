@@ -5,20 +5,31 @@ const SPEED: float = 32
 
 var speed: float = SPEED
 
-@export var scythe_animation: AnimationPlayer
-@export var sprite: AnimatedSprite2D
-@export var scythe_pivot: Node2D
 
 var move_direction: Game.Direction = Game.Direction.NONE
 var look_direction: Game.Direction = Game.Direction.RIGHT
 
+@export_category("Children")
 @export var rays: Dictionary[Game.Direction, RayCast2D] = {}
+@export var scythe_animation: AnimationPlayer
+@export var sprite: AnimatedSprite2D
+@export var scythe_pivot: Node2D
+@export var attack_lock: Timer
+@export var attack_particles: CPUParticles2D
 
 var is_dead: bool = false
 signal on_death
 
 func _ready() -> void:
 	scythe_pivot.visible = false
+	attack_lock.timeout.connect(func():
+		if is_dead:
+			return
+		sprite.play("idle")
+		speed = SPEED
+	)
+	attack_particles.one_shot = true
+	attack_particles.emitting = false
 	
 func death() -> void:
 	on_death.emit()
@@ -27,10 +38,22 @@ func death() -> void:
 	speed = 0
 	
 func attack() -> void:
+	if not attack_lock.is_stopped():
+		print("can't attack for: " + str(attack_lock.time_left))
+		return
 	var attack_ray := rays.get(look_direction) as RayCast2D
 	if not attack_ray.is_colliding():
+		print("miss - " + str(Game.Direction.find_key(look_direction)))
 		return
-	#speed = 0
+		
+	var enemy := attack_ray.get_collider().get_parent() as Enemy
+	
+	if enemy.hit(look_direction):
+		attack_lock.start()
+		sprite.play("attack")
+		speed = 0
+		attack_particles.direction = Game.dir_to_vec(look_direction)
+		attack_particles.restart()
 
 func change_direction(dir: Game.Direction) -> void:
 	if is_dead or dir == move_direction:
@@ -39,6 +62,9 @@ func change_direction(dir: Game.Direction) -> void:
 	move_direction = dir
 	if dir != Game.Direction.NONE:
 		look_direction = dir
+		
+	if is_equal_approx(speed, 0):
+		return
 		
 	match move_direction:
 		Game.Direction.NONE, Game.Direction.UP, Game.Direction.DOWN:
