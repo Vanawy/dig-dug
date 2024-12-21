@@ -1,22 +1,13 @@
 extends Node2D
 class_name WheatBlock
 
-var up: bool = true:
-	set(v):
-		up = v
-		update_sprite()
-var down: bool = true:
-	set(v):
-		down = v
-		update_sprite()
-var left: bool = true:
-	set(v):
-		left = v
-		update_sprite()
-var right: bool = true:
-	set(v):
-		right = v
-		update_sprite()
+
+var sides: Dictionary[Game.Direction, bool] = {
+	Game.Direction.UP: true,
+	Game.Direction.DOWN: true,
+	Game.Direction.LEFT: true,
+	Game.Direction.RIGHT: true,
+}
 
 @export var sprite: AnimatedSprite2D
 @export var debug_line: Line2D
@@ -37,21 +28,32 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+	
+func cut(remove: Game.Direction, cut_direction: Game.Direction = Game.Direction.NONE) -> void:
+	if cut_direction == Game.Direction.NONE:
+		cut_direction = remove
+	sides[remove] = false
+	update_sprite()
+
+func has_side(side: Game.Direction) -> bool:
+	return sides[side]
 
 func update_sprite() -> void:
 	queue_redraw()
 	
-	var count_intact_sides = int(up) + int(down) + int(left) + int(right)
+	var count_intact_sides = sides.values().filter(func(v): return v).size()
+	
 	if count_intact_sides < 4:
 		remove_parts(Game.Direction.NONE)
-	if not up:
-		remove_parts(Game.Direction.UP)
-	if not down:
-		remove_parts(Game.Direction.DOWN)
-	if not left:
-		remove_parts(Game.Direction.LEFT)
-	if not right:
-		remove_parts(Game.Direction.RIGHT)
+		
+	for side in sides.keys():
+		if not sides[side]:
+			remove_parts(side)
+	
+	var up := sides[Game.Direction.UP]
+	var down := sides[Game.Direction.DOWN]
+	var left := sides[Game.Direction.LEFT]
+	var right := sides[Game.Direction.RIGHT]
 	
 	match count_intact_sides:
 		0: 
@@ -111,7 +113,7 @@ func _draw() -> void:
 	if not Global.draw_debug:
 		return
 	draw_set_transform(Vector2(8,8))
-	draw_circle(Vector2.UP * 3, 2, Color.GREEN if up else Color.RED)
-	draw_circle(Vector2.DOWN * 3, 2, Color.GREEN if down else Color.RED)
-	draw_circle(Vector2.LEFT * 3, 2, Color.GREEN if left else Color.RED)
-	draw_circle(Vector2.RIGHT * 3, 2, Color.GREEN if right else Color.RED)
+	
+	
+	for side in sides.keys():
+		draw_circle(Game.dir_to_vec(side) * 3, 2, Color.GREEN if sides[side] else Color.RED)

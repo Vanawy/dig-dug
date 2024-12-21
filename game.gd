@@ -98,43 +98,29 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 	var block: WheatBlock = get_block_at_coords(block_coords)
 	if not is_instance_valid(block):
 		return
-	block.cut_direction = direction
 	var pos_dif = block.to_local(player.global_position) - Vector2(8, 8)
-		
-	#region Block destruction scary match
-	#print(pos_dif)
+	
+	var cut_dir := Direction.NONE
+	
 	match direction:
+		Direction.NONE:
+			return
 		Direction.UP, Direction.DOWN:
-			if block.down and pos_dif.y > DIG_OFFSET:
-				block.down = false
-				player.dig(direction)
-				var n := get_block_at_coords(block_coords + Vector2i.DOWN)
-				if is_instance_valid(n):
-					n.cut_direction = direction
-					n.up = false
-			if block.up and pos_dif.y < -DIG_OFFSET:
-				block.up = false
-				player.dig(direction)
-				var n := get_block_at_coords(block_coords + Vector2i.UP)
-				if is_instance_valid(n):
-					n.cut_direction = direction
-					n.down = false
+			if block.has_side(Direction.DOWN) and pos_dif.y > DIG_OFFSET:
+				cut_dir = Direction.DOWN
+			if block.has_side(Direction.UP) and pos_dif.y < -DIG_OFFSET:
+				cut_dir = Direction.UP
 		Direction.LEFT, Direction.RIGHT:
-			if block.right and pos_dif.x > DIG_OFFSET:
-				block.right = false
-				player.dig(direction)
-				var n := get_block_at_coords(block_coords + Vector2i.RIGHT)
-				if is_instance_valid(n):
-					n.cut_direction = direction
-					n.left = false
-			if block.left and pos_dif.x < -DIG_OFFSET:
-				block.left = false
-				player.dig(direction)
-				var n := get_block_at_coords(block_coords + Vector2i.LEFT)
-				if is_instance_valid(n):
-					n.cut_direction = direction
-					n.right = false
-	#endregion
+			if block.has_side(Direction.RIGHT) and pos_dif.x > DIG_OFFSET:
+				cut_dir = Direction.RIGHT
+			if block.has_side(Direction.LEFT) and pos_dif.x < -DIG_OFFSET:
+				cut_dir = Direction.LEFT
+	
+	block.cut(cut_dir)
+	player.dig(direction)
+	var n := get_block_at_coords(block_coords + Vector2i(dir_to_vec(cut_dir)))
+	if is_instance_valid(n):
+		n.cut(dir_invert(cut_dir), cut_dir)
 		
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
@@ -190,6 +176,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.as_text() == 'F4' and event.is_pressed():
 		player.death()
 		
+static func dir_invert(dir: Direction) -> Direction:
+	match dir:
+		Direction.UP:
+			return Direction.DOWN
+		Direction.DOWN:
+			return Direction.UP
+		Direction.LEFT:
+			return Direction.RIGHT
+		Direction.RIGHT:
+			return Direction.LEFT
+
+	return Direction.NONE
 	
 	
 static func dir_to_vec(dir: Direction) -> Vector2:
