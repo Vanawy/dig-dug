@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=38 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://deec3t4q86tux" path="res://tiny_village_tilemap_packed.png" id="6_mfdv2"]
 [ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://wheat_block.tscn" id="6_wsy42"]
 [ext_resource type="Texture2D" uid="uid://c2qjec803b0ht" path="res://scythe.png" id="7_vef74"]
+[ext_resource type="PackedScene" uid="uid://b50613lc4jxmv" path="res://corn_block.tscn" id="8_iotsf"]
 [ext_resource type="Shader" uid="uid://bgopyyminohta" path="res://game.tres" id="8_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="10_hve3p"]
 
@@ -168,6 +169,7 @@ sources/0 = SubResource("TileSetAtlasSource_iotsf")
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ykb3o"]
 scenes/1/scene = ExtResource("6_wsy42")
+scenes/2/scene = ExtResource("8_iotsf")
 
 [sub_resource type="TileSet" id="TileSet_tw16u"]
 sources/0 = SubResource("TileSetScenesCollectionSource_ykb3o")
@@ -415,12 +417,14 @@ _data = {
 &"idle": SubResource("Animation_vef74")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_mfdv2"]
+radius = 4.0
+
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player")]
 y_sort_enabled = true
 script = ExtResource("1_wu4la")
 field = NodePath("Field")
 player = NodePath("Player")
-skip_intro = false
 
 [node name="res" type="Node2D" parent="."]
 
@@ -497,6 +501,9 @@ libraries = {
 &"": SubResource("AnimationLibrary_mfdv2")
 }
 autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CircleShape2D_mfdv2")
 
 [node name="Dummy" type="CharacterBody2D" parent="."]
 y_sort_enabled = true

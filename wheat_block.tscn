@@ -102,49 +102,79 @@ y_sort_enabled = true
 [node name="up" type="Node2D" parent="Good/Parts"]
 y_sort_enabled = true
 
-[node name="Node2D9" parent="Good/Parts/up" instance=ExtResource("4_sge4t")]
+[node name="Node2D9" parent="Good/Parts/up" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(8, 3)
 frame = 1
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="Node2D10" parent="Good/Parts/up" instance=ExtResource("4_sge4t")]
+[node name="Node2D10" parent="Good/Parts/up" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(11, 2)
 frame = 3
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="right" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+[node name="right" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(15, 8)
 frame = 2
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="down" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+[node name="down" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(5, 15)
 frame = 1
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="left" parent="Good/Parts" instance=ExtResource("4_sge4t")]
+[node name="left" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(2, 9)
 frame = 1
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
 [node name="mid" type="Node2D" parent="Good/Parts"]
 y_sort_enabled = true
 
-[node name="Node2D6" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+[node name="Node2D6" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(12, 11)
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="Node2D3" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+[node name="Node2D3" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(9, 12)
 frame = 1
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="Node2D4" parent="Good/Parts/mid" instance=ExtResource("4_sge4t")]
+[node name="Node2D4" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(6, 8)
 frame = 1
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
 [node name="keep" type="Node2D" parent="Good/Parts"]
 y_sort_enabled = true
 
-[node name="Node2D" parent="Good/Parts/keep" instance=ExtResource("4_sge4t")]
+[node name="Node2D" parent="Good/Parts/keep" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(2, 16)
 frame = 2
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
-[node name="Node2D8" parent="Good/Parts/keep" instance=ExtResource("4_sge4t")]
+[node name="Node2D8" parent="Good/Parts/keep" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
 position = Vector2(14, 1)
+sprites = {
+0: NodePath("SpriteContainer/wheat")
+}
 
 [node name="Hitbox" type="Area2D" parent="."]
 visible = false
