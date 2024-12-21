@@ -1,21 +1,46 @@
 extends CharacterBody2D
 class_name Player
 
+const SPEED: float = 32
+
+var speed: float = SPEED
+
 @export var scythe_animation: AnimationPlayer
 @export var sprite: AnimatedSprite2D
 @export var scythe_pivot: Node2D
 
-var current_direction: Game.Direction = Game.Direction.NONE
+var move_direction: Game.Direction = Game.Direction.NONE
+var look_direction: Game.Direction = Game.Direction.RIGHT
 
+@export var rays: Dictionary[Game.Direction, RayCast2D] = {}
+
+var is_dead: bool = false
+signal on_death
 
 func _ready() -> void:
 	scythe_pivot.visible = false
+	
+func death() -> void:
+	on_death.emit()
+	sprite.play("death")
+	is_dead = true
+	speed = 0
+	
+func attack() -> void:
+	var attack_ray := rays.get(look_direction) as RayCast2D
+	if not attack_ray.is_colliding():
+		return
+	#speed = 0
 
 func change_direction(dir: Game.Direction) -> void:
-	if dir == current_direction:
+	if is_dead or dir == move_direction:
 		return
-	current_direction = dir
-	match dir:
+		
+	move_direction = dir
+	if dir != Game.Direction.NONE:
+		look_direction = dir
+		
+	match move_direction:
 		Game.Direction.NONE, Game.Direction.UP, Game.Direction.DOWN:
 			#sprite.flip_h = false
 			sprite.play("idle")
@@ -29,7 +54,7 @@ func change_direction(dir: Game.Direction) -> void:
 			scythe_pivot.scale.x = -1
 			sprite.play("run")
 			
-	match dir:
+	match move_direction:
 		Game.Direction.UP:
 			scythe_pivot.rotation = PI/2
 		Game.Direction.DOWN:

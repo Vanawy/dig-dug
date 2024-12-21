@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=41 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://bgopyyminohta" path="res://game.tres" id="8_j5wjh"]
 [ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="10_hve3p"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://impact1.png" id="12_lc2xo"]
+[ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="13_215e1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
 
@@ -421,6 +422,9 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_mfdv2"]
 radius = 4.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
+radius = 6.0
+
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player")]
 y_sort_enabled = true
 script = ExtResource("1_wu4la")
@@ -472,14 +476,22 @@ tile_set = SubResource("TileSet_lc2xo")
 anchor_mode = 0
 zoom = Vector2(3, 3)
 
-[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("scythe_animation", "sprite", "scythe_pivot")]
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("scythe_animation", "sprite", "scythe_pivot", "rays")]
 y_sort_enabled = true
 position = Vector2(24, 8)
+collision_layer = 8
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("5_poi4w")
 scythe_animation = NodePath("ScythePivot/Scythe/AnimationPlayer")
 sprite = NodePath("AnimatedSprite2D")
 scythe_pivot = NodePath("ScythePivot")
+rays = {
+1: NodePath("RayUp"),
+2: NodePath("RayDown"),
+3: NodePath("RayLeft"),
+4: NodePath("RayRight")
+}
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 position = Vector2(0, -4)
@@ -515,10 +527,41 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_mfdv2")
 
-[node name="Dummy" type="CharacterBody2D" parent="."]
+[node name="RayRight" type="RayCast2D" parent="Player"]
+target_position = Vector2(32, 0)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="RayLeft" type="RayCast2D" parent="Player"]
+target_position = Vector2(-32, 0)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="RayUp" type="RayCast2D" parent="Player"]
+target_position = Vector2(0, -32)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="RayDown" type="RayCast2D" parent="Player"]
+target_position = Vector2(0, 32)
+collision_mask = 2
+collide_with_areas = true
+
+[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("hitbox")]
 y_sort_enabled = true
 position = Vector2(136, 120)
+collision_layer = 2
+collision_mask = 8
+script = ExtResource("13_215e1")
+hitbox = NodePath("Hitbox")
 
-[node name="Sprite" type="Sprite2D" parent="Dummy"]
+[node name="Sprite" type="Sprite2D" parent="Enemy"]
 position = Vector2(0, -4)
 texture = ExtResource("10_hve3p")
+
+[node name="Hitbox" type="Area2D" parent="Enemy"]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Hitbox"]
+shape = SubResource("CircleShape2D_lc2xo")

@@ -7,8 +7,6 @@ var direction: Direction = Direction.NONE
 
 const FIELD_CENTER: Vector2i = Vector2i(6,7)
 
-const PLAYER_SPEED: int = 32
-
 const DIG_OFFSET: float = 4
 
 @export var field: TileMapLayer
@@ -49,7 +47,7 @@ func _physics_process(delta: float) -> void:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
 			if is_player_intro_done:
 				target_coords = field.get_neighbor_cell(player_corrds, k)
-			move_player_to_target(PLAYER_SPEED * delta)
+			move_player_to_target(player.speed * delta)
 
 		Direction.LEFT, Direction.RIGHT:
 			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE
@@ -57,7 +55,7 @@ func _physics_process(delta: float) -> void:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
 			if is_player_intro_done:
 				target_coords = field.get_neighbor_cell(player_corrds, k)
-			move_player_to_target(PLAYER_SPEED * delta)
+			move_player_to_target(player.speed * delta)
 		
 		Direction.NONE:
 			player.change_direction(Direction.NONE)
@@ -97,15 +95,13 @@ func move_player_to_target(speed) -> void:
 	player.change_direction(actual_direction)
 		
 func destroy_current_block(block_coords: Vector2i) -> void:
-	
 	var block: WheatBlock = get_block_at_coords(block_coords)
 	if not is_instance_valid(block):
 		return
-
 	block.cut_direction = direction
-		
 	var pos_dif = block.to_local(player.global_position) - Vector2(8, 8)
 		
+	#region Block destruction scary match
 	#print(pos_dif)
 	match direction:
 		Direction.UP, Direction.DOWN:
@@ -138,13 +134,14 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 				if is_instance_valid(n):
 					n.cut_direction = direction
 					n.right = false
+	#endregion
 		
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
 	var global_pos := to_global(field.map_to_local(block_coords))
 	
 	var space_state = get_world_2d().direct_space_state
-	var params = PhysicsRayQueryParameters2D.create(global_pos, global_pos + Vector2.DOWN, 0xFFFFFFFF, [
+	var params = PhysicsRayQueryParameters2D.create(global_pos, global_pos + Vector2.DOWN, (1 << Global.Layers.WHEAT), [
 		player.get_rid()
 	])
 	params.hit_from_inside = true
@@ -186,6 +183,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.as_text() == 'F3' and event.is_pressed():
 		Global.draw_debug = !Global.draw_debug
+		
+	if event.as_text() == 'F4' and event.is_pressed():
+		player.death()
 		
 	
 	
