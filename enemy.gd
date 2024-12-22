@@ -4,7 +4,7 @@ class_name Enemy
 @export var speed_multiplier: float = 0.0
 
 
-var speed: float = 0
+@export var speed: float = 0
 var current_speed: float = 0
 
 @export var hp: int = 99
@@ -29,7 +29,6 @@ func get_target() -> Vector2i:
 	return grid_coords
 
 func _ready() -> void:
-	speed = 0
 	current_speed = speed
 	current_hp = hp
 	stun_indicator.visible = false
@@ -68,6 +67,7 @@ func hit(dir: Game.Direction) -> bool:
 func death() -> void:
 	print("enemy died")
 	on_death.emit()
+	queue_free()
 	
 	
 func update_path() -> void:

@@ -32,6 +32,8 @@ func _ready() -> void:
 	attack_particles.emitting = false
 	
 func death() -> void:
+	if is_dead:
+		return
 	on_death.emit()
 	sprite.play("death")
 	is_dead = true

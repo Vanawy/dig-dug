@@ -83,6 +83,7 @@ func spawn_enemies() -> void:
 			
 		var enemy = preload("res://enemy.tscn").instantiate()
 		enemy.global_position = spawn.global_position
+		enemy.grid_coords = global_to_coords(enemy.global_position)
 		player.add_sibling(enemy) 
 		enemies.append(enemy)
 		
@@ -102,10 +103,15 @@ func _physics_process(delta: float) -> void:
 	Navigation.update_player_pos(player_coords)
 	#print(Navigation.player_pos_id)
 	for enemy in enemies:
-		enemy.grid_coords = global_to_coords(enemy.global_position)
+		if not is_instance_valid(enemy):
+			enemies.remove_at(enemies.find(enemy))
+			continue
+		var new_coords := global_to_coords(enemy.global_position)
+		if enemy.global_position.distance_squared_to(coords_to_global(new_coords)) < 1:
+			enemy.grid_coords = new_coords
 		
 	if is_player_intro_done:
-		move_enemies()
+		move_enemies(delta)
 	
 	if not is_player_intro_done:
 		direction = Direction.DOWN
@@ -114,7 +120,10 @@ func _physics_process(delta: float) -> void:
 			var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
 			player.global_position = target_pos
 			direction = Direction.NONE
+			player.dig(Direction.LEFT)
 			destroy_selected_block(FIELD_CENTER, Direction.LEFT)
+			await player.scythe_animation.animation_finished
+			player.dig(Direction.RIGHT)
 			destroy_selected_block(FIELD_CENTER, Direction.RIGHT)
 	
 	destroy_current_block(player_coords)
@@ -253,10 +262,11 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	return block
 	
 	
-func move_enemies() -> void:
+func move_enemies(delta: float) -> void:
 	for enemy in enemies:
-		if randf() < 0.01:
-			enemy.global_position = coords_to_global(enemy.get_target())
+		if not is_instance_valid(enemy):
+			continue
+		enemy.global_position = enemy.global_position.move_toward(coords_to_global(enemy.get_target()), enemy.current_speed * delta)
 	
 func _unhandled_input(event: InputEvent) -> void:
 	
