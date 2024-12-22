@@ -74,15 +74,26 @@ func spawn_enemies() -> void:
 		var type := spawn.type
 		if type == SpawnPoint.Type.ANY:
 			type = [SpawnPoint.Type.HORIZONTAL, SpawnPoint.Type.VERTICAL].pick_random()
+			
+		var offset: int = floor(randf() * spawn.size) - ceil(spawn.size / 2)
+		var pos_offset: Vector2 = Vector2.ZERO
 		if type == SpawnPoint.Type.HORIZONTAL:
+			pos_offset.x = offset
 			destroy_selected_block(coords, Direction.LEFT)
 			destroy_selected_block(coords, Direction.RIGHT)
+			if spawn.size == SpawnPoint.Size.BIG:
+				destroy_selected_block(coords + Vector2i.LEFT, Direction.LEFT)
+				destroy_selected_block(coords + Vector2i.RIGHT, Direction.RIGHT)
 		if type == SpawnPoint.Type.VERTICAL:
+			pos_offset.y = offset
 			destroy_selected_block(coords, Direction.UP)
 			destroy_selected_block(coords, Direction.DOWN)
+			if spawn.size == SpawnPoint.Size.BIG:
+				destroy_selected_block(coords + Vector2i.UP, Direction.UP)
+				destroy_selected_block(coords + Vector2i.DOWN, Direction.DOWN)
 			
 		var enemy = preload("res://enemy.tscn").instantiate()
-		enemy.global_position = spawn.global_position
+		enemy.global_position = spawn.global_position + pos_offset * tile_size
 		enemy.grid_coords = global_to_coords(enemy.global_position)
 		player.add_sibling(enemy) 
 		enemies.append(enemy)
@@ -104,7 +115,6 @@ func _physics_process(delta: float) -> void:
 	#print(Navigation.player_pos_id)
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
-			enemies.remove_at(enemies.find(enemy))
 			continue
 		var new_coords := global_to_coords(enemy.global_position)
 		if enemy.global_position.distance_squared_to(coords_to_global(new_coords)) < 1:
@@ -148,6 +158,9 @@ func _physics_process(delta: float) -> void:
 		Direction.NONE:
 			player.change_direction(Direction.NONE)
 			
+	enemies = enemies.filter(func(enemy):
+		return is_instance_valid(enemy)
+	)
 		
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
@@ -173,13 +186,13 @@ func move_player_to_target(speed) -> void:
 				player.global_position.x = move_toward(old_player_pos.x, target_pos.x, speed)
 	
 	var actual_direction := Direction.NONE
-	if player.position.x > old_player_pos.x:
+	if player.global_position.x > old_player_pos.x:
 		actual_direction = Direction.RIGHT
-	elif player.position.x < old_player_pos.x:
+	elif player.global_position.x < old_player_pos.x:
 		actual_direction = Direction.LEFT
-	elif player.position.y > old_player_pos.y:
+	elif player.global_position.y > old_player_pos.y:
 		actual_direction = Direction.DOWN
-	elif player.position.y < old_player_pos.y:
+	elif player.global_position.y < old_player_pos.y:
 		actual_direction = Direction.UP
 	
 	player.change_direction(actual_direction)
