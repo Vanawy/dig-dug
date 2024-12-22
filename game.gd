@@ -5,20 +5,28 @@ enum Direction {NONE, UP, DOWN, LEFT, RIGHT}
 
 var direction: Direction = Direction.NONE
 
-const FIELD_CENTER: Vector2i = Vector2i(6,7)
+const FIELD_CENTER: Vector2i = Vector2i(5,6)
 
 const DIG_OFFSET: float = 4
 
 @export var skip_intro: bool = true
+@export_category("Spawn Points")
+var rock_spawns: Array[SpawnPoint] = []
+var enemy_spawns: Array[SpawnPoint] = []
+
+
 @export_category("Children")
 @export var field: TileMapLayer
 @export var player: Player
 @export var game_camera: GameCamera
 
 var is_player_intro_done: bool = false
-
-
 var target_coords: Vector2i = Vector2.ZERO
+
+var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
+
+var rocks_amount: int = 2
+var enemies_amount: int = 3
 
 
 # Called when the node enters the scene tree for the first time.
@@ -27,23 +35,63 @@ func _ready() -> void:
 	if skip_intro:
 		game_camera.position = Vector2.ZERO
 		game_camera.move_camera()
-
+		
+	var spawns = get_tree().get_nodes_in_group("spawn") as Array[SpawnPoint]
+	for spawn in spawns:
+		if spawn.type == SpawnPoint.Type.ROCK:
+			rock_spawns.push_back(spawn)
+		else:
+			enemy_spawns.push_back(spawn)
+			
+	spawn_enemies.call_deferred()
+	
+	
+func spawn_enemies() -> void:
+	rock_spawns.shuffle()
+	for i in rocks_amount:
+		var spawn := rock_spawns.pop_back() as SpawnPoint
+		var coords = global_to_coords(spawn.global_position)
+		destroy_selected_block(coords, Direction.DOWN, false)
+		var rock = preload("res://rock.tscn").instantiate()
+		rock.global_position = spawn.global_position
+		player.add_sibling(rock) 
+		
+	enemy_spawns.shuffle()
+	for i in enemies_amount:
+		var spawn := enemy_spawns.pop_back() as SpawnPoint
+		var coords = global_to_coords(spawn.global_position)
+		var type := spawn.type
+		if type == SpawnPoint.Type.ANY:
+			type = [SpawnPoint.Type.HORIZONTAL, SpawnPoint.Type.VERTICAL].pick_random()
+		if type == SpawnPoint.Type.HORIZONTAL:
+			destroy_selected_block(coords, Direction.LEFT)
+			destroy_selected_block(coords, Direction.RIGHT)
+		if type == SpawnPoint.Type.VERTICAL:
+			destroy_selected_block(coords, Direction.UP)
+			destroy_selected_block(coords, Direction.DOWN)
+			
+		var rock = preload("res://enemy.tscn").instantiate()
+		rock.global_position = spawn.global_position
+		player.add_sibling(rock) 
+		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+func global_to_coords(pos: Vector2) -> Vector2i:
+	return field.local_to_map(field.to_local(pos + Vector2(0, tile_size.y)))
+
 func _physics_process(delta: float) -> void:
-	var player_corrds := field.local_to_map(to_local(player.global_position))
+	var player_coords := global_to_coords(player.global_position)
 	
 	if not is_player_intro_done:
 		direction = Direction.DOWN
-		if player_corrds == target_coords:
+		if player_coords == target_coords:
 			is_player_intro_done = true
 			direction = Direction.NONE
 	
-	
-	destroy_current_block(player_corrds)
+	destroy_current_block(player_coords)
 	
 	match direction:
 		Direction.UP, Direction.DOWN:
@@ -51,7 +99,7 @@ func _physics_process(delta: float) -> void:
 			if direction == Direction.DOWN:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
 			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_corrds, k)
+				target_coords = field.get_neighbor_cell(player_coords, k)
 			move_player_to_target(player.speed * delta)
 
 		Direction.LEFT, Direction.RIGHT:
@@ -59,7 +107,7 @@ func _physics_process(delta: float) -> void:
 			if direction == Direction.RIGHT:
 				k = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
 			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_corrds, k)
+				target_coords = field.get_neighbor_cell(player_coords, k)
 			move_player_to_target(player.speed * delta)
 		
 		Direction.NONE:
@@ -71,21 +119,23 @@ func move_player_to_target(speed) -> void:
 	if skip_intro and not is_player_intro_done:
 		speed *= 20
 		
-	var old_player_pos = player.position
+	var old_player_pos = player.global_position
 	
-	var target_pos := field.map_to_local(target_coords)
+	var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
+	
+	#print("target: " + str(target_pos) + " pl: " + str(old_player_pos))
 	match direction:
 		Direction.UP, Direction.DOWN:
-			if not is_equal_approx(to_local(player.position).x, target_pos.x):
-				player.position.x = move_toward(player.position.x, target_pos.x, speed)
+			if not is_equal_approx(old_player_pos.x, target_pos.x):
+				player.global_position.x = move_toward(old_player_pos.x, target_pos.x, speed)
 			else:
-				player.position.y = move_toward(player.position.y, target_pos.y, speed)
+				player.global_position.y = move_toward(old_player_pos.y, target_pos.y, speed)
 				
 		Direction.LEFT, Direction.RIGHT:
-			if not is_equal_approx(to_local(player.position).y, target_pos.y):
-				player.position.y = move_toward(player.position.y, target_pos.y, speed)
+			if not is_equal_approx(old_player_pos.y, target_pos.y):
+				player.global_position.y = move_toward(old_player_pos.y, target_pos.y, speed)
 			else:
-				player.position.x = move_toward(player.position.x, target_pos.x, speed)
+				player.global_position.x = move_toward(old_player_pos.x, target_pos.x, speed)
 	
 	var actual_direction := Direction.NONE
 	if player.position.x > old_player_pos.x:
@@ -103,7 +153,7 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 	var block: WheatBlock = get_block_at_coords(block_coords)
 	if not is_instance_valid(block):
 		return
-	var pos_dif = block.to_local(player.global_position) - Vector2(8, 8)
+	var pos_dif = block.to_local(player.global_position) - (tile_size / 2)
 	
 	var cut_dir := Direction.NONE
 	
@@ -127,10 +177,26 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 		var n := get_block_at_coords(block_coords + Vector2i(dir_to_vec(cut_dir)))
 		if is_instance_valid(n):
 			n.cut(dir_invert(cut_dir), cut_dir)
+			
+			
+func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: bool = true) -> void:
+	if side == Direction.NONE:
+		return
+	var block: WheatBlock = get_block_at_coords(at)
+	if not is_instance_valid(block):
+		return
+	
+	block.cut(side)
+	if destroy_neighbor:
+		var n := get_block_at_coords(at + Vector2i(dir_to_vec(side)))
+		if is_instance_valid(n):
+			n.cut(dir_invert(side), side)
+	
+	
 		
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
-	var global_pos := to_global(field.map_to_local(block_coords))
+	var global_pos := to_global(field.map_to_local(block_coords)) + tile_size
 	
 	var space_state = get_world_2d().direct_space_state
 	var params = PhysicsRayQueryParameters2D.create(global_pos, global_pos + Vector2.DOWN, (1 << Global.Layers.WHEAT), [
@@ -181,7 +247,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event.as_text() == 'F4' and event.is_pressed():
 		player.death()
-		
+
+
+
 static func dir_invert(dir: Direction) -> Direction:
 	match dir:
 		Direction.UP:

@@ -14,3 +14,5 @@ enum Layers {
 	PLAYER = 3,
 	WHEAT = 7,
 }
+
+const TILE_SIZE: float = 16

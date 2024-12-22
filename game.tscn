@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=45 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -12,10 +12,10 @@
 [ext_resource type="PackedScene" uid="uid://b50613lc4jxmv" path="res://corn_block.tscn" id="8_iotsf"]
 [ext_resource type="Shader" uid="uid://bgopyyminohta" path="res://game.tres" id="8_j5wjh"]
 [ext_resource type="Script" uid="uid://donw5jx2prao6" path="res://game_camera.gd" id="10_80cx4"]
-[ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="10_hve3p"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://impact1.png" id="12_lc2xo"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="13_7sc4i"]
-[ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="13_215e1"]
+[ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://enemy.tscn" id="15_7sc4i"]
+[ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://spawn_point.gd" id="16_80cx4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
 
@@ -438,14 +438,6 @@ particles_anim_loop = true
 _data = [Vector2(0.759162, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
-radius = 6.0
-
-[sub_resource type="LabelSettings" id="LabelSettings_215e1"]
-font_size = 10
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
-
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player", "game_camera")]
 y_sort_enabled = true
 script = ExtResource("1_wu4la")
@@ -488,6 +480,9 @@ show_behind_parent = true
 material = SubResource("ShaderMaterial_vef74")
 texture = SubResource("GradientTexture2D_j5wjh")
 centered = false
+
+[node name="FieldCenter" type="Marker2D" parent="Field"]
+position = Vector2(88, 88)
 
 [node name="Details" type="TileMapLayer" parent="."]
 y_sort_enabled = true
@@ -617,41 +612,85 @@ target_position = Vector2(0, 32)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="Enemy" type="CharacterBody2D" parent="." node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator")]
-y_sort_enabled = true
-position = Vector2(136, 120)
-collision_layer = 2
-collision_mask = 8
-script = ExtResource("13_215e1")
-hitbox = NodePath("Hitbox")
-stun_lock = NodePath("StunLock")
-stun_indicator = NodePath("StunIndicator")
+[node name="Enemy" parent="." instance=ExtResource("15_7sc4i")]
+position = Vector2(248, 136)
 
-[node name="Sprite" type="Sprite2D" parent="Enemy"]
-position = Vector2(0, -4)
-texture = ExtResource("10_hve3p")
+[node name="SpawnPositions" type="Node2D" parent="."]
+z_index = 100
 
-[node name="Hitbox" type="Area2D" parent="Enemy"]
-collision_layer = 2
-collision_mask = 8
+[node name="SpawnPoint2" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(40, 56)
+script = ExtResource("16_80cx4")
+size = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/Hitbox"]
-shape = SubResource("CircleShape2D_lc2xo")
+[node name="SpawnPoint4" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(72, 104)
+script = ExtResource("16_80cx4")
+size = 3
 
-[node name="StunIndicator" type="Node2D" parent="Enemy"]
-visible = false
+[node name="SpawnPoint11" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(104, 200)
+script = ExtResource("16_80cx4")
+size = 3
 
-[node name="Label" type="Label" parent="Enemy/StunIndicator"]
-offset_left = -20.0
-offset_top = -25.0
-offset_right = 23.0
-offset_bottom = -2.0
-size_flags_horizontal = 4
-text = "stunned"
-label_settings = SubResource("LabelSettings_215e1")
-horizontal_alignment = 1
+[node name="SpawnPoint12" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(136, 185)
+script = ExtResource("16_80cx4")
+size = 3
 
-[node name="StunLock" type="Timer" parent="Enemy"]
-process_callback = 0
-wait_time = 0.7
-one_shot = true
+[node name="SpawnPoint13" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(168, 200)
+script = ExtResource("16_80cx4")
+size = 3
+
+[node name="SpawnPoint10" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(24, 152)
+script = ExtResource("16_80cx4")
+type = 2
+size = 3
+
+[node name="SpawnPoint3" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(152, 72)
+script = ExtResource("16_80cx4")
+
+[node name="SpawnPoint14" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(168, 104)
+script = ExtResource("16_80cx4")
+size = 3
+
+[node name="SpawnPoint5" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+position = Vector2(56, 184)
+script = ExtResource("16_80cx4")
+
+[node name="Rocks" type="Node2D" parent="."]
+z_index = 100
+
+[node name="SpawnPoint" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(72, 56)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
+
+[node name="SpawnPoint6" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(120, 56)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
+
+[node name="SpawnPoint7" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(40, 136)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
+
+[node name="SpawnPoint8" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(168, 136)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
+
+[node name="SpawnPoint9" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(120, 152)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
