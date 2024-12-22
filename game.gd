@@ -116,11 +116,12 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 			if block.has_side(Direction.LEFT) and pos_dif.x < -DIG_OFFSET:
 				cut_dir = Direction.LEFT
 	
-	block.cut(cut_dir)
-	player.dig(direction)
-	var n := get_block_at_coords(block_coords + Vector2i(dir_to_vec(cut_dir)))
-	if is_instance_valid(n):
-		n.cut(dir_invert(cut_dir), cut_dir)
+	if cut_dir != Direction.NONE:
+		block.cut(cut_dir)
+		player.dig(direction)
+		var n := get_block_at_coords(block_coords + Vector2i(dir_to_vec(cut_dir)))
+		if is_instance_valid(n):
+			n.cut(dir_invert(cut_dir), cut_dir)
 		
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	

@@ -32,6 +32,7 @@ func _process(delta: float) -> void:
 func cut(remove: Game.Direction, cut_direction: Game.Direction = Game.Direction.NONE) -> void:
 	if cut_direction == Game.Direction.NONE:
 		cut_direction = remove
+	self.cut_direction = cut_direction
 	sides[remove] = false
 	update_sprite()
 
