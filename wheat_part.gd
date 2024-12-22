@@ -13,6 +13,8 @@ enum Type {
 
 @export var type: Type = Type.WHEAT
 
+var is_alive: bool = true
+
 
 func _ready() -> void:
 	for sprite in sprites.values():
@@ -25,11 +27,13 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
-	move_and_slide()
+	if not is_alive:
+		move_and_slide()
 
 func cut(dir: Game.Direction):
 	
 	velocity = Game.dir_to_vec(dir) * 100
+	is_alive = false
 	
 	if randf() > 0.5:
 		animation.play("cut")

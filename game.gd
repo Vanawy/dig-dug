@@ -12,10 +12,10 @@ const FIELD_CENTER: Vector2i = Vector2i(5,6)
 const DIG_OFFSET: float = 4
 
 @export var skip_intro: bool = true
+
 @export_category("Spawn Points")
 var rock_spawns: Array[SpawnPoint] = []
 var enemy_spawns: Array[SpawnPoint] = []
-
 
 @export_category("Children")
 @export var field: TileMapLayer
@@ -29,6 +29,11 @@ var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
 
 var rocks_amount: int = 2
 var enemies_amount: int = 3
+
+
+var navigation: AStar2D = AStar2D.new()
+
+var grid: Dictionary[Vector2i, WheatBlock] = {}
 
 
 # Called when the node enters the scene tree for the first time.
@@ -178,11 +183,8 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 				cut_dir = Direction.LEFT
 	
 	if cut_dir != Direction.NONE:
-		block.cut(cut_dir)
 		player.dig(direction)
-		var n := get_block_at_coords(block_coords + Vector2i(dir_to_vec(cut_dir)))
-		if is_instance_valid(n):
-			n.cut(dir_invert(cut_dir), cut_dir)
+		destroy_selected_block(block_coords, cut_dir)
 			
 			
 func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: bool = true) -> void:
@@ -191,16 +193,36 @@ func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: boo
 	var block: WheatBlock = get_block_at_coords(at)
 	if not is_instance_valid(block):
 		return
+		
+	add_nav_block(at)
 	
 	block.cut(side)
 	if destroy_neighbor:
-		var n := get_block_at_coords(at + Vector2i(dir_to_vec(side)))
+		var n_at := at + Vector2i(dir_to_vec(side))
+		var n := get_block_at_coords(n_at)
 		if is_instance_valid(n):
+			add_nav_block(n_at)
 			n.cut(dir_invert(side), side)
+			add_conection(at, n_at)
+			
+	#if Global.draw_debug:
+	queue_redraw()
 	
-	
+func add_nav_block(at: Vector2i) -> void:
+	if not navigation.has_point(nav_id(at)):
+		navigation.add_point(nav_id(at), at, 1.0)
 		
+func add_conection(from: Vector2i, to: Vector2i) -> void:
+	navigation.connect_points(nav_id(from), nav_id(to), true)
+	
+func nav_id(at: Vector2i) -> int:
+	return at.x + at.y * field_size.x
+	
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
+	
+	if grid.has(block_coords):
+		#print("returned from cache")
+		return grid.get(block_coords)
 	
 	var global_pos := to_global(field.map_to_local(block_coords)) + tile_size
 	
@@ -220,7 +242,9 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	if not collider.get_parent() is WheatBlock:
 		return null
 	
-	return collider.get_parent()
+	var block = collider.get_parent()
+	grid.set(block_coords, block)
+	return block
 	
 	
 func _unhandled_input(event: InputEvent) -> void:
@@ -288,3 +312,20 @@ static func dir_to_vec(dir: Direction) -> Vector2:
 			return Vector2.RIGHT
 
 	return Vector2.ZERO
+	
+	
+func _draw() -> void:
+	#if not Global.draw_debug:
+		#return
+		
+	draw_set_transform(Vector2(208, 112))
+	
+	var size := Vector2(4, 4)
+		
+	var off := Vector2(size.x / 2, -size.y / 2)
+	for id in navigation.get_point_ids():
+		var pos := navigation.get_point_position(id) * size + off
+		draw_circle(pos, 1, Color.PURPLE, true)
+		for con in navigation.get_point_connections(id):
+			var pos_b := navigation.get_point_position(con) * size + off
+			draw_line(pos, pos_b, Color.PLUM, 2)

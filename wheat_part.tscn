@@ -176,6 +176,8 @@ _data = {
 }
 
 [node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("sprites", "animation")]
+process_priority = 1
+process_physics_priority = 1
 y_sort_enabled = true
 collision_layer = 128
 motion_mode = 1
