@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=9 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="2_qi2p4"]
+[ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="3_qi2p4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
 radius = 6.0
@@ -14,14 +15,26 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
 radius = 4.0
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator")]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iifgy"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_epg4t"]
+_data = [Vector2(0, 0.80863), 0.0, 8.33807, 0, 0, Vector2(0.0680628, 1), 0.0, 0.0, 0, 0, Vector2(0.772251, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
+point_count = 4
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles")]
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 8
 script = ExtResource("1_4gyqm")
 hitbox = NodePath("Hitbox")
 stun_lock = NodePath("StunLock")
-stun_indicator = NodePath("StunIndicator")
+stun_indicator = NodePath("HBoxContainer/Stun")
+hp_indicator = NodePath("HBoxContainer/HP")
+hit_particles = NodePath("HitParticles")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, -4)
@@ -35,16 +48,33 @@ collision_mask = 8
 shape = SubResource("CircleShape2D_lc2xo")
 debug_color = Color(0.749141, 0.284326, 0.897157, 0.42)
 
-[node name="StunIndicator" type="Node2D" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
+z_index = 50
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 0
+alignment = 1
 
-[node name="Label" type="Label" parent="StunIndicator"]
-offset_left = -20.0
-offset_top = -25.0
-offset_right = 23.0
-offset_bottom = -2.0
+[node name="Stun" type="Label" parent="HBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 4
 text = "stunned"
+label_settings = SubResource("LabelSettings_215e1")
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0/0"
 label_settings = SubResource("LabelSettings_215e1")
 horizontal_alignment = 1
 
@@ -55,3 +85,26 @@ one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_4gyqm")
+
+[node name="HitParticles" type="CPUParticles2D" parent="."]
+z_index = 2
+material = SubResource("CanvasItemMaterial_iifgy")
+position = Vector2(0, -8)
+amount = 1
+lifetime = 0.7
+explosiveness = 0.25
+lifetime_randomness = 0.1
+local_coords = true
+texture = ExtResource("3_qi2p4")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+orbit_velocity_min = 2.0
+orbit_velocity_max = 2.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_curve = SubResource("Curve_epg4t")
+anim_speed_min = 3.0
+anim_speed_max = 3.0
+anim_offset_max = 0.2

@@ -7,6 +7,8 @@ var direction: Direction = Direction.NONE
 
 const FIELD_CENTER: Vector2i = Vector2i(5,6)
 
+@export var field_size: Vector2i = Vector2i(11, 12)
+
 const DIG_OFFSET: float = 4
 
 @export var skip_intro: bool = true

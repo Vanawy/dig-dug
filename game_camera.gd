@@ -10,4 +10,5 @@ func _ready() -> void:
 	
 func move_camera() -> void:
 	create_tween().tween_property(self, "position", Vector2.ZERO, 1.0)
-	move_trigger.queue_free()
+	if is_instance_valid(move_trigger):
+		move_trigger.queue_free()
