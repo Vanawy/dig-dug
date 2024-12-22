@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=46 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="13_7sc4i"]
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://enemy.tscn" id="15_7sc4i"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://spawn_point.gd" id="16_80cx4"]
+[ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://spawn_point.tscn" id="16_e8heu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
 
@@ -196,7 +197,7 @@ height = 192
 fill_to = Vector2(0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_80cx4"]
-size = Vector2(64, 80)
+size = Vector2(16, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
 atlas = ExtResource("4_igo6k")
@@ -441,6 +442,7 @@ point_count = 2
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player", "game_camera")]
 y_sort_enabled = true
 script = ExtResource("1_wu4la")
+skip_intro = false
 field = NodePath("Field")
 player = NodePath("Player")
 game_camera = NodePath("GameCamera")
@@ -618,10 +620,8 @@ position = Vector2(248, 136)
 [node name="SpawnPositions" type="Node2D" parent="."]
 z_index = 100
 
-[node name="SpawnPoint2" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
+[node name="SpawnPoint2" parent="SpawnPositions" instance=ExtResource("16_e8heu")]
 position = Vector2(40, 56)
-script = ExtResource("16_80cx4")
-size = 3
 
 [node name="SpawnPoint4" type="Node2D" parent="SpawnPositions" groups=["spawn"]]
 position = Vector2(72, 104)
@@ -691,6 +691,12 @@ size = 3
 
 [node name="SpawnPoint9" type="Node2D" parent="Rocks" groups=["spawn"]]
 position = Vector2(120, 152)
+script = ExtResource("16_80cx4")
+type = 0
+size = 3
+
+[node name="SpawnPoint10" type="Node2D" parent="Rocks" groups=["spawn"]]
+position = Vector2(24, 104)
 script = ExtResource("16_80cx4")
 type = 0
 size = 3

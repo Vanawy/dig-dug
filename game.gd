@@ -89,7 +89,11 @@ func _physics_process(delta: float) -> void:
 		direction = Direction.DOWN
 		if player_coords == target_coords:
 			is_player_intro_done = true
+			var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
+			player.global_position = target_pos
 			direction = Direction.NONE
+			destroy_selected_block(FIELD_CENTER, Direction.LEFT)
+			destroy_selected_block(FIELD_CENTER, Direction.RIGHT)
 	
 	destroy_current_block(player_coords)
 	
@@ -238,6 +242,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 		if event.is_action_pressed("ui_accept"):
 			player.attack()
+				
+	if not is_player_intro_done:
+		if event.is_action_pressed("ui_accept"):
+			skip_intro = true
+			game_camera.position = Vector2.ZERO
+			game_camera.move_camera()
 	
 	if event.as_text() == 'F2' and event.is_pressed():
 		get_tree().reload_current_scene()

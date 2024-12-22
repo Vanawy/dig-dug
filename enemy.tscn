@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=6 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="2_qi2p4"]
@@ -10,6 +10,9 @@ radius = 6.0
 font_size = 10
 outline_size = 3
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 4.0
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator")]
 y_sort_enabled = true
@@ -30,6 +33,7 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_lc2xo")
+debug_color = Color(0.749141, 0.284326, 0.897157, 0.42)
 
 [node name="StunIndicator" type="Node2D" parent="."]
 visible = false
@@ -48,3 +52,6 @@ horizontal_alignment = 1
 process_callback = 0
 wait_time = 0.7
 one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4gyqm")
