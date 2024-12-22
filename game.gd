@@ -9,9 +9,11 @@ const FIELD_CENTER: Vector2i = Vector2i(6,7)
 
 const DIG_OFFSET: float = 4
 
+@export var skip_intro: bool = true
+@export_category("Children")
 @export var field: TileMapLayer
 @export var player: Player
-@export var skip_intro: bool = true
+@export var game_camera: GameCamera
 
 var is_player_intro_done: bool = false
 
@@ -22,6 +24,9 @@ var target_coords: Vector2i = Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	target_coords = FIELD_CENTER
+	if skip_intro:
+		game_camera.position = Vector2.ZERO
+		game_camera.move_camera()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,7 +69,7 @@ func _physics_process(delta: float) -> void:
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
 	if skip_intro and not is_player_intro_done:
-		speed *= 10
+		speed *= 20
 		
 	var old_player_pos = player.position
 	
