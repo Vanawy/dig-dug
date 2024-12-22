@@ -30,14 +30,17 @@ var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
 var rocks_amount: int = 2
 var enemies_amount: int = 3
 
-
-var navigation: AStar2D = AStar2D.new()
-
 var grid: Dictionary[Vector2i, WheatBlock] = {}
+
+var enemies: Array[Enemy] = []
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	Navigation.field_size = field_size
+	Navigation.navigation.clear()
+	
 	target_coords = FIELD_CENTER
 	if skip_intro:
 		game_camera.position = Vector2.ZERO
@@ -59,6 +62,7 @@ func spawn_enemies() -> void:
 		var spawn := rock_spawns.pop_back() as SpawnPoint
 		var coords = global_to_coords(spawn.global_position)
 		destroy_selected_block(coords, Direction.DOWN, false)
+		Navigation.set_disabled(coords, true)
 		var rock = preload("res://rock.tscn").instantiate()
 		rock.global_position = spawn.global_position
 		player.add_sibling(rock) 
@@ -77,9 +81,10 @@ func spawn_enemies() -> void:
 			destroy_selected_block(coords, Direction.UP)
 			destroy_selected_block(coords, Direction.DOWN)
 			
-		var rock = preload("res://enemy.tscn").instantiate()
-		rock.global_position = spawn.global_position
-		player.add_sibling(rock) 
+		var enemy = preload("res://enemy.tscn").instantiate()
+		enemy.global_position = spawn.global_position
+		player.add_sibling(enemy) 
+		enemies.append(enemy)
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -88,9 +93,19 @@ func _process(delta: float) -> void:
 
 func global_to_coords(pos: Vector2) -> Vector2i:
 	return field.local_to_map(field.to_local(pos + Vector2(0, tile_size.y)))
+	
+func coords_to_global(coords: Vector2i) -> Vector2:
+	return to_global(field.map_to_local(coords)) + tile_size
 
 func _physics_process(delta: float) -> void:
 	var player_coords := global_to_coords(player.global_position)
+	Navigation.update_player_pos(player_coords)
+	#print(Navigation.player_pos_id)
+	for enemy in enemies:
+		enemy.grid_coords = global_to_coords(enemy.global_position)
+		
+	if is_player_intro_done:
+		move_enemies()
 	
 	if not is_player_intro_done:
 		direction = Direction.DOWN
@@ -132,7 +147,7 @@ func move_player_to_target(speed) -> void:
 		
 	var old_player_pos = player.global_position
 	
-	var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
+	var target_pos := coords_to_global(target_coords)
 	
 	#print("target: " + str(target_pos) + " pl: " + str(old_player_pos))
 	match direction:
@@ -194,29 +209,20 @@ func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: boo
 	if not is_instance_valid(block):
 		return
 		
-	add_nav_block(at)
+	Navigation.add_nav_block(at)
 	
 	block.cut(side)
 	if destroy_neighbor:
 		var n_at := at + Vector2i(dir_to_vec(side))
 		var n := get_block_at_coords(n_at)
 		if is_instance_valid(n):
-			add_nav_block(n_at)
+			Navigation.add_nav_block(n_at)
 			n.cut(dir_invert(side), side)
-			add_conection(at, n_at)
+			Navigation.add_conection(at, n_at)
 			
 	#if Global.draw_debug:
 	queue_redraw()
 	
-func add_nav_block(at: Vector2i) -> void:
-	if not navigation.has_point(nav_id(at)):
-		navigation.add_point(nav_id(at), at, 1.0)
-		
-func add_conection(from: Vector2i, to: Vector2i) -> void:
-	navigation.connect_points(nav_id(from), nav_id(to), true)
-	
-func nav_id(at: Vector2i) -> int:
-	return at.x + at.y * field_size.x
 	
 func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
@@ -224,7 +230,7 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 		#print("returned from cache")
 		return grid.get(block_coords)
 	
-	var global_pos := to_global(field.map_to_local(block_coords)) + tile_size
+	var global_pos := coords_to_global(block_coords)
 	
 	var space_state = get_world_2d().direct_space_state
 	var params = PhysicsRayQueryParameters2D.create(global_pos, global_pos + Vector2.DOWN, (1 << Global.Layers.WHEAT), [
@@ -246,6 +252,11 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	grid.set(block_coords, block)
 	return block
 	
+	
+func move_enemies() -> void:
+	for enemy in enemies:
+		if randf() < 0.01:
+			enemy.global_position = coords_to_global(enemy.get_target())
 	
 func _unhandled_input(event: InputEvent) -> void:
 	
@@ -316,16 +327,6 @@ static func dir_to_vec(dir: Direction) -> Vector2:
 	
 func _draw() -> void:
 	#if not Global.draw_debug:
-		#return
-		
+		#return		
 	draw_set_transform(Vector2(208, 112))
-	
-	var size := Vector2(4, 4)
-		
-	var off := Vector2(size.x / 2, -size.y / 2)
-	for id in navigation.get_point_ids():
-		var pos := navigation.get_point_position(id) * size + off
-		draw_circle(pos, 1, Color.PURPLE, true)
-		for con in navigation.get_point_connections(id):
-			var pos_b := navigation.get_point_position(con) * size + off
-			draw_line(pos, pos_b, Color.PLUM, 2)
+	Navigation.draw(self)

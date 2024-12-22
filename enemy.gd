@@ -16,9 +16,17 @@ var current_hp: int = 0
 @export var stun_indicator: Control
 @export var hp_indicator: Control
 @export var hit_particles: CPUParticles2D
+@export var update_path_timer: Timer
 
+var grid_coords: Vector2i = Vector2i.ZERO
+var current_path: Array[Vector2i] = []
 
 signal on_death
+
+func get_target() -> Vector2i:
+	if current_path.size() > 1:
+		return current_path[1]
+	return grid_coords
 
 func _ready() -> void:
 	speed = 0
@@ -35,6 +43,8 @@ func _ready() -> void:
 		current_speed = speed
 		stun_indicator.visible = false
 	)
+	
+	update_path_timer.timeout.connect(update_path)
 	
 	hit_particles.one_shot = true
 	hit_particles.emitting = false
@@ -59,3 +69,8 @@ func death() -> void:
 	print("enemy died")
 	on_death.emit()
 	
+	
+func update_path() -> void:
+	var path := Navigation.get_path_to_player(grid_coords)	
+	current_path = path
+		

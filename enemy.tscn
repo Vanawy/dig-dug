@@ -25,7 +25,7 @@ particles_anim_loop = true
 _data = [Vector2(0, 0.80863), 0.0, 8.33807, 0, 0, Vector2(0.0680628, 1), 0.0, 0.0, 0, 0, Vector2(0.772251, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
 point_count = 4
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer")]
 y_sort_enabled = true
 collision_layer = 2
 collision_mask = 8
@@ -35,6 +35,7 @@ stun_lock = NodePath("StunLock")
 stun_indicator = NodePath("HBoxContainer/Stun")
 hp_indicator = NodePath("HBoxContainer/HP")
 hit_particles = NodePath("HitParticles")
+update_path_timer = NodePath("UpdatePathTimer")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, -4)
@@ -108,3 +109,7 @@ scale_amount_curve = SubResource("Curve_epg4t")
 anim_speed_min = 3.0
 anim_speed_max = 3.0
 anim_offset_max = 0.2
+
+[node name="UpdatePathTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true

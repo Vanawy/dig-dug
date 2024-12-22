@@ -198,6 +198,7 @@ size = Vector2(16, 80)
 
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player", "game_camera")]
 y_sort_enabled = true
+position = Vector2(0, 1)
 script = ExtResource("1_wu4la")
 skip_intro = false
 field = NodePath("Field")
@@ -280,6 +281,7 @@ rays = {
 }
 
 [node name="Enemy" parent="." instance=ExtResource("15_7sc4i")]
+visible = false
 position = Vector2(248, 136)
 
 [node name="SpawnPositions" type="Node2D" parent="."]

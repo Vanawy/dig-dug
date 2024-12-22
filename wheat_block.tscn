@@ -98,6 +98,8 @@ position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_otxsm")
 
 [node name="Parts" type="Node2D" parent="Good"]
+process_priority = 1
+process_physics_priority = 1
 y_sort_enabled = true
 
 [node name="up" type="Node2D" parent="Good/Parts"]

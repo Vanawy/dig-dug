@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://global.gd"
+Navigation="*res://navigation.gd"
 
 [debug]
 

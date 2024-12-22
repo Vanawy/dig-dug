@@ -24,6 +24,7 @@ func _ready() -> void:
 		queue_redraw()
 		debug_line.visible = v
 	)
+	#$Good/Parts.queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -100,6 +101,7 @@ func update_sprite() -> void:
 				sprite.rotation = 0
 			
 func remove_parts(dir: Game.Direction) -> void:
+	pass
 	if parts_to_remove.has(dir):
 		var part: Node2D = parts_to_remove.get(dir) as Node2D
 		if part is WheatPart:
