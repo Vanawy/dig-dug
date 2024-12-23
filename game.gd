@@ -40,6 +40,7 @@ func _ready() -> void:
 	
 	Navigation.field_size = field_size
 	Navigation.navigation.clear()
+	Navigation.visualisation_paths.clear()
 	
 	target_coords = FIELD_CENTER
 	if skip_intro:
@@ -279,6 +280,9 @@ func move_enemies(delta: float) -> void:
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
+		if enemy.is_ghost:
+			enemy.global_target_pos = player.global_position
+			
 		if enemy.global_position.distance_squared_to(enemy.global_target_pos) < 1:
 			if enemy.has_path():
 				var target := enemy.get_target()

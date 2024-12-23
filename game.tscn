@@ -283,7 +283,6 @@ rays = {
 [node name="Enemy" parent="." instance=ExtResource("15_7sc4i")]
 visible = false
 position = Vector2(248, 136)
-speed_multiplier = null
 
 [node name="SpawnPositions" type="Node2D" parent="."]
 z_index = 100
