@@ -13,7 +13,7 @@ const DIG_OFFSET: float = 4
 
 @export var skip_intro: bool = true
 
-@export var ghost_probability: float = 0.01
+@export var ghost_probability: float = 0.03
 
 @export_category("Spawn Points")
 var rock_spawns: Array[SpawnPoint] = []

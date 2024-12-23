@@ -49,6 +49,9 @@ func attack() -> void:
 		return
 		
 	var enemy := attack_ray.get_collider().get_parent() as Enemy
+	if not enemy is Enemy:
+		print("Hit (not enemy) - " + str(Game.Direction.find_key(look_direction)))
+		return
 	
 	if enemy.hit(look_direction):
 		attack_lock.start()
