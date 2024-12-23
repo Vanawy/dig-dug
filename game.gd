@@ -101,6 +101,7 @@ func spawn_enemies() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	queue_redraw()
 	pass
 
 func global_to_coords(pos: Vector2) -> Vector2i:
@@ -117,8 +118,7 @@ func _physics_process(delta: float) -> void:
 		if not is_instance_valid(enemy):
 			continue
 		var new_coords := global_to_coords(enemy.global_position)
-		if enemy.global_position.distance_squared_to(coords_to_global(new_coords)) < 1:
-			enemy.grid_coords = new_coords
+		enemy.grid_coords = new_coords
 		
 	if is_player_intro_done:
 		move_enemies(delta)
@@ -279,7 +279,20 @@ func move_enemies(delta: float) -> void:
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
-		enemy.global_position = enemy.global_position.move_toward(coords_to_global(enemy.get_target()), enemy.current_speed * delta)
+		if enemy.global_position.distance_squared_to(enemy.global_target_pos) < 1:
+			if enemy.has_path():
+				var target := enemy.get_target()
+				var pos := coords_to_global(target)
+				enemy.global_target_pos = pos
+			else:
+				enemy.current_path.clear()
+				var next_point := enemy.grid_coords + Vector2i(dir_to_vec(enemy.current_roam_direction))
+				if Navigation.can_beeline(enemy.grid_coords, next_point):
+					enemy.global_target_pos = coords_to_global(next_point)
+				else:
+					enemy.change_direction()
+			
+		enemy.global_position = enemy.global_position.move_toward(enemy.global_target_pos, enemy.current_speed * delta)
 	
 func _unhandled_input(event: InputEvent) -> void:
 	

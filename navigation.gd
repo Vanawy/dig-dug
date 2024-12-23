@@ -6,8 +6,7 @@ var player_pos_id: int = 0
 
 var navigation: AStar2D = AStar2D.new()
 
-# value should be Array[Vector2i]
-var visualisation_paths: Dictionary[String, Array] = {}
+var visualisation_paths: Dictionary[RID, Array] = {}
 
 func add_nav_block(at: Vector2i) -> void:
 	if not navigation.has_point(nav_id(at)):
@@ -22,6 +21,8 @@ func nav_id(at: Vector2i) -> int:
 func set_disabled(at: Vector2i, state: bool) -> void:
 	navigation.set_point_disabled(nav_id(at), state)
 
+func can_beeline(from: Vector2i, to: Vector2i) -> bool:
+	return navigation.are_points_connected(nav_id(from), nav_id(to))
 
 func draw(item: CanvasItem) -> void:
 	
@@ -39,6 +40,14 @@ func draw(item: CanvasItem) -> void:
 			item.draw_line(pos, pos_b, Color.PLUM, 1)
 			
 		item.draw_circle(pos, 1, color, true)
+	
+	for path in visualisation_paths.values():
+		var prev_pos := Vector2.ZERO
+		for coords in path:
+			var pos: Vector2 = Vector2(coords) * size + off
+			if prev_pos != Vector2.ZERO:
+				item.draw_line(pos, prev_pos, Color.RED, 1)
+			prev_pos = pos
 		
 func update_player_pos(at: Vector2i) -> void:
 	player_pos_id = nav_id(at)

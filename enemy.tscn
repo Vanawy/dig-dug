@@ -28,8 +28,9 @@ point_count = 4
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer")]
 y_sort_enabled = true
 collision_layer = 2
-collision_mask = 8
+collision_mask = 9
 script = ExtResource("1_4gyqm")
+speed_multiplier = null
 speed = 16.0
 hp = 3
 hitbox = NodePath("Hitbox")
