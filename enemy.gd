@@ -78,6 +78,10 @@ func _physics_process(delta: float) -> void:
 func hit(dir: Game.Direction) -> bool:
 	print("hit")
 	
+	if is_ghost:
+		print("cant hit ghost haha")
+		return false
+	
 	current_speed = 0
 	stun_lock.start()
 	stun_indicator.visible = true
@@ -115,7 +119,8 @@ func update_path() -> void:
 		
 
 func _draw() -> void:
-	#draw_circle()
+	if not Global.draw_debug:
+		return
 	draw_line(Vector2.ZERO, Game.dir_to_vec(current_roam_direction) * 16, Color.GREEN, 1)
 	draw_line(Vector2.ZERO, (get_target() - grid_coords) * 16, Color.RED, 1)
 	draw_line(Vector2.ZERO, to_local(global_target_pos), Color.BLUE, 1)
