@@ -13,6 +13,8 @@ const DIG_OFFSET: float = 4
 
 @export var skip_intro: bool = true
 
+@export var ghost_probability: float = 0.01
+
 @export_category("Spawn Points")
 var rock_spawns: Array[SpawnPoint] = []
 var enemy_spawns: Array[SpawnPoint] = []
@@ -280,15 +282,20 @@ func move_enemies(delta: float) -> void:
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
+			
 		if enemy.is_ghost:
 			enemy.global_target_pos = player.global_position
-			
+			if enemy.has_path():
+				enemy.turn_normal()
+		
 		if enemy.global_position.distance_squared_to(enemy.global_target_pos) < 1:
 			if enemy.has_path():
 				var target := enemy.get_target()
 				var pos := coords_to_global(target)
 				enemy.global_target_pos = pos
 			else:
+				if randf() < ghost_probability:
+					enemy.turn_into_ghost()
 				enemy.current_path.clear()
 				var next_point := enemy.grid_coords + Vector2i(dir_to_vec(enemy.current_roam_direction))
 				if Navigation.can_beeline(enemy.grid_coords, next_point):

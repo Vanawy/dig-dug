@@ -17,7 +17,6 @@ var current_speed: float = 0
 @export var hp: int = 99
 var current_hp: int = 0
 
-@export var ghost_probability: float = 0.01
 var is_ghost = false
 
 @export_category("Children")
@@ -113,12 +112,6 @@ func update_path() -> void:
 	Navigation.visualisation_paths.set(get_rid(), path)
 	current_path = path
 	queue_redraw()
-	if has_path():
-		if is_ghost:
-			turn_normal()
-	else:
-		if randf() < ghost_probability:
-			turn_into_ghost()
 		
 
 func _draw() -> void:
