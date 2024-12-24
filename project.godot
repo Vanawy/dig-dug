@@ -38,6 +38,10 @@ window/vsync/vsync_mode=0
 
 enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
+[global_group]
+
+color_source=""
+
 [layer_names]
 
 2d_physics/layer_1="Walls"

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://villager.png" id="2_iifgy"]
 [ext_resource type="Texture2D" uid="uid://ccodldnnlk1lc" path="res://ghost.png" id="3_iifgy"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="3_qi2p4"]
-[ext_resource type="Texture2D" uid="uid://bererm1kjno3q" path="res://small_light.png" id="5_epg4t"]
+[ext_resource type="PackedScene" uid="uid://b1ft7mtlhmy7s" path="res://color_source.tscn" id="5_epg4t"]
 
 [sub_resource type="Shader" id="Shader_iifgy"]
 code = "shader_type canvas_item;
@@ -238,7 +238,5 @@ anim_offset_max = 0.2
 wait_time = 0.1
 autostart = true
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
-energy = 0.7
-texture = ExtResource("5_epg4t")
+[node name="color_source" parent="." instance=ExtResource("5_epg4t")]
+power = 0.05

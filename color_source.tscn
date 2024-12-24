@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1ft7mtlhmy7s"]
+
+[ext_resource type="Script" path="res://color_source.gd" id="1_2ejc8"]
+
+[node name="color_source" type="Node2D" node_paths=PackedStringArray("visibility_box") groups=["color_source"]]
+script = ExtResource("1_2ejc8")
+visibility_box = NodePath("VisibleOnScreenEnabler2D")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+rect = Rect2(-25.6, -25.6, 51.2, 51.2)

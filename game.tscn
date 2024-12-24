@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=27 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -12,8 +12,10 @@
 [ext_resource type="Script" uid="uid://donw5jx2prao6" path="res://game_camera.gd" id="10_80cx4"]
 [ext_resource type="PackedScene" uid="uid://bsu2vy1wgxv6o" path="res://player.tscn" id="11_215e1"]
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://enemy.tscn" id="15_7sc4i"]
+[ext_resource type="Shader" path="res://bw.gdshader" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://spawn_point.gd" id="16_80cx4"]
 [ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://spawn_point.tscn" id="16_e8heu"]
+[ext_resource type="Script" path="res://bw_effect.gd" id="16_rvswv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
 
@@ -196,7 +198,8 @@ fill_to = Vector2(0, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_80cx4"]
 size = Vector2(16, 80)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_215e1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80cx4"]
+shader = ExtResource("15_80cx4")
 
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player", "game_camera")]
 y_sort_enabled = true
@@ -372,22 +375,13 @@ type = 0
 size = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("CanvasItemMaterial_215e1")
+material = SubResource("ShaderMaterial_80cx4")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0406447, 0.138671, 0.307523, 0.623529)
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.226872, 0.452233, 0.702947, 1)
-
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-visible = false
-color = Color(0.4466, 0.65142, 0.77, 1)
-energy = 0.2
-blend_mode = 2
+color = Color(0.0212, 0.03816, 0.53, 0.65098)
+script = ExtResource("16_rvswv")
