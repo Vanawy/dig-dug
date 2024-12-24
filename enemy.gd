@@ -76,6 +76,7 @@ func _ready() -> void:
 	stun_indicator.visible = false
 	turn_normal()
 	normal_sprite.material.set("shader_parameter/hp_ratio", 1.0)
+	current_roam_direction = PATROL_ORDER.pick_random()
 	
 	hitbox.body_entered.connect(func(player: Player):
 		if stun_lock.is_stopped():

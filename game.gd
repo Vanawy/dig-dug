@@ -330,6 +330,7 @@ func move_bulls(delta: float) -> void:
 			else:
 				bull.stop()
 				Navigation.set_disabled(bull.grid_coords, true)
+				bull.global_position = coords_to_global(bull.grid_coords)
 			bull.global_position = bull.global_position.move_toward(bull.global_target_pos, bull.speed * delta)
 			
 func _unhandled_input(event: InputEvent) -> void:

@@ -166,9 +166,9 @@ animations = [{
 material = SubResource("ShaderMaterial_a8m5b")
 sprite_frames = SubResource("SpriteFrames_30kcu")
 animation = &"up"
-frame_progress = 0.0803323
+frame_progress = 0.944385
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite" index="0"]
 sprite_frames = SubResource("SpriteFrames_b7wcd")
 autoplay = "default"
-frame_progress = 0.100909
+frame_progress = 0.964962

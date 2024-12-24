@@ -1,7 +1,7 @@
 [gd_resource type="VisualShader" load_steps=9 format=3 uid="uid://c8hx208hw1w1i"]
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_tnnub"]
-size = Vector2(884, 360)
+size = Vector2(884, 242)
 title = "Average"
 attached_nodes = PackedInt32Array(8, 5, 7, 6)
 
@@ -82,7 +82,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-566.264, -186.517)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(620, 80)
