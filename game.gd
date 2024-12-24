@@ -321,6 +321,7 @@ func move_bulls(delta: float) -> void:
 				destroy_selected_block(bull.grid_coords, Direction.DOWN)
 				bull.rage()
 		if bull.is_running:
+			Navigation.set_disabled(bull.grid_coords, false)
 			if Navigation.can_beeline(bull.grid_coords, bull.grid_coords + Vector2i.DOWN):
 				bull.global_target_pos = coords_to_global(bull.grid_coords + Vector2i.DOWN)
 			elif bull.can_destroy_count > 0:
@@ -328,6 +329,7 @@ func move_bulls(delta: float) -> void:
 				bull.can_destroy_count -= 1
 			else:
 				bull.stop()
+				Navigation.set_disabled(bull.grid_coords, true)
 			bull.global_position = bull.global_position.move_toward(bull.global_target_pos, bull.speed * delta)
 			
 func _unhandled_input(event: InputEvent) -> void:
