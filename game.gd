@@ -293,7 +293,7 @@ func move_enemies(delta: float) -> void:
 				enemy.turn_normal()
 		
 		if enemy.global_position.distance_squared_to(enemy.global_target_pos) < 1:
-			if enemy.has_path():
+			if enemy.has_path() and not Navigation.is_disabled(enemy.grid_coords):
 				var target := enemy.get_target()
 				var pos := coords_to_global(target)
 				enemy.global_target_pos = pos

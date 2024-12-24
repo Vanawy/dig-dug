@@ -1,10 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://bsu2vy1wgxv6o"]
+[gd_scene load_steps=26 format=3 uid="uid://bsu2vy1wgxv6o"]
 
 [ext_resource type="Script" uid="uid://c71swver3v5hg" path="res://player.gd" id="1_sweqy"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://vampire.png" id="2_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://impact1.png" id="3_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://c2qjec803b0ht" path="res://scythe.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="5_b26j0"]
+[ext_resource type="Texture2D" uid="uid://cp0dau7isc2tp" path="res://light.png" id="6_2hs0m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
 atlas = ExtResource("2_2hs0m")
@@ -346,3 +347,9 @@ collide_with_areas = true
 target_position = Vector2(0, 32)
 collision_mask = 3
 collide_with_areas = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+light_mask = 0
+energy = 0.7
+texture = ExtResource("6_2hs0m")

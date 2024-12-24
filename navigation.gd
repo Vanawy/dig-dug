@@ -26,6 +26,9 @@ func can_beeline(from: Vector2i, to: Vector2i) -> bool:
 
 func has_point(at: Vector2i) -> bool:
 	return navigation.has_point(nav_id(at))
+	
+func is_disabled(at: Vector2i) -> bool:
+	return navigation.is_point_disabled(nav_id(at))
 
 func draw(item: CanvasItem) -> void:
 	
