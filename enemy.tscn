@@ -1,10 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=23 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="1_4gyqm"]
 [ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://villager.png" id="2_iifgy"]
 [ext_resource type="Texture2D" uid="uid://ccodldnnlk1lc" path="res://ghost.png" id="3_iifgy"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="3_qi2p4"]
-[ext_resource type="PackedScene" uid="uid://b1ft7mtlhmy7s" path="res://color_source.tscn" id="5_epg4t"]
 
 [sub_resource type="Shader" id="Shader_iifgy"]
 code = "shader_type canvas_item;
@@ -237,6 +236,3 @@ anim_offset_max = 0.2
 [node name="UpdatePathTimer" type="Timer" parent="."]
 wait_time = 0.1
 autostart = true
-
-[node name="color_source" parent="." instance=ExtResource("5_epg4t")]
-power = 0.05
