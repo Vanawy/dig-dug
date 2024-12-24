@@ -11,8 +11,16 @@ var draw_debug: bool = false:
 enum Layers {
 	WALLS = 0,
 	ENEMIES = 1,
+	BULLS = 2,
 	PLAYER = 3,
 	WHEAT = 7,
 }
 
 const TILE_SIZE: float = 16
+
+
+static func clear_mask_bit(mask: int, bit: int) -> int:
+	return mask & ~(1 << Global.Layers.WALLS)
+
+static func set_mask_bit(mask: int, bit: int) -> int:
+	return mask | (1 << Global.Layers.WALLS)

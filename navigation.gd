@@ -8,21 +8,24 @@ var navigation: AStar2D = AStar2D.new()
 
 var visualisation_paths: Dictionary[RID, Array] = {}
 
+func nav_id(at: Vector2i) -> int:
+	return at.x + at.y * field_size.x
+	
 func add_nav_block(at: Vector2i) -> void:
 	if not navigation.has_point(nav_id(at)):
 		navigation.add_point(nav_id(at), at, 1.0)
 		
 func add_conection(from: Vector2i, to: Vector2i) -> void:
 	navigation.connect_points(nav_id(from), nav_id(to), true)
-	
-func nav_id(at: Vector2i) -> int:
-	return at.x + at.y * field_size.x
 
 func set_disabled(at: Vector2i, state: bool) -> void:
 	navigation.set_point_disabled(nav_id(at), state)
 
 func can_beeline(from: Vector2i, to: Vector2i) -> bool:
 	return navigation.are_points_connected(nav_id(from), nav_id(to))
+
+func has_point(at: Vector2i) -> bool:
+	return navigation.has_point(nav_id(at))
 
 func draw(item: CanvasItem) -> void:
 	

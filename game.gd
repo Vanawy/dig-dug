@@ -16,7 +16,7 @@ const DIG_OFFSET: float = 4
 @export var ghost_probability: float = 0.03
 
 @export_category("Spawn Points")
-var rock_spawns: Array[SpawnPoint] = []
+var bull_spawns: Array[SpawnPoint] = []
 var enemy_spawns: Array[SpawnPoint] = []
 
 @export_category("Children")
@@ -29,12 +29,13 @@ var target_coords: Vector2i = Vector2.ZERO
 
 var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
 
-var rocks_amount: int = 2
+var bulls_amount: int = 3#2
 var enemies_amount: int = 3
 
 var grid: Dictionary[Vector2i, WheatBlock] = {}
 
 var enemies: Array[Enemy] = []
+var bulls: Array[Bull] = []
 
 
 # Called when the node enters the scene tree for the first time.
@@ -52,7 +53,7 @@ func _ready() -> void:
 	var spawns = get_tree().get_nodes_in_group("spawn") as Array[SpawnPoint]
 	for spawn in spawns:
 		if spawn.type == SpawnPoint.Type.ROCK:
-			rock_spawns.push_back(spawn)
+			bull_spawns.push_back(spawn)
 		else:
 			enemy_spawns.push_back(spawn)
 			
@@ -60,15 +61,16 @@ func _ready() -> void:
 	
 	
 func spawn_enemies() -> void:
-	rock_spawns.shuffle()
-	for i in rocks_amount:
-		var spawn := rock_spawns.pop_back() as SpawnPoint
+	bull_spawns.shuffle()
+	for i in bulls_amount:
+		var spawn := bull_spawns.pop_back() as SpawnPoint
 		var coords = global_to_coords(spawn.global_position)
 		destroy_selected_block(coords, Direction.DOWN, false)
 		Navigation.set_disabled(coords, true)
-		var rock = preload("res://rock.tscn").instantiate()
-		rock.global_position = spawn.global_position
-		player.add_sibling(rock) 
+		var bull = preload("res://bull.tscn").instantiate()
+		bull.global_position = spawn.global_position
+		player.add_sibling(bull) 
+		bulls.append(bull)
 		
 	enemy_spawns.shuffle()
 	for i in enemies_amount:
@@ -117,14 +119,10 @@ func _physics_process(delta: float) -> void:
 	var player_coords := global_to_coords(player.global_position)
 	Navigation.update_player_pos(player_coords)
 	#print(Navigation.player_pos_id)
-	for enemy in enemies:
-		if not is_instance_valid(enemy):
-			continue
-		var new_coords := global_to_coords(enemy.global_position)
-		enemy.grid_coords = new_coords
 		
 	if is_player_intro_done:
 		move_enemies(delta)
+		move_bulls(delta)
 	
 	if not is_player_intro_done:
 		direction = Direction.DOWN
@@ -163,6 +161,9 @@ func _physics_process(delta: float) -> void:
 			
 	enemies = enemies.filter(func(enemy):
 		return is_instance_valid(enemy)
+	)
+	bulls = bulls.filter(func(bull):
+		return is_instance_valid(bull)
 	)
 		
 # Move player along grid tilemap grid throug tiles centers
@@ -283,6 +284,8 @@ func move_enemies(delta: float) -> void:
 		if not is_instance_valid(enemy):
 			continue
 			
+		enemy.grid_coords = global_to_coords(enemy.global_position)
+			
 		if enemy.is_ghost:
 			enemy.global_target_pos = player.global_position
 			if enemy.has_path():
@@ -305,6 +308,27 @@ func move_enemies(delta: float) -> void:
 			
 		enemy.global_position = enemy.global_position.move_toward(enemy.global_target_pos, enemy.current_speed * delta)
 	
+	
+func move_bulls(delta: float) -> void:
+	for bull in bulls:
+		if not is_instance_valid(bull):
+			continue
+		bull.grid_coords = global_to_coords(bull.global_position)
+		
+		if not bull.is_raged:
+			if Navigation.has_point(bull.grid_coords + Vector2i.DOWN):
+				destroy_selected_block(bull.grid_coords, Direction.DOWN)
+				bull.rage()
+		if bull.is_running:
+			if Navigation.can_beeline(bull.grid_coords, bull.grid_coords + Vector2i.DOWN):
+				bull.global_target_pos = coords_to_global(bull.grid_coords + Vector2i.DOWN)
+			elif bull.can_destroy_count > 0:
+				destroy_selected_block(bull.grid_coords, Direction.DOWN)
+				bull.can_destroy_count -= 1
+			else:
+				bull.stop()
+			bull.global_position = bull.global_position.move_toward(bull.global_target_pos, bull.speed * delta)
+			
 func _unhandled_input(event: InputEvent) -> void:
 	
 	if is_player_intro_done and not player.is_dead:

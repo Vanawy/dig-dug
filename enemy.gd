@@ -104,14 +104,14 @@ func turn_into_ghost() -> void:
 	is_ghost = true
 	normal_sprite.visible = false
 	ghost_sprite.visible = true
-	collision_mask &= ~(1 << Global.Layers.WALLS)
+	collision_mask = Global.clear_mask_bit(collision_mask, Global.Layers.WALLS)
 	
 func turn_normal() -> void:
 	is_ghost = false
 	normal_sprite.visible = true
 	ghost_sprite.visible = false
 	global_target_pos = global_position
-	collision_mask |= 1 << Global.Layers.WALLS
+	collision_mask = Global.set_mask_bit(collision_mask, Global.Layers.WALLS)
 	
 func update_path() -> void:
 	var path := Navigation.get_path_to_player(grid_coords)
