@@ -339,7 +339,7 @@ type = 0
 size = 3
 
 [node name="SpawnPoint6" type="Node2D" parent="Rocks" groups=["spawn"]]
-position = Vector2(120, 56)
+position = Vector2(136, 55)
 script = ExtResource("16_80cx4")
 type = 0
 size = 3

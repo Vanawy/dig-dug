@@ -27,5 +27,5 @@ modes/blend = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(380, 160)
 nodes/fragment/3/node = SubResource("VisualShaderNodeFloatConstant_p0yrp")
-nodes/fragment/3/position = Vector2(40, 240)
+nodes/fragment/3/position = Vector2(60, 320)
 nodes/fragment/connections = PackedInt32Array(3, 0, 0, 1)

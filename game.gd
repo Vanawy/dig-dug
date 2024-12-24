@@ -97,7 +97,8 @@ func spawn_enemies() -> void:
 				destroy_selected_block(coords + Vector2i.UP, Direction.UP)
 				destroy_selected_block(coords + Vector2i.DOWN, Direction.DOWN)
 			
-		var enemy = preload("res://enemy.tscn").instantiate()
+		#var enemy = preload("res://enemy.tscn").instantiate()
+		var enemy = preload("res://enemy_priest.tscn").instantiate()
 		enemy.global_position = spawn.global_position + pos_offset * tile_size
 		enemy.grid_coords = global_to_coords(enemy.global_position)
 		player.add_sibling(enemy) 

@@ -49,12 +49,33 @@ func change_direction() -> void:
 	current_roam_direction = PATROL_ORDER[(PATROL_ORDER.find(current_roam_direction) + 1) % PATROL_ORDER.size()]
 	queue_redraw()
 	
+func _process(delta: float) -> void:
+	if not is_ghost:
+		var pos_diff := global_target_pos - global_position
+		
+		# there should be a better way but idk rn lol
+		var n := pos_diff.normalized()
+		if n.x > 0.5:
+			normal_sprite.play("left_right")
+			normal_sprite.flip_h = true
+		if n.x < -0.5:
+			normal_sprite.play("left_right")
+			normal_sprite.flip_h = false
+		if n.y > 0.5:
+			normal_sprite.flip_h = false
+			normal_sprite.play("down")
+		if n.y < -0.5:
+			normal_sprite.flip_h = false
+			normal_sprite.play("up")
+			
+	
 
 func _ready() -> void:
 	current_speed = speed
 	current_hp = hp
 	stun_indicator.visible = false
 	turn_normal()
+	normal_sprite.material.set("shader_parameter/hp_ratio", 1.0)
 	
 	hitbox.body_entered.connect(func(player: Player):
 		if stun_lock.is_stopped():
@@ -64,6 +85,7 @@ func _ready() -> void:
 	stun_lock.timeout.connect(func():
 		current_speed = speed
 		stun_indicator.visible = false
+		normal_sprite.speed_scale = 1
 	)
 	
 	update_path_timer.timeout.connect(update_path)
@@ -84,10 +106,13 @@ func hit(dir: Game.Direction) -> bool:
 	
 	current_speed = 0
 	stun_lock.start()
+	normal_sprite.speed_scale = 0
 	stun_indicator.visible = true
 	hit_particles.restart()
 	
 	current_hp -= 1
+	
+	normal_sprite.material.set("shader_parameter/hp_ratio", float(current_hp) / float(hp))
 	if current_hp <= 0:
 		death()
 		

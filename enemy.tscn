@@ -1,22 +1,85 @@
-[gd_scene load_steps=16 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=23 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="1_4gyqm"]
-[ext_resource type="Texture2D" uid="uid://bx5bch05oardj" path="res://dummy.png" id="2_qi2p4"]
+[ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://villager.png" id="2_iifgy"]
 [ext_resource type="Texture2D" uid="uid://ccodldnnlk1lc" path="res://ghost.png" id="3_iifgy"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="3_qi2p4"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qi2p4"]
-atlas = ExtResource("2_qi2p4")
+[sub_resource type="Shader" id="Shader_iifgy"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float hp_ratio : hint_range(0.0, 1.0) = 0.5;
+
+void fragment() {
+	vec4 color = COLOR;
+	float avg = (color.r + color.g + color.b)  / 3.0;
+	COLOR.rgb = mix(vec3(avg), color.rgb, hp_ratio);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epg4t"]
+resource_local_to_scene = true
+shader = SubResource("Shader_iifgy")
+shader_parameter/hp_ratio = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iifgy"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxifv"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hb8ge"]
+atlas = ExtResource("2_iifgy")
 region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1ltt"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwjut"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0g06"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 16, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iifgy"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qi2p4")
+"texture": SubResource("AtlasTexture_iifgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxifv")
 }],
 "loop": true,
-"name": &"default",
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hb8ge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1ltt")
+}],
+"loop": true,
+"name": &"left_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwjut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0g06")
+}],
+"loop": true,
+"name": &"up",
 "speed": 5.0
 }]
 
@@ -87,10 +150,14 @@ normal_sprite = NodePath("Sprite")
 ghost_sprite = NodePath("GhostSprite")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_epg4t")
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_iifgy")
+animation = &"left_right"
+autoplay = "left_right"
 
 [node name="GhostSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 z_index = 1
 position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_wujgv")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="aseprite_wizard.plugin"
+type="SpriteFrames"
+uid="uid://bvjhocu0gik6k"
+path="res://.godot/imported/priest.aseprite-e27ba0f8fea56eee611ff8dde5b60ef8.res"
+
+[deps]
+
+source_file="res://priest.aseprite"
+dest_files=["res://.godot/imported/priest.aseprite-e27ba0f8fea56eee611ff8dde5b60ef8.res"]
+
+[params]
+
+split_layers=false
+exclude_layers_pattern=""
+only_visible_layers=false
+sheet_type="4 columns"
+animation/round_fps=true

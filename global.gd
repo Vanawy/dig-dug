@@ -20,7 +20,7 @@ const TILE_SIZE: float = 16
 
 
 static func clear_mask_bit(mask: int, bit: int) -> int:
-	return mask & ~(1 << Global.Layers.WALLS)
+	return mask & ~(1 << bit)
 
 static func set_mask_bit(mask: int, bit: int) -> int:
-	return mask | (1 << Global.Layers.WALLS)
+	return mask | (1 << bit)
