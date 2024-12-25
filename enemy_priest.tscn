@@ -1,25 +1,13 @@
 [gd_scene load_steps=24 format=3 uid="uid://bqh3wqribm5nd"]
 
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://enemy.tscn" id="1_hokho"]
+[ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_vdnl2"]
 [ext_resource type="Texture2D" uid="uid://cpkwxyaeed8xf" path="res://priest.png" id="3_30kcu"]
 [ext_resource type="Texture2D" uid="uid://di7cehho5pub2" path="res://cross_animation.png" id="3_vdnl2"]
 
-[sub_resource type="Shader" id="Shader_iifgy"]
-code = "shader_type canvas_item;
-render_mode blend_mix;
-
-uniform float hp_ratio : hint_range(0.0, 1.0) = 0.5;
-
-void fragment() {
-	vec4 color = COLOR;
-	float avg = (color.r + color.g + color.b)  / 3.0;
-	COLOR.rgb = mix(vec3(avg), color.rgb, hp_ratio);
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a8m5b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f0yk4"]
 resource_local_to_scene = true
-shader = SubResource("Shader_iifgy")
+shader = ExtResource("2_vdnl2")
 shader_parameter/hp_ratio = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8m5b"]
@@ -163,12 +151,13 @@ animations = [{
 [node name="Enemy" instance=ExtResource("1_hokho")]
 
 [node name="Sprite" parent="." index="0"]
-material = SubResource("ShaderMaterial_a8m5b")
+material = SubResource("ShaderMaterial_f0yk4")
 sprite_frames = SubResource("SpriteFrames_30kcu")
 animation = &"up"
 frame_progress = 0.944385
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite" index="0"]
+use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_b7wcd")
 autoplay = "default"
 frame_progress = 0.964962

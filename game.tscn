@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=25 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://game.gd" id="1_wu4la"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://donw5jx2prao6" path="res://game_camera.gd" id="10_80cx4"]
 [ext_resource type="PackedScene" uid="uid://bsu2vy1wgxv6o" path="res://player.tscn" id="11_215e1"]
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://enemy.tscn" id="15_7sc4i"]
+[ext_resource type="PackedScene" uid="uid://cbwt38v1guinm" path="res://ui.tscn" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://spawn_point.gd" id="16_80cx4"]
 [ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://spawn_point.tscn" id="16_e8heu"]
 
@@ -368,3 +369,10 @@ position = Vector2(24, 104)
 script = ExtResource("16_80cx4")
 type = 0
 size = 3
+
+[node name="UI" type="CanvasLayer" parent="."]
+scale = Vector2(3, 3)
+transform = Transform2D(3, 0, 0, 3, 0, 0)
+
+[node name="UI" parent="UI" instance=ExtResource("15_80cx4")]
+offset_right = -538.0

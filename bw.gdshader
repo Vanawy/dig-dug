@@ -10,7 +10,7 @@ float circle(vec2 position, float radius, float feather)
 }
 
 void fragment() {
-	
+
 	ivec2 size = textureSize(sources, 0);
 	float mult = 1.0;
 	for (int i = 0; i < size.x; i++) {
@@ -20,7 +20,7 @@ void fragment() {
 		}
 		mult = min(mult, circle(SCREEN_UV - source.xy, source.z, source.z * 1.6));
 	}
-	
+
     vec4 original_color = texture(scr_tex, UV);
     	//COLOR = vec4(vec3(1.0), 1.0);
     COLOR = mix(original_color, COLOR, mult);

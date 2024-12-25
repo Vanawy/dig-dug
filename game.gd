@@ -6,6 +6,7 @@ enum Direction {NONE, UP, DOWN, LEFT, RIGHT}
 var direction: Direction = Direction.NONE
 
 const FIELD_CENTER: Vector2i = Vector2i(5,6)
+const PLAYER_SPAWN: Vector2i = Vector2i(5, -1)
 
 @export var field_size: Vector2i = Vector2i(11, 12)
 
@@ -14,6 +15,8 @@ const DIG_OFFSET: float = 4
 @export var skip_intro: bool = true
 
 @export var ghost_probability: float = 0.03
+
+var level: int = 0
 
 @export_category("Spawn Points")
 var bull_spawns: Array[SpawnPoint] = []
@@ -40,15 +43,8 @@ var bulls: Array[Bull] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
-	Navigation.field_size = field_size
-	Navigation.navigation.clear()
-	Navigation.visualisation_paths.clear()
-	
-	target_coords = FIELD_CENTER
-	if skip_intro:
-		game_camera.position = Vector2.ZERO
-		game_camera.move_camera()
+	level = 1
+	start_level()
 		
 	var spawns = get_tree().get_nodes_in_group("spawn") as Array[SpawnPoint]
 	for spawn in spawns:
@@ -57,13 +53,32 @@ func _ready() -> void:
 		else:
 			enemy_spawns.push_back(spawn)
 			
+func start_level() -> void:
+	
+	# remove old enemies
+	for node in enemies + bulls:
+		node.queue_free()
+	
+	Navigation.field_size = field_size
+	Navigation.navigation.clear()
+	Navigation.visualisation_paths.clear()
 	spawn_enemies.call_deferred()
 	
-	
+	respawn_player()
+	if level != 1 or skip_intro:
+		game_camera.position = Vector2.ZERO
+		game_camera.move_camera()
+
+func respawn_player() -> void:
+	is_player_intro_done = false
+	target_coords = FIELD_CENTER
+	player.global_position = coords_to_global(PLAYER_SPAWN)
+
 func spawn_enemies() -> void:
-	bull_spawns.shuffle()
+	var spawns := bull_spawns.duplicate()
+	spawns.shuffle()
 	for i in bulls_amount:
-		var spawn := bull_spawns.pop_back() as SpawnPoint
+		var spawn := spawns.pop_back() as SpawnPoint
 		var coords = global_to_coords(spawn.global_position)
 		destroy_selected_block(coords, Direction.DOWN, false)
 		Navigation.set_disabled(coords, true)
@@ -72,9 +87,10 @@ func spawn_enemies() -> void:
 		player.add_sibling(bull) 
 		bulls.append(bull)
 		
-	enemy_spawns.shuffle()
+	spawns = enemy_spawns.duplicate()
+	spawns.shuffle()
 	for i in enemies_amount:
-		var spawn := enemy_spawns.pop_back() as SpawnPoint
+		var spawn := spawns.pop_back() as SpawnPoint
 		var coords = global_to_coords(spawn.global_position)
 		var type := spawn.type
 		if type == SpawnPoint.Type.ANY:
@@ -133,6 +149,7 @@ func _physics_process(delta: float) -> void:
 			player.global_position = target_pos
 			direction = Direction.NONE
 			player.dig(Direction.LEFT)
+			destroy_selected_block(FIELD_CENTER, Direction.UP)
 			destroy_selected_block(FIELD_CENTER, Direction.LEFT)
 			await player.scythe_animation.animation_finished
 			player.dig(Direction.RIGHT)
@@ -170,7 +187,7 @@ func _physics_process(delta: float) -> void:
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
 	if skip_intro and not is_player_intro_done:
-		speed *= 20
+		speed *= 15
 		
 	var old_player_pos = player.global_position
 	
@@ -361,6 +378,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			game_camera.position = Vector2.ZERO
 			game_camera.move_camera()
 	
+	if event.as_text() == 'F1' and event.is_pressed():
+		start_level()
+		
 	if event.as_text() == 'F2' and event.is_pressed():
 		get_tree().reload_current_scene()
 		

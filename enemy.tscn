@@ -1,26 +1,14 @@
 [gd_scene load_steps=23 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://enemy.gd" id="1_4gyqm"]
+[ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_epg4t"]
 [ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://villager.png" id="2_iifgy"]
 [ext_resource type="Texture2D" uid="uid://ccodldnnlk1lc" path="res://ghost.png" id="3_iifgy"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://bat.png" id="3_qi2p4"]
 
-[sub_resource type="Shader" id="Shader_iifgy"]
-code = "shader_type canvas_item;
-render_mode blend_mix;
-
-uniform float hp_ratio : hint_range(0.0, 1.0) = 0.5;
-
-void fragment() {
-	vec4 color = COLOR;
-	float avg = (color.r + color.g + color.b)  / 3.0;
-	COLOR.rgb = mix(vec3(avg), color.rgb, hp_ratio);
-}
-"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epg4t"]
 resource_local_to_scene = true
-shader = SubResource("Shader_iifgy")
+shader = ExtResource("2_epg4t")
 shader_parameter/hp_ratio = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iifgy"]

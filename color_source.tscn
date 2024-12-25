@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b1ft7mtlhmy7s"]
 
-[ext_resource type="Script" path="res://color_source.gd" id="1_2ejc8"]
+[ext_resource type="Script" uid="uid://dpwjlv007on67" path="res://color_source.gd" id="1_2ejc8"]
 
 [node name="color_source" type="Node2D" node_paths=PackedStringArray("visibility_box") groups=["color_source"]]
 script = ExtResource("1_2ejc8")
