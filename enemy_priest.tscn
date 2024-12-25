@@ -149,6 +149,8 @@ animations = [{
 }]
 
 [node name="Enemy" instance=ExtResource("1_hokho")]
+speed = 14.0
+hp = 4
 
 [node name="Sprite" parent="." index="0"]
 material = SubResource("ShaderMaterial_f0yk4")

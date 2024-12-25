@@ -62,8 +62,11 @@ func _ready() -> void:
 		else:
 			enemy_spawns.push_back(spawn)
 			
+	player.on_death.connect(func(): 
+		player_health -= 1
+	)
+			
 func start_level() -> void:
-	player_health -= 1
 	# remove old enemies
 	for node in enemies + bulls:
 		node.queue_free()
@@ -87,6 +90,7 @@ func start_level() -> void:
 
 func respawn_player() -> void:
 	is_player_intro_done = false
+	player.respawn()
 	target_coords = FIELD_CENTER
 	player.global_position = coords_to_global(PLAYER_SPAWN)
 

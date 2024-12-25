@@ -17,7 +17,7 @@ var look_direction: Game.Direction = Game.Direction.RIGHT
 @export var attack_lock: Timer
 @export var attack_particles: CPUParticles2D
 
-var is_dead: bool = false
+var is_dead: bool = true
 signal on_death
 
 func _ready() -> void:
@@ -30,6 +30,7 @@ func _ready() -> void:
 	)
 	attack_particles.one_shot = true
 	attack_particles.emitting = false
+	respawn()
 	
 func death() -> void:
 	if is_dead:
@@ -38,6 +39,16 @@ func death() -> void:
 	sprite.play("death")
 	is_dead = true
 	speed = 0
+	#collision_layer = Global.clear_mask_bit(collision_layer, Global.Layers.PLAYER)
+	
+func respawn() -> void:
+	if not is_dead:
+		return
+	sprite.play("idle")
+	speed = SPEED
+	is_dead = false
+	#collision_layer = Global.set_mask_bit(collision_layer, Global.Layers.PLAYER)
+	
 	
 func attack() -> void:
 	if not attack_lock.is_stopped():
