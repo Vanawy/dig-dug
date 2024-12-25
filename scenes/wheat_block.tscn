@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bsaeqicad5dlm" path="res://scripts/wheat_block.gd" id="1_4iwym"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://sprites/wheat_sheet.png" id="2_lhof2"]
 [ext_resource type="Texture2D" uid="uid://det35oga5utbx" path="res://sprites/wheat.png" id="2_o35ox"]
-[ext_resource type="PackedScene" uid="uid://kpahxsscvbxs" path="res://wheat_part.tscn" id="4_sge4t"]
+[ext_resource type="PackedScene" uid="uid://kpahxsscvbxs" path="res://scenes/wheat_part.tscn" id="4_sge4t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u242n"]
 atlas = ExtResource("2_lhof2")
