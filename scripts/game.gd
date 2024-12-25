@@ -3,27 +3,34 @@ class_name Game
 
 enum Direction {NONE, UP, DOWN, LEFT, RIGHT}
 
-var direction: Direction = Direction.NONE
-
 const FIELD_CENTER: Vector2i = Vector2i(5,6)
 const PLAYER_SPAWN: Vector2i = Vector2i(5, -1)
 
-@export var field_size: Vector2i = Vector2i(11, 12)
-
 const DIG_OFFSET: float = 4
-
-@export var skip_intro: bool = true
-
-@export var ghost_probability: float = 0.03
 
 const MAX_HP: int = 3
 
+@export var field_size: Vector2i = Vector2i(11, 12)
+
+
+@export var skip_intro: bool = true
+
+
+var direction: Direction = Direction.NONE
 var player_health: int = 0:
 	set(v):
 		player_health = v
 		game_ui.player_hp = player_health
 		
-var level: int = 0
+var level: int = 1:
+	set(v):
+		level = v
+		game_ui.level += level
+		
+var score: int = 0:
+	set(v):
+		score = v
+		game_ui.score += score
 
 @export_category("Spawn Points")
 var bull_spawns: Array[SpawnPoint] = []
@@ -40,8 +47,13 @@ var target_coords: Vector2i = Vector2.ZERO
 
 var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
 
-var bulls_amount: int = 3#2
+var bulls_amount: int = 2
 var enemies_amount: int = 3
+
+var enemies_additional_speed: float = 0
+var enemies_additional_speed_increase: float = 4
+
+@export var ghost_probability: float = 0.03
 
 var grid: Dictionary[Vector2i, WheatBlock] = {}
 
@@ -52,6 +64,7 @@ var bulls: Array[Bull] = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	level = 1
+	score = 0
 	start_level()
 	player_health = MAX_HP
 		
@@ -64,6 +77,7 @@ func _ready() -> void:
 			
 	player.on_death.connect(func(): 
 		player_health -= 1
+		respawn_player(false)
 	)
 			
 func start_level() -> void:
@@ -88,11 +102,15 @@ func start_level() -> void:
 		game_camera.position = Vector2.ZERO
 		game_camera.move_camera()
 
-func respawn_player() -> void:
-	is_player_intro_done = false
+func respawn_player(with_intro: bool = true) -> void:
 	player.respawn()
-	target_coords = FIELD_CENTER
 	player.global_position = coords_to_global(PLAYER_SPAWN)
+	direction = Direction.NONE
+	if with_intro:
+		is_player_intro_done = false
+		target_coords = FIELD_CENTER
+	else:
+		player.global_position = coords_to_global(FIELD_CENTER)
 
 func spawn_enemies() -> void:
 	var spawns := bull_spawns.duplicate()
@@ -137,8 +155,12 @@ func spawn_enemies() -> void:
 		var enemy = preload("res://scenes/enemy_priest.tscn").instantiate()
 		enemy.global_position = spawn.global_position + pos_offset * tile_size
 		enemy.grid_coords = global_to_coords(enemy.global_position)
+		enemy.speed += enemies_additional_speed
 		player.add_sibling(enemy) 
 		enemies.append(enemy)
+		enemy.on_death.connect(func():
+			score += 500
+		)
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -203,10 +225,22 @@ func _physics_process(delta: float) -> void:
 	bulls = bulls.filter(func(bull):
 		return is_instance_valid(bull)
 	)
+	
+	if is_player_intro_done and enemies.is_empty() and not player.is_dead:
+		next_level()
+		
+func next_level() -> void:
+	level += 1
+	score += 1000
+	if level % 3 == 0:
+		enemies_amount += 1
+	enemies_additional_speed += enemies_additional_speed_increase
+	start_level()
+	
 		
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
-	if skip_intro and not is_player_intro_done:
+	if level == 1 and skip_intro and not is_player_intro_done:
 		speed *= 15
 		
 	var old_player_pos = player.global_position
@@ -264,6 +298,8 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 	if cut_dir != Direction.NONE:
 		player.dig(direction)
 		destroy_selected_block(block_coords, cut_dir)
+		if is_player_intro_done and not player.is_dead:
+			score += 10
 			
 			
 func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: bool = true) -> void:

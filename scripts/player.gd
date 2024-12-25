@@ -35,10 +35,11 @@ func _ready() -> void:
 func death() -> void:
 	if is_dead:
 		return
-	on_death.emit()
-	sprite.play("death")
 	is_dead = true
 	speed = 0
+	sprite.play("death")
+	await sprite.animation_finished
+	on_death.emit()
 	#collision_layer = Global.clear_mask_bit(collision_layer, Global.Layers.PLAYER)
 	
 func respawn() -> void:

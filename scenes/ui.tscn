@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cbwt38v1guinm"]
+[gd_scene load_steps=7 format=3 uid="uid://cbwt38v1guinm"]
 
 [ext_resource type="Texture2D" uid="uid://bn83jfvs5q2gl" path="res://sprites/coffin.png" id="1_fyqef"]
 [ext_resource type="Script" uid="uid://bss0fyi4p5tsg" path="res://scripts/ui.gd" id="1_m6e0p"]
+[ext_resource type="Theme" uid="uid://dointlqpqiudv" path="res://game_ui_theme.tres" id="1_yev5y"]
 
 [sub_resource type="Theme" id="Theme_7sc4i"]
 
@@ -13,7 +14,7 @@ region = Rect2(48, 0, 48, 16)
 atlas = ExtResource("1_fyqef")
 region = Rect2(0, 0, 48, 16)
 
-[node name="UI" type="Control" node_paths=PackedStringArray("player_hp_progress")]
+[node name="UI" type="Control" node_paths=PackedStringArray("player_hp_progress", "level_label", "score_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,8 +25,11 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource("1_yev5y")
 script = ExtResource("1_m6e0p")
-player_hp_progress = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Health/HealthProgressBar")
+player_hp_progress = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Health/HealthProgressBar")
+level_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Level/LevelValue")
+score_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Score/ScoreValue")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -39,20 +43,59 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="Health" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="HealthProgressBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/HBoxContainer/Health"]
+[node name="Health" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="HealthProgressBar" type="TextureProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer/Health"]
 layout_mode = 2
 theme = SubResource("Theme_7sc4i")
 max_value = 3.0
 value = 2.0
 texture_under = SubResource("AtlasTexture_e8heu")
 texture_progress = SubResource("AtlasTexture_80cx4")
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="Score" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(-8.285, 0)
+layout_mode = 2
+
+[node name="ScoreText" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Score"]
+visible = false
+layout_mode = 2
+text = "Score"
+horizontal_alignment = 2
+
+[node name="ScoreValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Score"]
+layout_mode = 2
+text = "9999999"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Level" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LevelText" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Level"]
+layout_mode = 2
+text = "Level"
+
+[node name="LevelValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Level"]
+layout_mode = 2
+text = "99"
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(272, 240)
+gizmo_extents = 825.0
