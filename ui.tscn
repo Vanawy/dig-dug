@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbwt38v1guinm"]
+[gd_scene load_steps=6 format=3 uid="uid://cbwt38v1guinm"]
 
 [ext_resource type="Texture2D" uid="uid://cwqbfeqh3jvmc" path="res://coffin.png" id="1_fyqef"]
+[ext_resource type="Script" uid="uid://bss0fyi4p5tsg" path="res://ui.gd" id="1_m6e0p"]
 
 [sub_resource type="Theme" id="Theme_7sc4i"]
 
@@ -12,7 +13,7 @@ region = Rect2(48, 0, 48, 16)
 atlas = ExtResource("1_fyqef")
 region = Rect2(0, 0, 48, 16)
 
-[node name="UI" type="Control"]
+[node name="UI" type="Control" node_paths=PackedStringArray("player_hp_progress")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +24,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_m6e0p")
+player_hp_progress = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Health/HealthProgressBar")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -93,7 +93,7 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"queue_free"
+"method": &"disable"
 }]
 }
 
@@ -147,7 +147,7 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"queue_free"
+"method": &"disable"
 }]
 }
 
@@ -175,10 +175,11 @@ _data = {
 &"wind": SubResource("Animation_o242q")
 }
 
-[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("sprites", "animation")]
+[node name="Node2D" type="CharacterBody2D" node_paths=PackedStringArray("sprites", "animation") groups=["wheat_part"]]
 process_priority = 1
 process_physics_priority = 1
 y_sort_enabled = true
+rotation = -0.113446
 collision_layer = 128
 motion_mode = 1
 script = ExtResource("1_uo7pg")

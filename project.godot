@@ -41,6 +41,7 @@ enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 [global_group]
 
 color_source=""
+wheat_part=""
 
 [layer_names]
 

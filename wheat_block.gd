@@ -30,6 +30,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 	
+func reset_sides() -> void:
+	for side in sides.keys():
+		sides.set(side, true)
+	update_sprite()
+	
 func cut(remove: Game.Direction, cut_direction: Game.Direction = Game.Direction.NONE) -> void:
 	if cut_direction == Game.Direction.NONE:
 		cut_direction = remove
@@ -41,7 +46,6 @@ func has_side(side: Game.Direction) -> bool:
 	return sides[side]
 
 func update_sprite() -> void:
-	queue_redraw()
 	
 	var count_intact_sides = sides.values().filter(func(v): return v).size()
 	
@@ -99,9 +103,11 @@ func update_sprite() -> void:
 				sprite.rotation = PI
 			if not left:
 				sprite.rotation = 0
+		4:
+			sprite.set_frame_and_progress(0, 0)
+	queue_redraw()
 			
 func remove_parts(dir: Game.Direction) -> void:
-	pass
 	if parts_to_remove.has(dir):
 		var part: Node2D = parts_to_remove.get(dir) as Node2D
 		if part is WheatPart:
@@ -110,7 +116,7 @@ func remove_parts(dir: Game.Direction) -> void:
 			for child in part.get_children():
 				if child is WheatPart:
 					(child as WheatPart).cut(cut_direction)
-		parts_to_remove.erase(dir)
+		#parts_to_remove.erase(dir)
 	
 func _draw() -> void:
 	if not Global.draw_debug:

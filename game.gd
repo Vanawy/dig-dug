@@ -16,6 +16,13 @@ const DIG_OFFSET: float = 4
 
 @export var ghost_probability: float = 0.03
 
+const MAX_HP: int = 3
+
+var player_health: int = 0:
+	set(v):
+		player_health = v
+		game_ui.player_hp = player_health
+		
 var level: int = 0
 
 @export_category("Spawn Points")
@@ -26,6 +33,7 @@ var enemy_spawns: Array[SpawnPoint] = []
 @export var field: TileMapLayer
 @export var player: Player
 @export var game_camera: GameCamera
+@export var game_ui: GameUI
 
 var is_player_intro_done: bool = false
 var target_coords: Vector2i = Vector2.ZERO
@@ -45,6 +53,7 @@ var bulls: Array[Bull] = []
 func _ready() -> void:
 	level = 1
 	start_level()
+	player_health = MAX_HP
 		
 	var spawns = get_tree().get_nodes_in_group("spawn") as Array[SpawnPoint]
 	for spawn in spawns:
@@ -54,10 +63,17 @@ func _ready() -> void:
 			enemy_spawns.push_back(spawn)
 			
 func start_level() -> void:
-	
+	player_health -= 1
 	# remove old enemies
 	for node in enemies + bulls:
 		node.queue_free()
+		
+	for i in field_size.x + 1:
+		for j in field_size.y + 1:
+			var block := get_block_at_coords(Vector2i(i, j))
+			if is_instance_valid(block):
+				block.reset_sides()
+	get_tree().call_group("wheat_part", "reset")
 	
 	Navigation.field_size = field_size
 	Navigation.navigation.clear()

@@ -15,8 +15,10 @@ enum Type {
 
 var is_alive: bool = true
 
+var initial_position: Vector2
 
 func _ready() -> void:
+	initial_position = position
 	for sprite in sprites.values():
 		sprite.visible = false
 		
@@ -39,3 +41,17 @@ func cut(dir: Game.Direction):
 		animation.play("cut")
 	else:
 		animation.play("cut_2")
+		
+func disable() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+	visible = false
+
+func reset() -> void:
+	position = initial_position
+	process_mode = Node.PROCESS_MODE_INHERIT
+	visible = true
+	is_alive = true
+	animation.play("RESET")
+	await animation.animation_finished
+	animation.play("wind")
+	animation.seek(randf() * 0.4)
