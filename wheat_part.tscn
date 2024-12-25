@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://kpahxsscvbxs"]
 
-[ext_resource type="Script" uid="uid://c1ki0bap7pbr5" path="res://wheat_part.gd" id="1_uo7pg"]
+[ext_resource type="Script" uid="uid://c1ki0bap7pbr5" path="res://scripts/wheat_part.gd" id="1_uo7pg"]
 [ext_resource type="SpriteFrames" uid="uid://dbbv3nmxkqere" path="res://wheat_part_long_frames.tres" id="2_o242q"]
 [ext_resource type="SpriteFrames" uid="uid://c1vsh6w7v6hcs" path="res://wheat_corn_frames.tres" id="3_eijmd"]
 

@@ -1,0 +1,19 @@
+[remap]
+
+importer="aseprite_wizard.plugin"
+type="SpriteFrames"
+uid="uid://tcoj3cxc5bi5"
+path="res://.godot/imported/villager.aseprite-6ac7ed2ecb322a1c1f26392d1b2b4ad0.res"
+
+[deps]
+
+source_file="res://sprites/villager.aseprite"
+dest_files=["res://.godot/imported/villager.aseprite-6ac7ed2ecb322a1c1f26392d1b2b4ad0.res"]
+
+[params]
+
+split_layers=false
+exclude_layers_pattern=""
+only_visible_layers=false
+sheet_type="2 columns"
+animation/round_fps=true

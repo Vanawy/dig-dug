@@ -1,0 +1,226 @@
+[gd_scene load_steps=23 format=3 uid="uid://be3bvcv7nyjow"]
+
+[ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://scripts/enemy.gd" id="1_4gyqm"]
+[ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_epg4t"]
+[ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://sprites/villager.png" id="2_iifgy"]
+[ext_resource type="Texture2D" uid="uid://42bgu7k3hyu5" path="res://sprites/ghost.png" id="3_iifgy"]
+[ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="3_qi2p4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epg4t"]
+resource_local_to_scene = true
+shader = ExtResource("2_epg4t")
+shader_parameter/hp_ratio = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iifgy"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxifv"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hb8ge"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1ltt"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwjut"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0g06"]
+atlas = ExtResource("2_iifgy")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iifgy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iifgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxifv")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hb8ge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1ltt")
+}],
+"loop": true,
+"name": &"left_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwjut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0g06")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_epg4t"]
+atlas = ExtResource("3_iifgy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yqyl"]
+atlas = ExtResource("3_iifgy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wujgv"]
+atlas = ExtResource("3_iifgy")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wujgv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_epg4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yqyl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wujgv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lc2xo"]
+radius = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_215e1"]
+font_size = 10
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 4.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iifgy"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_epg4t"]
+_data = [Vector2(0, 0.80863), 0.0, 8.33807, 0, 0, Vector2(0.0680628, 1), 0.0, 0.0, 0, 0, Vector2(0.772251, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
+point_count = 4
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer", "normal_sprite", "ghost_sprite")]
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_4gyqm")
+speed = 16.0
+hp = 3
+hitbox = NodePath("Hitbox")
+stun_lock = NodePath("StunLock")
+stun_indicator = NodePath("HBoxContainer/Stun")
+hp_indicator = NodePath("HBoxContainer/HP")
+hit_particles = NodePath("HitParticles")
+update_path_timer = NodePath("UpdatePathTimer")
+normal_sprite = NodePath("Sprite")
+ghost_sprite = NodePath("GhostSprite")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_epg4t")
+position = Vector2(0, -4)
+sprite_frames = SubResource("SpriteFrames_iifgy")
+animation = &"left_right"
+autoplay = "left_right"
+
+[node name="GhostSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_wujgv")
+autoplay = "default"
+frame_progress = 0.245185
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_lc2xo")
+debug_color = Color(0.749141, 0.284326, 0.897157, 0.42)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+z_index = 50
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 0
+alignment = 1
+
+[node name="Stun" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "stunned"
+label_settings = SubResource("LabelSettings_215e1")
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0/0"
+label_settings = SubResource("LabelSettings_215e1")
+horizontal_alignment = 1
+
+[node name="StunLock" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.7
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4gyqm")
+
+[node name="HitParticles" type="CPUParticles2D" parent="."]
+z_index = 2
+material = SubResource("CanvasItemMaterial_iifgy")
+position = Vector2(0, -8)
+amount = 1
+lifetime = 0.7
+explosiveness = 0.25
+lifetime_randomness = 0.1
+local_coords = true
+texture = ExtResource("3_qi2p4")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+orbit_velocity_min = 2.0
+orbit_velocity_max = 2.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_curve = SubResource("Curve_epg4t")
+anim_speed_min = 3.0
+anim_speed_max = 3.0
+anim_offset_max = 0.2
+
+[node name="UpdatePathTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true

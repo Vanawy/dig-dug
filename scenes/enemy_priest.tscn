@@ -1,0 +1,165 @@
+[gd_scene load_steps=24 format=3 uid="uid://bqh3wqribm5nd"]
+
+[ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://scenes/enemy.tscn" id="1_hokho"]
+[ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_vdnl2"]
+[ext_resource type="Texture2D" uid="uid://cpkwxyaeed8xf" path="res://sprites/priest.png" id="3_30kcu"]
+[ext_resource type="Texture2D" uid="uid://cpkg70hbjbpg3" path="res://sprites/cross_animation.png" id="3_vdnl2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f0yk4"]
+resource_local_to_scene = true
+shader = ExtResource("2_vdnl2")
+shader_parameter/hp_ratio = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8m5b"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_30kcu"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drdy6"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rs4gn"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdnl2"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0yk4"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xo0a5"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwdv1"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0823m"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kcup"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bwqj"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ejvie"]
+atlas = ExtResource("3_30kcu")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_30kcu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8m5b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_30kcu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drdy6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rs4gn")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdnl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0yk4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xo0a5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwdv1")
+}],
+"loop": true,
+"name": &"left_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0823m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kcup")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bwqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ejvie")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e7wrx"]
+atlas = ExtResource("3_vdnl2")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7rq47"]
+atlas = ExtResource("3_vdnl2")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vwx7u"]
+atlas = ExtResource("3_vdnl2")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iltr2"]
+atlas = ExtResource("3_vdnl2")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b7wcd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e7wrx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7rq47")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vwx7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iltr2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy" instance=ExtResource("1_hokho")]
+speed = 14.0
+hp = 4
+
+[node name="Sprite" parent="." index="0"]
+material = SubResource("ShaderMaterial_f0yk4")
+sprite_frames = SubResource("SpriteFrames_30kcu")
+animation = &"up"
+frame_progress = 0.944385
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite" index="0"]
+use_parent_material = true
+sprite_frames = SubResource("SpriteFrames_b7wcd")
+autoplay = "default"
+frame_progress = 0.964962
