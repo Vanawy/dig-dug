@@ -30,6 +30,8 @@ var is_ghost = false
 @export var normal_sprite: AnimatedSprite2D
 @export var ghost_sprite: AnimatedSprite2D
 
+
+var global_spawn_pos: Vector2 = Vector2.ZERO
 var grid_coords: Vector2i = Vector2i.ZERO
 var current_path: Array[Vector2i] = []
 var current_roam_direction = Game.Direction.UP
@@ -144,8 +146,14 @@ func update_path() -> void:
 	Navigation.visualisation_paths.set(get_rid(), path)
 	current_path = path
 	queue_redraw()
-		
 
+func respawn() -> void:
+	turn_normal()
+	current_path = []
+	global_position = global_spawn_pos
+	global_target_pos = global_spawn_pos
+	grid_coords = Vector2i(-1, -1)
+		
 func _draw() -> void:
 	if not Global.draw_debug:
 		return

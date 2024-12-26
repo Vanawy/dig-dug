@@ -31,6 +31,8 @@ var score: int = 0:
 	set(v):
 		score = v
 		game_ui.score += score
+		#if score > global.high_score:
+			#global.high_score
 
 @export_category("Spawn Points")
 var bull_spawns: Array[SpawnPoint] = []
@@ -77,7 +79,9 @@ func _ready() -> void:
 			
 	player.on_death.connect(func(): 
 		player_health -= 1
-		respawn_player(false)
+		if player_health <= 0:
+			game_over()
+		respawn_player()
 	)
 			
 func start_level() -> void:
@@ -102,15 +106,15 @@ func start_level() -> void:
 		game_camera.position = Vector2.ZERO
 		game_camera.move_camera()
 
-func respawn_player(with_intro: bool = true) -> void:
+func respawn_player() -> void:
 	player.respawn()
 	player.global_position = coords_to_global(PLAYER_SPAWN)
 	direction = Direction.NONE
-	if with_intro:
-		is_player_intro_done = false
-		target_coords = FIELD_CENTER
-	else:
-		player.global_position = coords_to_global(FIELD_CENTER)
+	is_player_intro_done = false
+	target_coords = FIELD_CENTER
+		
+	for enemy in enemies:
+		enemy.respawn()
 
 func spawn_enemies() -> void:
 	var spawns := bull_spawns.duplicate()
@@ -150,10 +154,14 @@ func spawn_enemies() -> void:
 			if spawn.size == SpawnPoint.Size.BIG:
 				destroy_selected_block(coords + Vector2i.UP, Direction.UP)
 				destroy_selected_block(coords + Vector2i.DOWN, Direction.DOWN)
+		var enemy: Enemy
+		if i % 3 == 0:
+			enemy = preload("res://scenes/enemy_priest.tscn").instantiate()
+		else:
+			enemy = preload("res://scenes/enemy.tscn").instantiate()
 			
-		#var enemy = preload("res://enemy.tscn").instantiate()
-		var enemy = preload("res://scenes/enemy_priest.tscn").instantiate()
 		enemy.global_position = spawn.global_position + pos_offset * tile_size
+		enemy.global_spawn_pos = enemy.global_position
 		enemy.grid_coords = global_to_coords(enemy.global_position)
 		enemy.speed += enemies_additional_speed
 		player.add_sibling(enemy) 
@@ -162,6 +170,9 @@ func spawn_enemies() -> void:
 			score += 500
 		)
 		
+func game_over() -> void:
+	print("game over")
+	get_tree().reload_current_scene()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
