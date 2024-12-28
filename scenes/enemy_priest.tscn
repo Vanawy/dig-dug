@@ -1,14 +1,19 @@
-[gd_scene load_steps=24 format=3 uid="uid://bqh3wqribm5nd"]
+[gd_scene load_steps=26 format=3 uid="uid://bqh3wqribm5nd"]
 
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://scenes/enemy.tscn" id="1_hokho"]
 [ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_vdnl2"]
 [ext_resource type="Texture2D" uid="uid://cpkwxyaeed8xf" path="res://sprites/priest.png" id="3_30kcu"]
 [ext_resource type="Texture2D" uid="uid://cpkg70hbjbpg3" path="res://sprites/cross_animation.png" id="3_vdnl2"]
+[ext_resource type="Texture2D" uid="uid://dvtsd1koa5t4f" path="res://icon.svg" id="3_vrfba"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f0yk4"]
 resource_local_to_scene = true
 shader = ExtResource("2_vdnl2")
 shader_parameter/hp_ratio = 1.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jcnpl"]
+atlas = ExtResource("3_vrfba")
+region = Rect2(80, 64, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8m5b"]
 atlas = ExtResource("3_30kcu")
@@ -60,6 +65,14 @@ region = Rect2(48, 32, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_30kcu"]
 animations = [{
+"frames": [{
+"duration": 15.0,
+"texture": SubResource("AtlasTexture_jcnpl")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_a8m5b")
@@ -155,8 +168,6 @@ hp = 4
 [node name="Sprite" parent="." index="0"]
 material = SubResource("ShaderMaterial_f0yk4")
 sprite_frames = SubResource("SpriteFrames_30kcu")
-animation = &"up"
-frame_progress = 0.944385
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite" index="0"]
 use_parent_material = true

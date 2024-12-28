@@ -199,6 +199,7 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-196.889, 68.9546)
 mode = 1
 modes/blend = 1
 flags/light_only = false
@@ -229,7 +230,6 @@ size = Vector2(16, 80)
 [node name="game" type="Node2D" node_paths=PackedStringArray("field", "player", "game_camera", "game_ui")]
 y_sort_enabled = true
 script = ExtResource("1_wu4la")
-skip_intro = false
 field = NodePath("Field")
 player = NodePath("Player")
 game_camera = NodePath("GameCamera")

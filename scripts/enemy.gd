@@ -17,6 +17,7 @@ var current_speed: float = 0
 @export var hp: int = 99
 var current_hp: int = 0
 
+var is_dead = false
 var is_ghost = false
 
 @export_category("Children")
@@ -29,6 +30,8 @@ var is_ghost = false
 
 @export var normal_sprite: AnimatedSprite2D
 @export var ghost_sprite: AnimatedSprite2D
+
+@export var hit_sfx: AudioStreamPlayer2D
 
 
 var global_spawn_pos: Vector2 = Vector2.ZERO
@@ -52,6 +55,8 @@ func change_direction() -> void:
 	queue_redraw()
 	
 func _process(delta: float) -> void:
+	if is_dead:
+		return
 	if not is_ghost:
 		var pos_diff := global_target_pos - global_position
 		
@@ -86,6 +91,8 @@ func _ready() -> void:
 	)
 	
 	stun_lock.timeout.connect(func():
+		if is_dead:
+			return
 		current_speed = speed
 		stun_indicator.visible = false
 		normal_sprite.speed_scale = 1
@@ -103,8 +110,7 @@ func _physics_process(delta: float) -> void:
 func hit(dir: Game.Direction) -> bool:
 	print("hit")
 	
-	if is_ghost:
-		print("cant hit ghost haha")
+	if is_dead:
 		return false
 	
 	current_speed = 0
@@ -112,6 +118,7 @@ func hit(dir: Game.Direction) -> bool:
 	normal_sprite.speed_scale = 0
 	stun_indicator.visible = true
 	hit_particles.restart()
+	hit_sfx.play()
 	
 	current_hp -= 1
 	
@@ -123,10 +130,17 @@ func hit(dir: Game.Direction) -> bool:
 	return true
 
 func death() -> void:
+	if is_dead:
+		return
+	is_dead = true
+	current_speed = 0
+	hitbox.position = Vector2(10000, 10000)
 	print("enemy died")
 	on_death.emit()
 	Navigation.visualisation_paths.erase(get_rid())
-	queue_free()
+	normal_sprite.play("death")
+	normal_sprite.speed_scale = 1
+	normal_sprite.animation_finished.connect(queue_free)
 	
 func turn_into_ghost() -> void:
 	is_ghost = true

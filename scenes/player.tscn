@@ -249,7 +249,6 @@ point_count = 2
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles")]
 y_sort_enabled = true
 collision_layer = 8
-collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_sweqy")
 rays = {

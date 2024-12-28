@@ -44,6 +44,7 @@ var enemy_spawns: Array[SpawnPoint] = []
 @export var game_camera: GameCamera
 @export var game_ui: GameUI
 
+var is_game_started: bool = false
 var is_player_intro_done: bool = false
 var target_coords: Vector2i = Vector2.ZERO
 
@@ -108,9 +109,10 @@ func start_level() -> void:
 
 func respawn_player() -> void:
 	player.respawn()
-	player.global_position = coords_to_global(PLAYER_SPAWN)
-	direction = Direction.NONE
-	is_player_intro_done = false
+	if is_game_started:
+		player.global_position = coords_to_global(PLAYER_SPAWN)
+		direction = Direction.NONE
+		is_player_intro_done = false
 	target_coords = FIELD_CENTER
 		
 	for enemy in enemies:
@@ -198,6 +200,7 @@ func _physics_process(delta: float) -> void:
 		direction = Direction.DOWN
 		if player_coords == target_coords:
 			is_player_intro_done = true
+			is_game_started = true
 			var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
 			player.global_position = target_pos
 			direction = Direction.NONE
