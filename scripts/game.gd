@@ -249,12 +249,13 @@ func next_level() -> void:
 	if level % 3 == 0:
 		enemies_amount += 1
 	enemies_additional_speed += enemies_additional_speed_increase
+	skip_intro = false
 	start_level()
 	
 		
 # Move player along grid tilemap grid throug tiles centers
 func move_player_to_target(speed) -> void:
-	if level == 1 and skip_intro and not is_player_intro_done:
+	if skip_intro and not is_player_intro_done:
 		speed *= 15
 		
 	var old_player_pos = player.global_position
