@@ -95,7 +95,7 @@ func _ready() -> void:
 			return
 		current_speed = speed
 		stun_indicator.visible = false
-		normal_sprite.speed_scale = 1
+		normal_sprite.play()
 	)
 	
 	update_path_timer.timeout.connect(update_path)
@@ -115,7 +115,7 @@ func hit(dir: Game.Direction) -> bool:
 	
 	current_speed = 0
 	stun_lock.start()
-	normal_sprite.speed_scale = 0
+	normal_sprite.pause()
 	stun_indicator.visible = true
 	hit_particles.restart()
 	hit_sfx.play()
@@ -132,6 +132,7 @@ func hit(dir: Game.Direction) -> bool:
 func death() -> void:
 	if is_dead:
 		return
+	turn_normal()
 	is_dead = true
 	current_speed = 0
 	hitbox.position = Vector2(10000, 10000)
@@ -139,7 +140,6 @@ func death() -> void:
 	on_death.emit()
 	Navigation.visualisation_paths.erase(get_rid())
 	normal_sprite.play("death")
-	normal_sprite.speed_scale = 1
 	normal_sprite.animation_finished.connect(queue_free)
 	
 func turn_into_ghost() -> void:

@@ -371,6 +371,9 @@ func move_enemies(delta: float) -> void:
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
+		
+		if enemy.is_dead:
+			continue
 			
 		enemy.grid_coords = global_to_coords(enemy.global_position)
 			
