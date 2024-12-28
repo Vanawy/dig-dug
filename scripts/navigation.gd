@@ -24,9 +24,9 @@ func set_disabled(at: Vector2i, state: bool) -> void:
 func can_beeline(from: Vector2i, to: Vector2i) -> bool:
 	var id_from := nav_id(from)
 	var id_to := nav_id(to)
-	if navigation.is_point_disabled(id_from):
+	if not navigation.has_point(id_from) or navigation.is_point_disabled(id_from):
 		return false
-	if navigation.is_point_disabled(id_to):
+	if not navigation.has_point(id_to) or navigation.is_point_disabled(id_to):
 		return false
 	return navigation.are_points_connected(id_from, id_to)
 
