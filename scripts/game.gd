@@ -225,10 +225,7 @@ func next_level() -> void:
 	
 		
 # Move player along grid tilemap grid throug tiles centers
-func move_player_to_target(speed) -> void:
-	if skip_intro and not is_player_intro_done:
-		speed *= 15
-		
+func move_player_to_target(speed) -> void:		
 	var old_player_pos = player.global_position
 	
 	var target_pos := field.coords_to_global(player.get_target())
@@ -238,6 +235,8 @@ func move_player_to_target(speed) -> void:
 	if not is_player_intro_done:
 		target_pos = field.coords_to_global(target_coords)
 		dir = Direction.DOWN
+		if skip_intro:
+			speed *= 15
 	
 	#print("target: " + str(target_pos) + " pl: " + str(old_player_pos))
 	match dir:
@@ -263,7 +262,7 @@ func move_player_to_target(speed) -> void:
 	elif player.global_position.y < old_player_pos.y:
 		actual_direction = Direction.UP
 	
-	player.change_direction(actual_direction)
+	player.update_sprites(actual_direction)
 		
 func destroy_current_block(block_coords: Vector2i) -> void:
 	var block: WheatBlock = field.get_block_at_coords(block_coords)

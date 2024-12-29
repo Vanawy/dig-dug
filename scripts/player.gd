@@ -81,7 +81,7 @@ func attack() -> void:
 func get_target() -> Vector2i:
 	return grid_coords.at + Vector2i(Game.dir_to_vec(in_direction))
 
-func change_direction(dir: Game.Direction) -> void:
+func update_sprites(dir: Game.Direction) -> void:
 	if is_dead or dir == move_direction:
 		return
 		
