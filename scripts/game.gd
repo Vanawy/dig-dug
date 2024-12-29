@@ -15,8 +15,6 @@ const MAX_HP: int = 3
 
 @export var skip_intro: bool = true
 
-
-var direction: Direction = Direction.NONE
 var player_health: int = 0:
 	set(v):
 		player_health = v
@@ -39,7 +37,7 @@ var bull_spawns: Array[SpawnPoint] = []
 var enemy_spawns: Array[SpawnPoint] = []
 
 @export_category("Children")
-@export var field: TileMapLayer
+@export var field: Field
 @export var player: Player
 @export var game_camera: GameCamera
 @export var game_ui: GameUI
@@ -48,8 +46,6 @@ var is_game_started: bool = false
 var is_player_intro_done: bool = false
 var target_coords: Vector2i = Vector2.ZERO
 
-var tile_size: Vector2 = Vector2(Global.TILE_SIZE, Global.TILE_SIZE)
-
 var bulls_amount: int = 2
 var enemies_amount: int = 3
 
@@ -57,8 +53,6 @@ var enemies_additional_speed: float = 0
 var enemies_additional_speed_increase: float = 4
 
 @export var ghost_probability: float = 0.03
-
-var grid: Dictionary[Vector2i, WheatBlock] = {}
 
 var enemies: Array[Enemy] = []
 var bulls: Array[Bull] = []
@@ -92,7 +86,7 @@ func start_level() -> void:
 		
 	for i in field_size.x + 1:
 		for j in field_size.y + 1:
-			var block := get_block_at_coords(Vector2i(i, j))
+			var block := field.get_block_at_coords(Vector2i(i, j))
 			if is_instance_valid(block):
 				block.reset_sides()
 	get_tree().call_group("wheat_part", "reset")
@@ -110,8 +104,7 @@ func start_level() -> void:
 func respawn_player() -> void:
 	player.respawn()
 	if is_game_started:
-		player.global_position = coords_to_global(PLAYER_SPAWN)
-		direction = Direction.NONE
+		player.global_position = field.coords_to_global(PLAYER_SPAWN)
 		is_player_intro_done = false
 	target_coords = FIELD_CENTER
 		
@@ -123,8 +116,8 @@ func spawn_enemies() -> void:
 	spawns.shuffle()
 	for i in bulls_amount:
 		var spawn := spawns.pop_back() as SpawnPoint
-		var coords = global_to_coords(spawn.global_position)
-		destroy_selected_block(coords, Direction.DOWN, false)
+		var coords = field.global_to_coords(spawn.global_position)
+		field.destroy_selected_block(coords, Direction.DOWN, false)
 		Navigation.set_disabled(coords, true)
 		var bull = preload("res://scenes/bull.tscn").instantiate()
 		bull.global_position = spawn.global_position
@@ -135,7 +128,7 @@ func spawn_enemies() -> void:
 	spawns.shuffle()
 	for i in enemies_amount:
 		var spawn := spawns.pop_back() as SpawnPoint
-		var coords = global_to_coords(spawn.global_position)
+		var coords = field.global_to_coords(spawn.global_position)
 		var type := spawn.type
 		if type == SpawnPoint.Type.ANY:
 			type = [SpawnPoint.Type.HORIZONTAL, SpawnPoint.Type.VERTICAL].pick_random()
@@ -144,27 +137,26 @@ func spawn_enemies() -> void:
 		var pos_offset: Vector2 = Vector2.ZERO
 		if type == SpawnPoint.Type.HORIZONTAL:
 			pos_offset.x = offset
-			destroy_selected_block(coords, Direction.LEFT)
-			destroy_selected_block(coords, Direction.RIGHT)
+			field.destroy_selected_block(coords, Direction.LEFT)
+			field.destroy_selected_block(coords, Direction.RIGHT)
 			if spawn.size == SpawnPoint.Size.BIG:
-				destroy_selected_block(coords + Vector2i.LEFT, Direction.LEFT)
-				destroy_selected_block(coords + Vector2i.RIGHT, Direction.RIGHT)
+				field.destroy_selected_block(coords + Vector2i.LEFT, Direction.LEFT)
+				field.destroy_selected_block(coords + Vector2i.RIGHT, Direction.RIGHT)
 		if type == SpawnPoint.Type.VERTICAL:
 			pos_offset.y = offset
-			destroy_selected_block(coords, Direction.UP)
-			destroy_selected_block(coords, Direction.DOWN)
+			field.destroy_selected_block(coords, Direction.UP)
+			field.destroy_selected_block(coords, Direction.DOWN)
 			if spawn.size == SpawnPoint.Size.BIG:
-				destroy_selected_block(coords + Vector2i.UP, Direction.UP)
-				destroy_selected_block(coords + Vector2i.DOWN, Direction.DOWN)
+				field.destroy_selected_block(coords + Vector2i.UP, Direction.UP)
+				field.destroy_selected_block(coords + Vector2i.DOWN, Direction.DOWN)
 		var enemy: Enemy
 		if i % 3 == 0:
 			enemy = preload("res://scenes/enemy_priest.tscn").instantiate()
 		else:
 			enemy = preload("res://scenes/enemy.tscn").instantiate()
 			
-		enemy.global_position = spawn.global_position + pos_offset * tile_size
+		enemy.global_position = spawn.global_position + pos_offset * Global.TILE_SIZE
 		enemy.global_spawn_pos = enemy.global_position
-		enemy.grid_coords = global_to_coords(enemy.global_position)
 		enemy.speed += enemies_additional_speed
 		player.add_sibling(enemy) 
 		enemies.append(enemy)
@@ -181,57 +173,36 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	pass
 
-func global_to_coords(pos: Vector2) -> Vector2i:
-	return field.local_to_map(field.to_local(pos + Vector2(0, tile_size.y)))
-	
-func coords_to_global(coords: Vector2i) -> Vector2:
-	return to_global(field.map_to_local(coords)) + tile_size
 
 func _physics_process(delta: float) -> void:
-	var player_coords := global_to_coords(player.global_position)
-	Navigation.update_player_pos(player_coords)
+	
+	for at_grid: GridCoordinates in get_tree().get_nodes_in_group("on_grid"):
+		at_grid.at = field.global_to_coords(at_grid.global_position)
+	
 	#print(Navigation.player_pos_id)
 		
 	if is_player_intro_done:
 		move_enemies(delta)
 		move_bulls(delta)
-	
+		
+		
+	# INTRO DONE code
 	if not is_player_intro_done:
-		direction = Direction.DOWN
-		if player_coords == target_coords:
+		var target_pos := field.coords_to_global(target_coords)
+		#direction = Direction.DOWN
+		if player.global_position.distance_squared_to(target_pos) < 1:
 			is_player_intro_done = true
 			is_game_started = true
-			var target_pos := to_global(field.map_to_local(target_coords)) + tile_size
-			player.global_position = target_pos
-			direction = Direction.NONE
+			#direction = Direction.NONE
 			player.dig(Direction.LEFT)
-			destroy_selected_block(FIELD_CENTER, Direction.UP)
-			destroy_selected_block(FIELD_CENTER, Direction.LEFT)
+			field.destroy_selected_block(FIELD_CENTER, Direction.UP)
+			field.destroy_selected_block(FIELD_CENTER, Direction.LEFT)
 			await player.scythe_animation.animation_finished
 			player.dig(Direction.RIGHT)
-			destroy_selected_block(FIELD_CENTER, Direction.RIGHT)
+			field.destroy_selected_block(FIELD_CENTER, Direction.RIGHT)
 	
-	destroy_current_block(player_coords)
-	
-	match direction:
-		Direction.UP, Direction.DOWN:
-			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE
-			if direction == Direction.DOWN:
-				k = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
-			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_coords, k)
-			move_player_to_target(player.speed * delta)
-
-		Direction.LEFT, Direction.RIGHT:
-			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE
-			if direction == Direction.RIGHT:
-				k = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
-			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_coords, k)
-			move_player_to_target(player.speed * delta)
-		
-		Direction.NONE:
-			player.change_direction(Direction.NONE)
+	move_player_to_target(player.speed * delta)
+	destroy_current_block(player.grid_coords.at)
 			
 	enemies = enemies.filter(func(enemy):
 		return is_instance_valid(enemy)
@@ -254,16 +225,21 @@ func next_level() -> void:
 	
 		
 # Move player along grid tilemap grid throug tiles centers
-func move_player_to_target(speed) -> void:
-	if skip_intro and not is_player_intro_done:
-		speed *= 15
-		
+func move_player_to_target(speed) -> void:		
 	var old_player_pos = player.global_position
 	
-	var target_pos := coords_to_global(target_coords)
+	var target_pos := field.coords_to_global(player.get_target())
+	var dir := player.in_direction
+	
+	
+	if not is_player_intro_done:
+		target_pos = field.coords_to_global(target_coords)
+		dir = Direction.DOWN
+		if skip_intro:
+			speed *= 15
 	
 	#print("target: " + str(target_pos) + " pl: " + str(old_player_pos))
-	match direction:
+	match dir:
 		Direction.UP, Direction.DOWN:
 			if not is_equal_approx(old_player_pos.x, target_pos.x):
 				player.global_position.x = move_toward(old_player_pos.x, target_pos.x, speed)
@@ -286,17 +262,17 @@ func move_player_to_target(speed) -> void:
 	elif player.global_position.y < old_player_pos.y:
 		actual_direction = Direction.UP
 	
-	player.change_direction(actual_direction)
+	player.update_sprites(actual_direction)
 		
 func destroy_current_block(block_coords: Vector2i) -> void:
-	var block: WheatBlock = get_block_at_coords(block_coords)
+	var block: WheatBlock = field.get_block_at_coords(block_coords)
 	if not is_instance_valid(block):
 		return
-	var pos_dif = block.to_local(player.global_position) - (tile_size / 2)
+	var pos_dif = block.to_local(player.global_position) - (Global.TILE_SIZE / 2)
 	
 	var cut_dir := Direction.NONE
 	
-	match direction:
+	match player.move_direction:
 		Direction.NONE:
 			return
 		Direction.UP, Direction.DOWN:
@@ -311,62 +287,12 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 				cut_dir = Direction.LEFT
 	
 	if cut_dir != Direction.NONE:
-		player.dig(direction)
-		destroy_selected_block(block_coords, cut_dir)
+		player.dig(player.move_direction)
+		field.destroy_selected_block(block_coords, cut_dir)
 		if is_player_intro_done and not player.is_dead:
 			score += 10
 			
 			
-func destroy_selected_block(at: Vector2i, side: Direction, destroy_neighbor: bool = true) -> void:
-	if side == Direction.NONE:
-		return
-	var block: WheatBlock = get_block_at_coords(at)
-	if not is_instance_valid(block):
-		return
-		
-	Navigation.add_nav_block(at)
-	
-	block.cut(side)
-	if destroy_neighbor:
-		var n_at := at + Vector2i(dir_to_vec(side))
-		var n := get_block_at_coords(n_at)
-		if is_instance_valid(n):
-			Navigation.add_nav_block(n_at)
-			n.cut(dir_invert(side), side)
-			Navigation.add_conection(at, n_at)
-			
-	#if Global.draw_debug:
-	queue_redraw()
-	
-	
-func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
-	
-	if grid.has(block_coords):
-		#print("returned from cache")
-		return grid.get(block_coords)
-	
-	var global_pos := coords_to_global(block_coords)
-	
-	var space_state = get_world_2d().direct_space_state
-	var params = PhysicsRayQueryParameters2D.create(global_pos, global_pos + Vector2.DOWN, (1 << Global.Layers.WHEAT), [
-		player.get_rid()
-	])
-	params.hit_from_inside = true
-	params.collide_with_areas = true
-	
-	var result := space_state.intersect_ray(params)
-	
-	#print(result)
-	if not result.has('collider') or not is_instance_valid(result['collider']):
-		return null
-	var collider: Node2D = result['collider']
-	if not collider.get_parent() is WheatBlock:
-		return null
-	
-	var block = collider.get_parent()
-	grid.set(block_coords, block)
-	return block
-	
 	
 func move_enemies(delta: float) -> void:
 	for enemy in enemies:
@@ -376,25 +302,23 @@ func move_enemies(delta: float) -> void:
 		if enemy.is_dead:
 			continue
 			
-		enemy.grid_coords = global_to_coords(enemy.global_position)
-			
 		if enemy.is_ghost:
 			enemy.global_target_pos = player.global_position
 			if enemy.has_path():
 				enemy.turn_normal()
 		
 		if enemy.global_position.distance_squared_to(enemy.global_target_pos) < 1:
-			if enemy.has_path() and not Navigation.is_disabled(enemy.grid_coords):
+			if enemy.has_path() and not Navigation.is_disabled(enemy.grid_coords.at):
 				var target := enemy.get_target()
-				var pos := coords_to_global(target)
+				var pos := field.coords_to_global(target)
 				enemy.global_target_pos = pos
 			else:
 				if randf() < ghost_probability:
 					enemy.turn_into_ghost()
 				enemy.current_path.clear()
-				var next_point := enemy.grid_coords + Vector2i(dir_to_vec(enemy.current_roam_direction))
-				if Navigation.can_beeline(enemy.grid_coords, next_point):
-					enemy.global_target_pos = coords_to_global(next_point)
+				var next_point := enemy.grid_coords.at + Vector2i(dir_to_vec(enemy.current_roam_direction))
+				if Navigation.can_beeline(enemy.grid_coords.at, next_point):
+					enemy.global_target_pos = field.coords_to_global(next_point)
 				else:
 					enemy.change_direction()
 			
@@ -405,52 +329,34 @@ func move_bulls(delta: float) -> void:
 	for bull in bulls:
 		if not is_instance_valid(bull):
 			continue
-		bull.grid_coords = global_to_coords(bull.global_position)
+		
+		var at = bull.grid_coords.at
 		
 		if not bull.is_raged:
-			if Navigation.has_point(bull.grid_coords + Vector2i.DOWN):
-				destroy_selected_block(bull.grid_coords, Direction.DOWN)
+			if Navigation.has_point(at + Vector2i.DOWN):
+				field.destroy_selected_block(at, Direction.DOWN)
 				bull.rage()
 		if bull.is_running:
-			Navigation.set_disabled(bull.grid_coords, false)
-			if Navigation.can_beeline(bull.grid_coords, bull.grid_coords + Vector2i.DOWN):
-				bull.global_target_pos = coords_to_global(bull.grid_coords + Vector2i.DOWN)
+			Navigation.set_disabled(at, false)
+			if Navigation.can_beeline(at, at + Vector2i.DOWN):
+				bull.global_target_pos = field.coords_to_global(at + Vector2i.DOWN)
 			elif bull.can_destroy_count > 0:
-				destroy_selected_block(bull.grid_coords, Direction.DOWN)
+				field.destroy_selected_block(at, Direction.DOWN)
 				bull.can_destroy_count -= 1
 			else:
 				bull.stop()
-				Navigation.set_disabled(bull.grid_coords, true)
-				bull.global_position = coords_to_global(bull.grid_coords)
+				Navigation.set_disabled(at, true)
+				bull.global_position = field.coords_to_global(at)
 			bull.global_position = bull.global_position.move_toward(bull.global_target_pos, bull.speed * delta)
 			
 func _unhandled_input(event: InputEvent) -> void:
-	
-	if is_player_intro_done and not player.is_dead:
-		if event.is_action_pressed("ui_up"):
-			direction = Direction.UP
-		if event.is_action_pressed("ui_down"):
-			direction = Direction.DOWN
-		if event.is_action_pressed("ui_right"):
-			direction = Direction.RIGHT
-		if event.is_action_pressed("ui_left"):
-			direction = Direction.LEFT
-			
-		if event.is_action_released("ui_up") and direction == Direction.UP \
-			or event.is_action_released("ui_down") and direction == Direction.DOWN \
-			or event.is_action_released("ui_right") and direction == Direction.RIGHT \
-			or event.is_action_released("ui_left") and direction == Direction.LEFT:
-
-			direction = Direction.NONE
-			
-		if event.is_action_pressed("ui_accept"):
-			player.attack()
 				
 	if not is_player_intro_done:
 		if event.is_action_pressed("ui_accept"):
 			skip_intro = true
 			game_camera.position = Vector2.ZERO
 			game_camera.move_camera()
+		
 	
 	if event.as_text() == 'F1' and event.is_pressed():
 		start_level()
@@ -497,5 +403,8 @@ static func dir_to_vec(dir: Direction) -> Vector2:
 func _draw() -> void:
 	#if not Global.draw_debug:
 		#return		
-	draw_set_transform(Vector2(208, 112))
+		
+	draw_circle(to_local(field.coords_to_global(player.grid_coords.at)), 2, Color.GREEN, true)
+	draw_circle(to_local(field.coords_to_global(player.get_target())), 2, Color.RED, true)
+	draw_set_transform(Vector2(206, 112))
 	Navigation.draw(self)

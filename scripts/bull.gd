@@ -8,7 +8,7 @@ class_name Bull
 var speed: float = 0
 var a: float = 64
 
-var grid_coords: Vector2i = Vector2i.ZERO
+@export var grid_coords: GridCoordinates
 var global_target_pos: Vector2 = Vector2.ZERO
 
 var can_destroy_count: float = 1

@@ -6,8 +6,9 @@ const SPEED: float = 32
 var speed: float = SPEED
 
 
-var move_direction: Game.Direction = Game.Direction.NONE
+var in_direction: Game.Direction = Game.Direction.NONE
 var look_direction: Game.Direction = Game.Direction.RIGHT
+var move_direction: Game.Direction = Game.Direction.NONE
 
 @export_category("Children")
 @export var rays: Dictionary[Game.Direction, RayCast2D] = {}
@@ -16,6 +17,7 @@ var look_direction: Game.Direction = Game.Direction.RIGHT
 @export var scythe_pivot: Node2D
 @export var attack_lock: Timer
 @export var attack_particles: CPUParticles2D
+@export var grid_coords: GridCoordinates
 
 var is_dead: bool = true
 signal on_death
@@ -52,6 +54,10 @@ func respawn() -> void:
 	
 	
 func attack() -> void:
+	
+	if is_dead:
+		return
+	
 	if not attack_lock.is_stopped():
 		print("can't attack for: " + str(attack_lock.time_left))
 		return
@@ -72,13 +78,14 @@ func attack() -> void:
 		attack_particles.direction = Game.dir_to_vec(look_direction)
 		attack_particles.restart()
 
-func change_direction(dir: Game.Direction) -> void:
+func get_target() -> Vector2i:
+	return grid_coords.at + Vector2i(Game.dir_to_vec(in_direction))
+
+func update_sprites(dir: Game.Direction) -> void:
 	if is_dead or dir == move_direction:
 		return
 		
 	move_direction = dir
-	if dir != Game.Direction.NONE:
-		look_direction = dir
 		
 	if is_equal_approx(speed, 0):
 		return
@@ -116,19 +123,41 @@ func dig(_direction: Game.Direction) -> void:
 	scythe_animation.play("idle")
 	scythe_pivot.visible = false
 
-
-
 #const SPEED = 32.0
 #
 #
 func _physics_process(delta: float) -> void:
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	#var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	#if direction:
-		#velocity = direction * SPEED
-	#else:
-		#velocity.x = move_toward(velocity.x, 0, SPEED)
-		#velocity.y = move_toward(velocity.y, 0, SPEED)
+	
+	Navigation.update_player_pos(grid_coords.at)
 
 	move_and_slide()
+	queue_redraw()
+	
+func _draw() -> void:
+	#draw_circle(to_local())
+	pass
+
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_up"):
+		in_direction = Game.Direction.UP
+	if event.is_action_pressed("ui_down"):
+		in_direction = Game.Direction.DOWN
+	if event.is_action_pressed("ui_right"):
+		in_direction = Game.Direction.RIGHT
+	if event.is_action_pressed("ui_left"):
+		in_direction = Game.Direction.LEFT
+		
+	if event.is_action_released("ui_up") and in_direction == Game.Direction.UP \
+		or event.is_action_released("ui_down") and in_direction == Game.Direction.DOWN \
+		or event.is_action_released("ui_right") and in_direction == Game.Direction.RIGHT \
+		or event.is_action_released("ui_left") and in_direction == Game.Direction.LEFT:
+
+		in_direction = Game.Direction.NONE
+		
+	if in_direction != Game.Direction.NONE:
+		look_direction = in_direction
+		
+	if event.is_action_pressed("ui_accept"):
+		attack()

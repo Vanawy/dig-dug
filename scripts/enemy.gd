@@ -33,9 +33,9 @@ var is_ghost = false
 
 @export var hit_sfx: AudioStreamPlayer2D
 
+@export var grid_coords: GridCoordinates
 
 var global_spawn_pos: Vector2 = Vector2.ZERO
-var grid_coords: Vector2i = Vector2i.ZERO
 var current_path: Array[Vector2i] = []
 var current_roam_direction = Game.Direction.UP
 var global_target_pos: Vector2 = Vector2.ZERO
@@ -45,7 +45,7 @@ signal on_death
 func get_target() -> Vector2i:
 	if current_path.size() > 0:
 		return current_path.pop_front()
-	return grid_coords
+	return grid_coords.at
 	
 func has_path() -> bool:
 	return current_path.size() > 0
@@ -156,7 +156,7 @@ func turn_normal() -> void:
 	collision_mask = Global.set_mask_bit(collision_mask, Global.Layers.WALLS)
 	
 func update_path() -> void:
-	var path := Navigation.get_path_to_player(grid_coords)
+	var path := Navigation.get_path_to_player(grid_coords.at)
 	Navigation.visualisation_paths.set(get_rid(), path)
 	current_path = path
 	queue_redraw()
@@ -166,11 +166,11 @@ func respawn() -> void:
 	current_path = []
 	global_position = global_spawn_pos
 	global_target_pos = global_spawn_pos
-	grid_coords = Vector2i(-1, -1)
+	grid_coords.at = Vector2i(-1, -1)
 		
 func _draw() -> void:
 	if not Global.draw_debug:
 		return
 	draw_line(Vector2.ZERO, Game.dir_to_vec(current_roam_direction) * 16, Color.GREEN, 1)
-	draw_line(Vector2.ZERO, (get_target() - grid_coords) * 16, Color.RED, 1)
+	draw_line(Vector2.ZERO, (get_target() - grid_coords.at) * 16, Color.RED, 1)
 	draw_line(Vector2.ZERO, to_local(global_target_pos), Color.BLUE, 1)

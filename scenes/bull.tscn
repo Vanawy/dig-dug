@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c54q70mfjmu37"]
+[gd_scene load_steps=7 format=3 uid="uid://c54q70mfjmu37"]
 
 [ext_resource type="Script" uid="uid://fu42hh5oln20" path="res://scripts/bull.gd" id="1_85vty"]
 [ext_resource type="Texture2D" uid="uid://ywwjhnwtppkw" path="res://sprites/bull.png" id="2_g2pcm"]
+[ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="3_hqf4x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_85vty"]
 atlas = ExtResource("2_g2pcm")
@@ -21,13 +22,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o0qsl"]
 size = Vector2(12, 12)
 
-[node name="bull" type="CharacterBody2D" node_paths=PackedStringArray("rage_timer", "sprite")]
+[node name="bull" type="CharacterBody2D" node_paths=PackedStringArray("rage_timer", "sprite", "grid_coords")]
 collision_layer = 5
 collision_mask = 11
 collision_priority = 20.0
 script = ExtResource("1_85vty")
 rage_timer = NodePath("RageTimer")
 sprite = NodePath("Bull")
+grid_coords = NodePath("GridCoordinates")
 
 [node name="Bull" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_g2pcm")
@@ -38,3 +40,5 @@ shape = SubResource("RectangleShape2D_o0qsl")
 [node name="RageTimer" type="Timer" parent="."]
 process_callback = 0
 one_shot = true
+
+[node name="GridCoordinates" parent="." instance=ExtResource("3_hqf4x")]
