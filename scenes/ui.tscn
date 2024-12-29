@@ -4,16 +4,6 @@
 [ext_resource type="Script" uid="uid://bss0fyi4p5tsg" path="res://scripts/ui.gd" id="1_m6e0p"]
 [ext_resource type="Theme" uid="uid://dointlqpqiudv" path="res://game_ui_theme.tres" id="1_yev5y"]
 
-[sub_resource type="Theme" id="Theme_7sc4i"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e8heu"]
-atlas = ExtResource("1_fyqef")
-region = Rect2(48, 0, 48, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_80cx4"]
-atlas = ExtResource("1_fyqef")
-region = Rect2(0, 0, 48, 16)
-
 [sub_resource type="Animation" id="Animation_gdt2y"]
 length = 0.001
 tracks/0/type = "value"
@@ -75,6 +65,16 @@ _data = {
 &"fadeout": SubResource("Animation_yev5y")
 }
 
+[sub_resource type="Theme" id="Theme_7sc4i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e8heu"]
+atlas = ExtResource("1_fyqef")
+region = Rect2(48, 0, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80cx4"]
+atlas = ExtResource("1_fyqef")
+region = Rect2(0, 0, 48, 16)
+
 [node name="UI" type="Control" node_paths=PackedStringArray("player_hp_progress", "level_label", "score_label", "level_change_label", "level_change_animation")]
 layout_mode = 3
 anchors_preset = 15
@@ -91,8 +91,8 @@ script = ExtResource("1_m6e0p")
 player_hp_progress = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Health/HealthProgressBar")
 level_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Level/LevelValue")
 score_label = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Score/ScoreValue")
-level_change_label = NodePath("MarginContainer/Level Change Label")
-level_change_animation = NodePath("MarginContainer/Level Change Label/AnimationPlayer")
+level_change_label = NodePath("MarginContainer/HBoxContainer/CenterContainer/Level Change Label")
+level_change_animation = NodePath("MarginContainer/HBoxContainer/CenterContainer/Level Change Label/AnimationPlayer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -109,6 +109,22 @@ theme_override_constants/margin_bottom = 8
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 alignment = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Level Change Label" type="Label" parent="MarginContainer/HBoxContainer/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Level 02"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/HBoxContainer/CenterContainer/Level Change Label"]
+libraries = {
+&"": SubResource("AnimationLibrary_gdt2y")
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -158,18 +174,6 @@ text = "Level"
 [node name="LevelValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer/Level"]
 layout_mode = 2
 text = "99"
-
-[node name="Level Change Label" type="Label" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Level 02"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/Level Change Label"]
-libraries = {
-&"": SubResource("AnimationLibrary_gdt2y")
-}
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(272, 240)
