@@ -15,8 +15,6 @@ const MAX_HP: int = 3
 
 @export var skip_intro: bool = true
 
-
-var direction: Direction = Direction.NONE
 var player_health: int = 0:
 	set(v):
 		player_health = v
@@ -107,7 +105,6 @@ func respawn_player() -> void:
 	player.respawn()
 	if is_game_started:
 		player.global_position = field.coords_to_global(PLAYER_SPAWN)
-		direction = Direction.NONE
 		is_player_intro_done = false
 	target_coords = FIELD_CENTER
 		
@@ -182,22 +179,21 @@ func _physics_process(delta: float) -> void:
 	for at_grid: GridCoordinates in get_tree().get_nodes_in_group("on_grid"):
 		at_grid.at = field.global_to_coords(at_grid.global_position)
 	
-	var player_coords := field.global_to_coords(player.global_position)
-	Navigation.update_player_pos(player_coords)
 	#print(Navigation.player_pos_id)
 		
 	if is_player_intro_done:
 		move_enemies(delta)
 		move_bulls(delta)
-	
+		
+		
+	# INTRO DONE code
 	if not is_player_intro_done:
-		direction = Direction.DOWN
-		if player_coords == target_coords:
+		var target_pos := field.coords_to_global(target_coords)
+		#direction = Direction.DOWN
+		if player.global_position.distance_squared_to(target_pos) < 1:
 			is_player_intro_done = true
 			is_game_started = true
-			var target_pos := field.coords_to_global(target_coords)
-			player.global_position = target_pos
-			direction = Direction.NONE
+			#direction = Direction.NONE
 			player.dig(Direction.LEFT)
 			field.destroy_selected_block(FIELD_CENTER, Direction.UP)
 			field.destroy_selected_block(FIELD_CENTER, Direction.LEFT)
@@ -205,27 +201,8 @@ func _physics_process(delta: float) -> void:
 			player.dig(Direction.RIGHT)
 			field.destroy_selected_block(FIELD_CENTER, Direction.RIGHT)
 	
-	destroy_current_block(player_coords)
-	
-	match direction:
-		Direction.UP, Direction.DOWN:
-			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_TOP_SIDE
-			if direction == Direction.DOWN:
-				k = TileSet.CellNeighbor.CELL_NEIGHBOR_BOTTOM_SIDE
-			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_coords, k)
-			move_player_to_target(player.speed * delta)
-
-		Direction.LEFT, Direction.RIGHT:
-			var k := TileSet.CellNeighbor.CELL_NEIGHBOR_LEFT_SIDE
-			if direction == Direction.RIGHT:
-				k = TileSet.CellNeighbor.CELL_NEIGHBOR_RIGHT_SIDE
-			if is_player_intro_done:
-				target_coords = field.get_neighbor_cell(player_coords, k)
-			move_player_to_target(player.speed * delta)
-		
-		Direction.NONE:
-			player.change_direction(Direction.NONE)
+	move_player_to_target(player.speed * delta)
+	destroy_current_block(player.grid_coords.at)
 			
 	enemies = enemies.filter(func(enemy):
 		return is_instance_valid(enemy)
@@ -254,10 +231,16 @@ func move_player_to_target(speed) -> void:
 		
 	var old_player_pos = player.global_position
 	
-	var target_pos := field.coords_to_global(target_coords)
+	var target_pos := field.coords_to_global(player.get_target())
+	var dir := player.in_direction
+	
+	
+	if not is_player_intro_done:
+		target_pos = field.coords_to_global(target_coords)
+		dir = Direction.DOWN
 	
 	#print("target: " + str(target_pos) + " pl: " + str(old_player_pos))
-	match direction:
+	match dir:
 		Direction.UP, Direction.DOWN:
 			if not is_equal_approx(old_player_pos.x, target_pos.x):
 				player.global_position.x = move_toward(old_player_pos.x, target_pos.x, speed)
@@ -290,7 +273,7 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 	
 	var cut_dir := Direction.NONE
 	
-	match direction:
+	match player.move_direction:
 		Direction.NONE:
 			return
 		Direction.UP, Direction.DOWN:
@@ -305,7 +288,7 @@ func destroy_current_block(block_coords: Vector2i) -> void:
 				cut_dir = Direction.LEFT
 	
 	if cut_dir != Direction.NONE:
-		player.dig(direction)
+		player.dig(player.move_direction)
 		field.destroy_selected_block(block_coords, cut_dir)
 		if is_player_intro_done and not player.is_dead:
 			score += 10
@@ -368,32 +351,13 @@ func move_bulls(delta: float) -> void:
 			bull.global_position = bull.global_position.move_toward(bull.global_target_pos, bull.speed * delta)
 			
 func _unhandled_input(event: InputEvent) -> void:
-	
-	if is_player_intro_done and not player.is_dead:
-		if event.is_action_pressed("ui_up"):
-			direction = Direction.UP
-		if event.is_action_pressed("ui_down"):
-			direction = Direction.DOWN
-		if event.is_action_pressed("ui_right"):
-			direction = Direction.RIGHT
-		if event.is_action_pressed("ui_left"):
-			direction = Direction.LEFT
-			
-		if event.is_action_released("ui_up") and direction == Direction.UP \
-			or event.is_action_released("ui_down") and direction == Direction.DOWN \
-			or event.is_action_released("ui_right") and direction == Direction.RIGHT \
-			or event.is_action_released("ui_left") and direction == Direction.LEFT:
-
-			direction = Direction.NONE
-			
-		if event.is_action_pressed("ui_accept"):
-			player.attack()
 				
 	if not is_player_intro_done:
 		if event.is_action_pressed("ui_accept"):
 			skip_intro = true
 			game_camera.position = Vector2.ZERO
 			game_camera.move_camera()
+		
 	
 	if event.as_text() == 'F1' and event.is_pressed():
 		start_level()
@@ -442,6 +406,6 @@ func _draw() -> void:
 		#return		
 		
 	draw_circle(to_local(field.coords_to_global(player.grid_coords.at)), 2, Color.GREEN, true)
-	draw_circle(to_local(field.coords_to_global(target_coords)), 2, Color.RED, true)
+	draw_circle(to_local(field.coords_to_global(player.get_target())), 2, Color.RED, true)
 	draw_set_transform(Vector2(206, 112))
 	Navigation.draw(self)
