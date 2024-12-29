@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://h6mu4ycywy2u"]
+
+[ext_resource type="Script" uid="uid://ckgbn3e7wt8ib" path="res://grid_coordinates.gd" id="1_7uwbg"]
+
+[node name="GridCoordinates" type="Node2D" groups=["on_grid"]]
+script = ExtResource("1_7uwbg")

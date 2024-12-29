@@ -16,6 +16,7 @@ var look_direction: Game.Direction = Game.Direction.RIGHT
 @export var scythe_pivot: Node2D
 @export var attack_lock: Timer
 @export var attack_particles: CPUParticles2D
+@export var grid_coords: GridCoordinates
 
 var is_dead: bool = true
 signal on_death
@@ -132,3 +133,8 @@ func _physics_process(delta: float) -> void:
 		#velocity.y = move_toward(velocity.y, 0, SPEED)
 
 	move_and_slide()
+	queue_redraw()
+	
+func _draw() -> void:
+	#draw_circle(to_local())
+	pass

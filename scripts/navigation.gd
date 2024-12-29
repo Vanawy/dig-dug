@@ -9,7 +9,7 @@ var navigation: AStar2D = AStar2D.new()
 var visualisation_paths: Dictionary[RID, Array] = {}
 
 func nav_id(at: Vector2i) -> int:
-	return at.x + at.y * field_size.x
+	return 10000 + at.x + at.y * field_size.x
 	
 func add_nav_block(at: Vector2i) -> void:
 	if not navigation.has_point(nav_id(at)):

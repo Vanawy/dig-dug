@@ -1,10 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://bsu2vy1wgxv6o"]
+[gd_scene load_steps=26 format=3 uid="uid://bsu2vy1wgxv6o"]
 
 [ext_resource type="Script" uid="uid://c71swver3v5hg" path="res://scripts/player.gd" id="1_sweqy"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://sprites/vampire.png" id="2_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://sprites/impact1.png" id="3_1jxqw"]
 [ext_resource type="Texture2D" uid="uid://cma4sbeu58bxd" path="res://sprites/scythe.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="5_b26j0"]
+[ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
 atlas = ExtResource("2_2hs0m")
@@ -246,7 +247,7 @@ particles_anim_loop = true
 _data = [Vector2(0.759162, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
 point_count = 2
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles", "grid_coords")]
 y_sort_enabled = true
 collision_layer = 8
 motion_mode = 1
@@ -262,6 +263,7 @@ sprite = NodePath("AnimatedSprite2D")
 scythe_pivot = NodePath("ScythePivot")
 attack_lock = NodePath("AttackLock")
 attack_particles = NodePath("AttackParticles")
+grid_coords = NodePath("GridCoordinates")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
@@ -345,3 +347,5 @@ collide_with_areas = true
 target_position = Vector2(0, 32)
 collision_mask = 3
 collide_with_areas = true
+
+[node name="GridCoordinates" parent="." instance=ExtResource("6_tuyoq")]

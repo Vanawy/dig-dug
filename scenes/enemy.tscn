@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=35 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://scripts/enemy.gd" id="1_4gyqm"]
 [ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_epg4t"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dpvbw3c2xn5vd" path="res://sfx/impactPlank_medium_002.ogg" id="8_otmr2"]
 [ext_resource type="AudioStream" uid="uid://dtn2y2sy8qnw3" path="res://sfx/impactPlank_medium_003.ogg" id="9_wtq4b"]
 [ext_resource type="AudioStream" uid="uid://dcuo0uvhyl5jt" path="res://sfx/impactPlank_medium_004.ogg" id="10_j0cyh"]
+[ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="12_otmr2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epg4t"]
 resource_local_to_scene = true
@@ -168,7 +169,7 @@ stream_2/stream = ExtResource("8_otmr2")
 stream_3/stream = ExtResource("9_wtq4b")
 stream_4/stream = ExtResource("10_j0cyh")
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer", "normal_sprite", "ghost_sprite", "hit_sfx")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer", "normal_sprite", "ghost_sprite", "hit_sfx", "grid_coords")]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_4gyqm")
@@ -183,6 +184,7 @@ update_path_timer = NodePath("UpdatePathTimer")
 normal_sprite = NodePath("Sprite")
 ghost_sprite = NodePath("GhostSprite")
 hit_sfx = NodePath("HitSound")
+grid_coords = NodePath("GridCoordinates")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_epg4t")
@@ -275,3 +277,5 @@ autostart = true
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_g0wcc")
 bus = &"SFX"
+
+[node name="GridCoordinates" parent="." instance=ExtResource("12_otmr2")]

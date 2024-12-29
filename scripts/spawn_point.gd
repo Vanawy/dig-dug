@@ -33,12 +33,11 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	if Engine.is_editor_hint() or Global.draw_debug:
 		if type == Type.HORIZONTAL or type == Type.ANY:
-			var width: float = Global.TILE_SIZE * size
-			draw_rect(Rect2(-width / 2, -Global.TILE_SIZE / 2, width, Global.TILE_SIZE), Color.AQUA, false, 1.0)
+			var width: float = Global.TILE_SIZE.x * size
+			draw_rect(Rect2(-width / 2, -Global.TILE_SIZE.x / 2, width, Global.TILE_SIZE.y), Color.AQUA, false, 1.0)
 		if type == Type.VERTICAL or type == Type.ANY:
-			var height: float = Global.TILE_SIZE * size
-			draw_rect(Rect2(-Global.TILE_SIZE / 2, -height / 2, Global.TILE_SIZE, height), Color.DARK_CYAN, false, 1.0)
+			var height: float = Global.TILE_SIZE.y * size
+			draw_rect(Rect2(-Global.TILE_SIZE.x / 2, -height / 2, Global.TILE_SIZE.x, height), Color.DARK_CYAN, false, 1.0)
 		if type == Type.ROCK:
-			var height: float = Global.TILE_SIZE * size
-			draw_rect(Rect2(-Global.TILE_SIZE / 2, -Global.TILE_SIZE / 2, Global.TILE_SIZE, Global.TILE_SIZE), Color.INDIAN_RED, false, 1.0)
+			draw_rect(Rect2(-Global.TILE_SIZE.x / 2, -Global.TILE_SIZE.y / 2, Global.TILE_SIZE.x, Global.TILE_SIZE.y), Color.INDIAN_RED, false, 1.0)
 		

@@ -16,7 +16,7 @@ enum Layers {
 	WHEAT = 7,
 }
 
-const TILE_SIZE: float = 16
+const TILE_SIZE: Vector2 = Vector2(16, 16)
 
 
 static func clear_mask_bit(mask: int, bit: int) -> int:
