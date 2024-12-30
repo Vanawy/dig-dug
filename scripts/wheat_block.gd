@@ -108,15 +108,19 @@ func update_sprite() -> void:
 	queue_redraw()
 			
 func remove_parts(dir: Game.Direction) -> void:
-	if parts_to_remove.has(dir):
-		var part: Node2D = parts_to_remove.get(dir) as Node2D
-		if part is WheatPart:
-			(part as WheatPart).cut(cut_direction)
-		else:
-			for child in part.get_children():
-				if child is WheatPart:
-					(child as WheatPart).cut(cut_direction)
+	#if parts_to_remove.has(dir):
+		#var part: Node2D = parts_to_remove.get(dir) as Node2D
+		#if part is WheatPart:
+			#(part as WheatPart).cut(cut_direction)
+		#else:
+			#for child in part.get_children():
+				#if child is WheatPart:
+					#(child as WheatPart).cut(cut_direction)
 		#parts_to_remove.erase(dir)
+	return
+	
+func remove_hitbox() -> void:
+	$Hitbox.queue_free()
 	
 func _draw() -> void:
 	if not Global.draw_debug:

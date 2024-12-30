@@ -1,7 +1,55 @@
 extends TileMapLayer
 class_name Field
 
+@export var size: Vector2i = Vector2i(11, 12)
 var grid: Dictionary[Vector2i, WheatBlock] = {}
+
+const WHEAT_IN_CELL: int = 10
+const WHEAT_PARTS_OFFSETS: Array[Vector2] = [
+	Vector2(14, 0 ),
+	Vector2(10, 1 ),
+	Vector2(8,  2 ),
+	Vector2(6,  7 ),
+	Vector2(14, 7 ),
+	
+	Vector2(2,  8 ),
+	Vector2(11, 10),
+	Vector2(9,  11),
+	Vector2(5,  14),
+	Vector2(1,  15),
+]
+
+const WHEAT_PARTS_FRAMES: Array[int] = [
+	0,
+	3,
+	1,
+	1,
+	2,
+	1,
+	0,
+	1,
+	1,
+	2
+]
+const WHEAT_FRAMES: int = 5
+const FRAME_SIZE: float = 1 / WHEAT_FRAMES
+
+
+func _ready() -> void:
+	var multimesh2d := $MultiMeshInstance2D as MultiMeshInstance2D
+	multimesh2d.multimesh.instance_count = size.x * size.y * WHEAT_IN_CELL
+	
+	for i in size.x:
+		for j in size.y:
+			for k in WHEAT_IN_CELL:
+				var index := i * size.y * WHEAT_IN_CELL + j * WHEAT_IN_CELL + k
+				print(i, j, " ", index)
+				var angle = PI
+				var pos = Vector2(i, j) * Global.TILE_SIZE + WHEAT_PARTS_OFFSETS[k]
+				 #+ Vector2(0, -6)
+				multimesh2d.multimesh.set_instance_transform_2d(index, Transform2D(angle, pos))
+				multimesh2d.multimesh.set_instance_custom_data(index, Color(WHEAT_PARTS_FRAMES[k] * FRAME_SIZE, 0, 0, 1))
+		
 
 func destroy_selected_block(at: Vector2i, side: Game.Direction, destroy_neighbor: bool = true) -> void:
 	if side == Game.Direction.NONE:
@@ -53,7 +101,8 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	if not collider.get_parent() is WheatBlock:
 		return null
 	
-	var block = collider.get_parent()
+	var block := collider.get_parent() as WheatBlock
+	block.remove_hitbox()
 	grid.set(block_coords, block)
 	return block
 	

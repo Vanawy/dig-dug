@@ -1,0 +1,11 @@
+
+position = Vector2(14, 1)
+position = Vector2(11, 2)frame = 3
+position = Vector2(8, 3)frame = 1
+position = Vector2(6, 8)frame = 1
+position = Vector2(15, 8)frame = 2
+position = Vector2(2, 9)frame = 1
+position = Vector2(12, 11)
+position = Vector2(9, 12)frame = 1
+position = Vector2(5, 15)frame = 1
+position = Vector2(2, 16)frame = 2
