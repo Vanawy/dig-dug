@@ -16,6 +16,10 @@ var sides: Dictionary[Game.Direction, bool] = {
 @export var parts_to_remove: Dictionary[Game.Direction, Node2D] = {}
 
 var cut_direction: Game.Direction = Game.Direction.NONE
+var grid_coords: Vector2i
+
+signal on_side_cut(at: Vector2i, dir: Game.Direction)
+signal on_reset(at: Vector2i)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,6 +38,7 @@ func reset_sides() -> void:
 	for side in sides.keys():
 		sides.set(side, true)
 	update_sprite()
+	on_reset.emit(grid_coords)
 	
 func cut(remove: Game.Direction, cut_direction: Game.Direction = Game.Direction.NONE) -> void:
 	if cut_direction == Game.Direction.NONE:
@@ -50,11 +55,11 @@ func update_sprite() -> void:
 	var count_intact_sides = sides.values().filter(func(v): return v).size()
 	
 	if count_intact_sides < 4:
-		remove_parts(Game.Direction.NONE)
+		on_side_cut.emit(grid_coords, Game.Direction.NONE)
 		
 	for side in sides.keys():
 		if not sides[side]:
-			remove_parts(side)
+			on_side_cut.emit(grid_coords, side)
 	
 	var up := sides[Game.Direction.UP]
 	var down := sides[Game.Direction.DOWN]
@@ -107,17 +112,6 @@ func update_sprite() -> void:
 			sprite.set_frame_and_progress(0, 0)
 	queue_redraw()
 			
-func remove_parts(dir: Game.Direction) -> void:
-	#if parts_to_remove.has(dir):
-		#var part: Node2D = parts_to_remove.get(dir) as Node2D
-		#if part is WheatPart:
-			#(part as WheatPart).cut(cut_direction)
-		#else:
-			#for child in part.get_children():
-				#if child is WheatPart:
-					#(child as WheatPart).cut(cut_direction)
-		#parts_to_remove.erase(dir)
-	return
 	
 func remove_hitbox() -> void:
 	$Hitbox.queue_free()

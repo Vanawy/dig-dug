@@ -34,9 +34,10 @@ const WHEAT_PARTS_FRAMES: Array[int] = [
 const WHEAT_FRAMES: float = 5
 const FRAME_SIZE: float = 1.0 / WHEAT_FRAMES
 
+@export_category("Nodes")
+@export var multimesh2d: MultiMeshInstance2D
 
 func _ready() -> void:
-	var multimesh2d := $MultiMeshInstance2D as MultiMeshInstance2D
 	multimesh2d.multimesh.instance_count = size.x * size.y * WHEAT_IN_CELL
 	
 	for i in size.x:
@@ -56,7 +57,7 @@ func _ready() -> void:
 					1 # visibility
 				))
 				
-		
+	return
 
 func destroy_selected_block(at: Vector2i, side: Game.Direction, destroy_neighbor: bool = true) -> void:
 	if side == Game.Direction.NONE:
@@ -78,6 +79,7 @@ func destroy_selected_block(at: Vector2i, side: Game.Direction, destroy_neighbor
 			
 	#if Global.draw_debug:
 	queue_redraw()
+	return
 	
 	
 func global_to_coords(pos: Vector2) -> Vector2i:
@@ -111,5 +113,26 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	var block := collider.get_parent() as WheatBlock
 	block.remove_hitbox()
 	grid.set(block_coords, block)
+	block.grid_coords = block_coords
+	block.on_side_cut.connect(cut_block)
+	block.on_reset.connect(reset_block)
+	
 	return block
 	
+	
+	
+func cut_block(at: Vector2i, dir: Game.Direction) -> void:
+	for k in WHEAT_IN_CELL:
+		var index := at.x * size.y * WHEAT_IN_CELL + at.y * WHEAT_IN_CELL + k
+		var data := multimesh2d.multimesh.get_instance_custom_data(index)
+		data.a = 0
+		multimesh2d.multimesh.set_instance_custom_data(index, data)
+	return
+	
+func reset_block(at: Vector2i) -> void:
+	for k in WHEAT_IN_CELL:
+		var index := at.x * size.y * WHEAT_IN_CELL + at.y * WHEAT_IN_CELL + k
+		var data := multimesh2d.multimesh.get_instance_custom_data(index)
+		data.a = 1
+		multimesh2d.multimesh.set_instance_custom_data(index, data)
+	return
