@@ -31,8 +31,8 @@ const WHEAT_PARTS_FRAMES: Array[int] = [
 	1,
 	2
 ]
-const WHEAT_FRAMES: int = 5
-const FRAME_SIZE: float = 1 / WHEAT_FRAMES
+const WHEAT_FRAMES: float = 5
+const FRAME_SIZE: float = 1.0 / WHEAT_FRAMES
 
 
 func _ready() -> void:
@@ -43,12 +43,19 @@ func _ready() -> void:
 		for j in size.y:
 			for k in WHEAT_IN_CELL:
 				var index := i * size.y * WHEAT_IN_CELL + j * WHEAT_IN_CELL + k
-				print(i, j, " ", index)
+				#print(i, j, " ", index)
 				var angle = PI
 				var pos = Vector2(i, j) * Global.TILE_SIZE + WHEAT_PARTS_OFFSETS[k]
 				 #+ Vector2(0, -6)
 				multimesh2d.multimesh.set_instance_transform_2d(index, Transform2D(angle, pos))
-				multimesh2d.multimesh.set_instance_custom_data(index, Color(WHEAT_PARTS_FRAMES[k] * FRAME_SIZE, 0, 0, 1))
+				multimesh2d.multimesh.set_instance_custom_data(index, 
+				Color(
+					WHEAT_PARTS_FRAMES[k] * FRAME_SIZE, # UV offset
+					randf(), # Wind time offset
+					0, # unused
+					1 # visibility
+				))
+				
 		
 
 func destroy_selected_block(at: Vector2i, side: Game.Direction, destroy_neighbor: bool = true) -> void:

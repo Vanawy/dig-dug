@@ -4,7 +4,7 @@ class_name GameCamera
 @export var move_trigger: Area2D
 
 func _ready() -> void:
-	move_trigger.body_entered.connect(func(bode: Node2D):
+	move_trigger.body_entered.connect(func(_b: Node2D):
 		move_camera()
 	)
 	

@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://scenes/wheat_block.tscn" id="1_7156t"]
 [ext_resource type="PackedScene" uid="uid://b50613lc4jxmv" path="res://scenes/corn_block.tscn" id="2_pn4dk"]
 [ext_resource type="Script" uid="uid://dsl80gc7pm7a8" path="res://scenes/field.gd" id="3_wnvii"]
-[ext_resource type="Shader" uid="uid://dnaal3dsy7hug" path="res://scenes/wheat.gdshader" id="4_pn4dk"]
-[ext_resource type="Texture2D" uid="uid://be6x26wvvefop" path="res://sprites/whaet_variants/wheat_packed.png" id="5_wnvii"]
+[ext_resource type="Shader" uid="uid://dnaal3dsy7hug" path="res://wheat.gdshader" id="4_pn4dk"]
+[ext_resource type="Texture2D" uid="uid://be6x26wvvefop" path="res://sprites/whaet_variants/wheat_packed.png" id="5_pn4dk"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ykb3o"]
 scenes/1/scene = ExtResource("1_7156t")
@@ -59,12 +59,20 @@ width = 176
 height = 192
 fill_to = Vector2(0, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcubs"]
-render_priority = 0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wnvii"]
 shader = ExtResource("4_pn4dk")
+shader_parameter/col = 5.0
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 10.0
+shader_parameter/interval = 1.8
+shader_parameter/detail = 2.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = null
+shader_parameter/timeOffsetScale = 1.5
 
 [sub_resource type="QuadMesh" id="QuadMesh_ir15t"]
-material = SubResource("ShaderMaterial_tcubs")
 size = Vector2(2, 12)
 center_offset = Vector3(0, 6, 0)
 
@@ -90,5 +98,6 @@ centered = false
 position = Vector2(88, 88)
 
 [node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_wnvii")
 multimesh = SubResource("MultiMesh_ir15t")
-texture = ExtResource("5_wnvii")
+texture = ExtResource("5_pn4dk")
