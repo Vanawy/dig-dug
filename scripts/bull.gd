@@ -1,14 +1,15 @@
 extends CharacterBody2D
 class_name Bull
 
-@export_category("Children")
+@export_category("Nodes")
 @export var rage_timer: Timer
 @export var sprite: AnimatedSprite2D
+@export var rage_audio: AudioStreamPlayer2D
+@export var grid_coords: GridCoordinates
 
 var speed: float = 0
 var a: float = 64
 
-@export var grid_coords: GridCoordinates
 var global_target_pos: Vector2 = Vector2.ZERO
 
 var can_destroy_count: float = 1
@@ -28,6 +29,7 @@ func rage() -> void:
 	if is_raged:
 		return
 	rage_timer.start()
+	rage_audio.play()
 	is_raged = true
 	
 func run() -> void:

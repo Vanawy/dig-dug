@@ -43,7 +43,7 @@ var is_game_started: bool = false
 var is_player_intro_done: bool = false
 var target_coords: Vector2i = Vector2.ZERO
 
-var bulls_amount: int = 2
+var bulls_amount: int = 3
 var enemies_amount: int = 3
 
 var enemies_additional_speed: float = 0
@@ -419,7 +419,8 @@ func _draw() -> void:
 	#if not Global.draw_debug:
 		#return		
 		
-	draw_circle(to_local(field.coords_to_global(player.grid_coords.at)), 2, Color.GREEN, true)
-	draw_circle(to_local(field.coords_to_global(player.get_target())), 2, Color.RED, true)
-	draw_set_transform(Vector2(206, 112))
+	#draw_circle(to_local(field.coords_to_global(player.grid_coords.at)), 2, Color.GREEN, true)
+	#draw_circle(to_local(field.coords_to_global(player.get_target())), 2, Color.RED, true)
+	#draw_set_transform(Vector2(206, 112))
 	#Navigation.draw(self)
+	pass

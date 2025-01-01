@@ -15,19 +15,21 @@ enum Size {
 	BIG = 5,
 }
 
-@export var type: Type = Type.ANY
+@export var type: Type = Type.ANY:
+	set(v):
+		type = v
+		queue_redraw()
 
-@export var size: Size = Size.BIG
+@export var size: Size = Size.BIG:
+	set(v):
+		size = v
+		queue_redraw()
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		Global.draw_debug_toggled.connect(func(v: bool):
 			queue_redraw()
 		)
-
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		queue_redraw()
 	
 
 func _draw() -> void:

@@ -195,11 +195,13 @@ animation = &"left_right"
 autoplay = "left_right"
 
 [node name="SpriteDouble" parent="Sprite" node_paths=PackedStringArray("from", "to") instance=ExtResource("5_wtq4b")]
+position = Vector2(0, -4)
 from = NodePath("..")
 to = NodePath("Sprite")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Sprite/SpriteDouble"]
 material = SubResource("ShaderMaterial_epg4t")
+position = Vector2(0, 4)
 sprite_frames = SubResource("SpriteFrames_iifgy")
 animation = &"left_right"
 autoplay = "left_right"

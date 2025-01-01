@@ -86,7 +86,7 @@ process_mode = 1
 layer = 2
 script = ExtResource("3_jyhfs")
 
-[node name="PauseUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "continue_button")]
+[node name="PauseUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "continue_button", "restart_button")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -95,6 +95,7 @@ theme = ExtResource("4_tefeu")
 script = ExtResource("5_tbgi4")
 animation = NodePath("AnimationPlayer")
 continue_button = NodePath("MarginContainer/VBoxContainer/continue")
+restart_button = NodePath("MarginContainer/VBoxContainer/restart")
 
 [node name="BG" type="TextureRect" parent="UI/PauseUI"]
 modulate = Color(1, 1, 1, 0.588235)
@@ -119,6 +120,7 @@ theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/PauseUI/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 2
 alignment = 1
 
 [node name="paused" type="Label" parent="UI/PauseUI/MarginContainer/VBoxContainer"]
@@ -131,6 +133,10 @@ vertical_alignment = 1
 [node name="continue" type="Button" parent="UI/PauseUI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Continue"
+
+[node name="restart" type="Button" parent="UI/PauseUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Restart"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/PauseUI"]
 libraries = {

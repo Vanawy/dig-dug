@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=20 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://sprites/reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://scripts/game.gd" id="1_wu4la"]
+[ext_resource type="Script" uid="uid://6ea0nkr7tjkq" path="res://scripts/free_on_ready.gd" id="2_ir15t"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://sprites/wheat_sheet.png" id="2_wfkkd"]
 [ext_resource type="Texture2D" uid="uid://ywwjhnwtppkw" path="res://sprites/bull.png" id="3_p12mw"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://sprites/vampire.png" id="4_igo6k"]
@@ -184,6 +185,7 @@ game_ui = NodePath("UI/UI")
 
 [node name="res" type="Node2D" parent="."]
 position = Vector2(-32, 0)
+script = ExtResource("2_ir15t")
 
 [node name="Reference" type="Sprite2D" parent="res"]
 position = Vector2(-205, 175)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bsu2vy1wgxv6o"]
+[gd_scene load_steps=35 format=3 uid="uid://bsu2vy1wgxv6o"]
 
 [ext_resource type="Script" uid="uid://c71swver3v5hg" path="res://scripts/player.gd" id="1_sweqy"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://sprites/vampire.png" id="2_2hs0m"]
@@ -7,6 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://cma4sbeu58bxd" path="res://sprites/scythe.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="5_b26j0"]
 [ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="6_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://d3hcp2aienas8" path="res://sfx/bats_quiet_1.wav" id="8_ur7pv"]
+[ext_resource type="AudioStream" uid="uid://bi1xsafeouqqo" path="res://sfx/bats_1.wav" id="8_y4r1p"]
+[ext_resource type="AudioStream" uid="uid://cj3rgicejs71h" path="res://sfx/bats_2.wav" id="9_d2wvv"]
+[ext_resource type="AudioStream" uid="uid://cm6kxkwg07y26" path="res://sfx/bats_quiet_2.wav" id="9_y4r1p"]
+[ext_resource type="AudioStream" uid="uid://bnjrhts1m6vxf" path="res://sfx/bats_3.wav" id="10_3v2ag"]
+[ext_resource type="AudioStream" uid="uid://dk1bhmgowjy11" path="res://sfx/death.wav" id="13_jej6c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tbpn"]
 atlas = ExtResource("2_2hs0m")
@@ -248,7 +254,18 @@ particles_anim_loop = true
 _data = [Vector2(0.759162, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -6.72213, 0.0, 0, 0]
 point_count = 2
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles", "grid_coords")]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_3v2ag"]
+streams_count = 3
+stream_0/stream = ExtResource("8_y4r1p")
+stream_1/stream = ExtResource("9_d2wvv")
+stream_2/stream = ExtResource("10_3v2ag")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jej6c"]
+streams_count = 2
+stream_0/stream = ExtResource("8_ur7pv")
+stream_1/stream = ExtResource("9_y4r1p")
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles", "grid_coords", "hit_sound", "miss_sound", "death_sound")]
 y_sort_enabled = true
 collision_layer = 8
 motion_mode = 1
@@ -265,13 +282,16 @@ scythe_pivot = NodePath("ScythePivot")
 attack_lock = NodePath("AttackLock")
 attack_particles = NodePath("AttackParticles")
 grid_coords = NodePath("GridCoordinates")
+hit_sound = NodePath("AttackHitSound")
+miss_sound = NodePath("AttackMissSound")
+death_sound = NodePath("DeathSound")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_0b6hk")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.800779
+frame_progress = 0.877106
 
 [node name="SpriteDouble" parent="AnimatedSprite2D" node_paths=PackedStringArray("from", "to") instance=ExtResource("3_fjrip")]
 position = Vector2(0, -4)
@@ -362,3 +382,16 @@ collision_mask = 3
 collide_with_areas = true
 
 [node name="GridCoordinates" parent="." instance=ExtResource("6_tuyoq")]
+
+[node name="AttackHitSound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_3v2ag")
+bus = &"SFX"
+
+[node name="AttackMissSound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_jej6c")
+max_polyphony = 3
+bus = &"SFX"
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_jej6c")
+bus = &"SFX"

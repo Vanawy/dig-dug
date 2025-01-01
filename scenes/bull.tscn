@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c54q70mfjmu37"]
+[gd_scene load_steps=8 format=3 uid="uid://c54q70mfjmu37"]
 
 [ext_resource type="Script" uid="uid://fu42hh5oln20" path="res://scripts/bull.gd" id="1_85vty"]
 [ext_resource type="Texture2D" uid="uid://ywwjhnwtppkw" path="res://sprites/bull.png" id="2_g2pcm"]
 [ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="3_hqf4x"]
+[ext_resource type="AudioStream" uid="uid://bypbelke12my0" path="res://sfx/animal_bull_scottish_highland_moo_002.mp3" id="4_pjux2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_85vty"]
 atlas = ExtResource("2_g2pcm")
@@ -22,13 +23,14 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o0qsl"]
 size = Vector2(8, 8)
 
-[node name="bull" type="CharacterBody2D" node_paths=PackedStringArray("rage_timer", "sprite", "grid_coords")]
+[node name="bull" type="CharacterBody2D" node_paths=PackedStringArray("rage_timer", "sprite", "rage_audio", "grid_coords")]
 collision_layer = 5
 collision_mask = 11
 collision_priority = 20.0
 script = ExtResource("1_85vty")
 rage_timer = NodePath("RageTimer")
 sprite = NodePath("Bull")
+rage_audio = NodePath("RageSound")
 grid_coords = NodePath("GridCoordinates")
 
 [node name="Bull" type="AnimatedSprite2D" parent="."]
@@ -42,3 +44,7 @@ process_callback = 0
 one_shot = true
 
 [node name="GridCoordinates" parent="." instance=ExtResource("3_hqf4x")]
+
+[node name="RageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_pjux2")
+bus = &"SFX"

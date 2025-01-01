@@ -4,14 +4,10 @@ class_name PauseUI
 @export_category("Nodes")
 @export var animation: AnimationPlayer
 @export var continue_button: Button
-
-signal continue_pressed
+@export var restart_button: Button
 
 func _ready() -> void:
 	visible = false
-	continue_button.pressed.connect(func():
-		continue_pressed.emit()
-	)
 	
 func pause() -> void:
 	animation.play("pause")

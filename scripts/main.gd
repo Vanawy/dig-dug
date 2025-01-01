@@ -6,7 +6,8 @@ extends Node2D
 @onready var tree: SceneTree = get_tree()
 
 func _ready() -> void:
-	pause_ui.continue_pressed.connect(unpause)
+	pause_ui.continue_button.pressed.connect(unpause)
+	pause_ui.restart_button.pressed.connect(restart)
 	return
 	
 	
@@ -28,6 +29,12 @@ func unpause() -> void:
 	pause_ui.unpause()
 	await pause_ui.visibility_changed
 	tree.paused = false
+	
+func restart() -> void:
+	pause_ui.unpause()
+	await pause_ui.visibility_changed
+	tree.paused = false
+	tree.reload_current_scene()
 	
 	
 func _unhandled_input(event: InputEvent) -> void:

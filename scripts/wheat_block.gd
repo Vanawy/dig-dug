@@ -26,10 +26,6 @@ func _ready() -> void:
 		debug_line.visible = v
 	)
 	#$Good/Parts.queue_free()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 	
 func reset_sides() -> void:
 	for side in sides.keys():
