@@ -7,6 +7,7 @@ var speed: float = SPEED
 
 
 var in_direction: Game.Direction = Game.Direction.NONE
+var priority_direction: Game.Direction = Game.Direction.NONE
 var look_direction: Game.Direction = Game.Direction.RIGHT
 var move_direction: Game.Direction = Game.Direction.NONE
 
@@ -136,8 +137,6 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 	
 func _draw() -> void:
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_up"):
 	draw_line(Vector2.ZERO, move_input * 16, Color.BLUE, 1)
 		
 func _process(delta: float) -> void:
