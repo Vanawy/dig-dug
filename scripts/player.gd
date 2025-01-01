@@ -10,6 +10,8 @@ var in_direction: Game.Direction = Game.Direction.NONE
 var look_direction: Game.Direction = Game.Direction.RIGHT
 var move_direction: Game.Direction = Game.Direction.NONE
 
+var move_input: Vector2 = Vector2.ZERO
+
 @export_category("Children")
 @export var rays: Dictionary[Game.Direction, RayCast2D] = {}
 @export var scythe_animation: AnimationPlayer
@@ -134,30 +136,28 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 	
 func _draw() -> void:
-	#draw_circle(to_local())
-	pass
-
-
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_up"):
-		in_direction = Game.Direction.UP
-	if event.is_action_pressed("ui_down"):
-		in_direction = Game.Direction.DOWN
-	if event.is_action_pressed("ui_right"):
-		in_direction = Game.Direction.RIGHT
-	if event.is_action_pressed("ui_left"):
-		in_direction = Game.Direction.LEFT
+	draw_line(Vector2.ZERO, move_input * 16, Color.BLUE, 1)
 		
-	if event.is_action_released("ui_up") and in_direction == Game.Direction.UP \
-		or event.is_action_released("ui_down") and in_direction == Game.Direction.DOWN \
-		or event.is_action_released("ui_right") and in_direction == Game.Direction.RIGHT \
-		or event.is_action_released("ui_left") and in_direction == Game.Direction.LEFT:
-
-		in_direction = Game.Direction.NONE
-		
+func _process(delta: float) -> void:
+	
+	move_input = Input.get_vector("player_left", "player_right", "player_up", "player_down")
+	
+	in_direction = Game.vec_to_dir(move_input, priority_direction)
+	
 	if in_direction != Game.Direction.NONE:
 		look_direction = in_direction
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("player_up"):
+		priority_direction = Game.Direction.UP
+	if event.is_action_pressed("player_down"):
+		priority_direction = Game.Direction.DOWN
+	if event.is_action_pressed("player_right"):
+		priority_direction = Game.Direction.RIGHT
+	if event.is_action_pressed("player_left"):
+		priority_direction = Game.Direction.LEFT
 		
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("player_attack"):
 		attack()

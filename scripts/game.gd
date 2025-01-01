@@ -349,7 +349,7 @@ func move_bulls(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 				
 	if not is_player_intro_done:
-		if event.is_action_pressed("ui_accept"):
+		if event.is_action_pressed("player_attack"):
 			skip_intro = true
 			game_camera.position = Vector2.ZERO
 			game_camera.move_camera()
@@ -395,7 +395,25 @@ static func dir_to_vec(dir: Direction) -> Vector2:
 			return Vector2.RIGHT
 
 	return Vector2.ZERO
+
+static func vec_to_dir(vector: Vector2, priority: Direction = Direction.NONE) -> Direction:
+	if vector.is_zero_approx():
+		return Direction.NONE
+	var ax: float = abs(vector.x)
+	var ay: float = abs(vector.y)
+	if abs(ax - ay) < 0.05:
+		return priority
 	
+	if abs(ax) > abs(ay):
+		if vector.x > 0:
+			return Direction.RIGHT
+		else:
+			return Direction.LEFT
+	else:
+		if vector.y > 0:
+			return Direction.DOWN
+		else:
+			return Direction.UP
 	
 func _draw() -> void:
 	#if not Global.draw_debug:
