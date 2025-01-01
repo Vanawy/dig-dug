@@ -25,6 +25,7 @@ var move_input: Vector2 = Vector2.ZERO
 @export var hit_sound: AudioStreamPlayer2D
 @export var miss_sound: AudioStreamPlayer2D
 @export var death_sound: AudioStreamPlayer2D
+@export var cut_sound: AudioStreamPlayer2D
 
 var is_dead: bool = true
 signal on_death
@@ -134,6 +135,7 @@ func update_sprites(dir: Game.Direction) -> void:
 
 func dig(_direction: Game.Direction) -> void:
 	scythe_pivot.visible = true
+	cut_sound.play()
 	scythe_animation.play("dig")
 	await scythe_animation.animation_finished
 	scythe_animation.play("idle")

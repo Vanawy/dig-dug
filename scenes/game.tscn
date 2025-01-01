@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=21 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://sprites/reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://scripts/game.gd" id="1_wu4la"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cbwt38v1guinm" path="res://scenes/ui.tscn" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://ca5s7sw626gnh" path="res://scripts/ui_zoom.gd" id="15_e8heu"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://scripts/spawn_point.gd" id="16_80cx4"]
+[ext_resource type="AudioStream" uid="uid://c6oedtysk2qbc" path="res://music/wheat-in-the-wind-7159.mp3" id="16_ca42v"]
 [ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://scenes/spawn_point.tscn" id="16_e8heu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
@@ -344,3 +345,9 @@ script = ExtResource("15_e8heu")
 camera = NodePath("../GameCamera")
 
 [node name="UI" parent="UI" instance=ExtResource("15_80cx4")]
+
+[node name="BackgroundSounds" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_ca42v")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true
