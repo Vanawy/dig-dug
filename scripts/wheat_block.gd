@@ -11,9 +11,6 @@ var sides: Dictionary[Game.Direction, bool] = {
 
 @export var sprite: AnimatedSprite2D
 @export var debug_line: Line2D
-@export var parts: Node2D
-
-@export var parts_to_remove: Dictionary[Game.Direction, Node2D] = {}
 
 var cut_direction: Game.Direction = Game.Direction.NONE
 var grid_coords: Vector2i

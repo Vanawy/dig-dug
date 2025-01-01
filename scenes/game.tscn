@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=19 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://sprites/reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://scripts/game.gd" id="1_wu4la"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ch507o0be7vsq" path="res://scenes/field.tscn" id="7_kvuet"]
 [ext_resource type="Script" uid="uid://donw5jx2prao6" path="res://scripts/game_camera.gd" id="10_80cx4"]
 [ext_resource type="PackedScene" uid="uid://bsu2vy1wgxv6o" path="res://scenes/player.tscn" id="11_215e1"]
+[ext_resource type="Texture2D" uid="uid://dwant4xgvu0vc" path="res://sprites/wheat_reference.png" id="14_trtic"]
 [ext_resource type="PackedScene" uid="uid://cbwt38v1guinm" path="res://scenes/ui.tscn" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://ca5s7sw626gnh" path="res://scripts/ui_zoom.gd" id="15_e8heu"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://scripts/spawn_point.gd" id="16_80cx4"]
@@ -200,6 +201,11 @@ texture = ExtResource("3_p12mw")
 position = Vector2(-52, 24)
 texture = ExtResource("4_igo6k")
 
+[node name="WheatReference" type="Sprite2D" parent="res"]
+position = Vector2(-47, 152)
+scale = Vector2(4, 4)
+texture = ExtResource("14_trtic")
+
 [node name="Background" type="TileMapLayer" parent="."]
 z_index = -15
 position = Vector2(0, -1)
@@ -207,6 +213,8 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAA
 tile_set = SubResource("TileSet_lc2xo")
 
 [node name="Field" parent="." instance=ExtResource("7_kvuet")]
+z_index = 5
+y_sort_enabled = false
 position = Vector2(16, 32)
 
 [node name="Details" type="TileMapLayer" parent="."]

@@ -1,10 +1,6 @@
 shader_type canvas_item;
 render_mode blend_mix;
 
-uniform float col = 1.0;
-
-varying vec4 custom;
-
 
 
 // Wind settings.
@@ -31,6 +27,10 @@ uniform float heightOffset : hint_range(0.0, 1.0);
 
 uniform float timeOffsetScale = 1.0;
 
+uniform float col = 1.0;
+
+varying vec4 custom;
+
 float getWind(vec2 vertex, vec2 uv, float time){
     float diff = pow(maxStrength - minStrength, 2.0);
     float strength = clamp(minStrength + diff + sin(time / interval) * diff, minStrength, maxStrength) * strengthScale;
@@ -40,6 +40,11 @@ float getWind(vec2 vertex, vec2 uv, float time){
 }
 
 void vertex() {
+
+	// r UV offset
+	// g Wind time offset
+	// b unused
+	// a visibility (0 -hidden, 1-visible)
 	custom = INSTANCE_CUSTOM;
 
 	// from wind shader

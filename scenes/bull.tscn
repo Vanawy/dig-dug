@@ -20,7 +20,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o0qsl"]
-size = Vector2(12, 12)
+size = Vector2(8, 8)
 
 [node name="bull" type="CharacterBody2D" node_paths=PackedStringArray("rage_timer", "sprite", "grid_coords")]
 collision_layer = 5

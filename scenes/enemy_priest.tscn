@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bqh3wqribm5nd"]
+[gd_scene load_steps=27 format=3 uid="uid://bqh3wqribm5nd"]
 
 [ext_resource type="PackedScene" uid="uid://be3bvcv7nyjow" path="res://scenes/enemy.tscn" id="1_hokho"]
 [ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_vdnl2"]
@@ -161,6 +161,11 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vrfba"]
+resource_local_to_scene = true
+shader = ExtResource("2_vdnl2")
+shader_parameter/hp_ratio = 1.0
+
 [node name="Enemy" instance=ExtResource("1_hokho")]
 speed = 14.0
 hp = 4
@@ -170,7 +175,16 @@ material = SubResource("ShaderMaterial_f0yk4")
 sprite_frames = SubResource("SpriteFrames_30kcu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite" index="0"]
+z_index = 20
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_b7wcd")
 autoplay = "default"
 frame_progress = 0.964962
+
+[node name="SpriteDouble" parent="Sprite" index="1"]
+position = Vector2(0, -3)
+
+[node name="Sprite" parent="Sprite/SpriteDouble" index="0"]
+material = SubResource("ShaderMaterial_vrfba")
+position = Vector2(0, 3)
+sprite_frames = SubResource("SpriteFrames_30kcu")

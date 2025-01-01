@@ -5,32 +5,29 @@ class_name Field
 var grid: Dictionary[Vector2i, WheatBlock] = {}
 
 const WHEAT_IN_CELL: int = 10
-const WHEAT_PARTS_OFFSETS: Array[Vector2] = [
-	Vector2(14, 0 ),
-	Vector2(10, 1 ),
-	Vector2(8,  2 ),
-	Vector2(6,  7 ),
-	Vector2(14, 7 ),
-	
-	Vector2(2,  8 ),
-	Vector2(11, 10),
-	Vector2(9,  11),
-	Vector2(5,  14),
-	Vector2(1,  15),
-]
 
-const WHEAT_PARTS_FRAMES: Array[int] = [
-	0,
-	3,
-	1,
-	1,
-	2,
-	1,
-	0,
-	1,
-	1,
-	2
+const WHEAT_PARTS_DATA: Array[Array] = [
+	# x, y, frame_n
+	[14, 0 , 0],
+	[10, 1 , 3],
+	[8,  2 , 1],
+	[6,  7 , 1],
+	[14, 7 , 2],
+	
+	[2,  8 , 1],
+	[11, 10, 0],
+	[9,  11, 1],
+	[5,  14, 1],
+	[1,  15, 2],
 ]
+const PARTS_REMOVE: Dictionary[Game.Direction, Array] = {
+	Game.Direction.NONE: [3,6,7],
+	Game.Direction.UP: [1,2],
+	Game.Direction.LEFT: [5],
+	Game.Direction.RIGHT: [4],
+	Game.Direction.DOWN: [8]
+}
+
 const WHEAT_FRAMES: float = 5
 const FRAME_SIZE: float = 1.0 / WHEAT_FRAMES
 
@@ -46,12 +43,12 @@ func _ready() -> void:
 				var index := i * size.y * WHEAT_IN_CELL + j * WHEAT_IN_CELL + k
 				#print(i, j, " ", index)
 				var angle = PI
-				var pos = Vector2(i, j) * Global.TILE_SIZE + WHEAT_PARTS_OFFSETS[k]
+				var pos = Vector2(i, j) * Global.TILE_SIZE + Vector2(WHEAT_PARTS_DATA[k][0], WHEAT_PARTS_DATA[k][1])
 				 #+ Vector2(0, -6)
 				multimesh2d.multimesh.set_instance_transform_2d(index, Transform2D(angle, pos))
 				multimesh2d.multimesh.set_instance_custom_data(index, 
 				Color(
-					WHEAT_PARTS_FRAMES[k] * FRAME_SIZE, # UV offset
+					WHEAT_PARTS_DATA[k][2] * FRAME_SIZE, # UV offset
 					randf(), # Wind time offset
 					0, # unused
 					1 # visibility
@@ -122,7 +119,7 @@ func get_block_at_coords(block_coords: Vector2i) -> WheatBlock:
 	
 	
 func cut_block(at: Vector2i, dir: Game.Direction) -> void:
-	for k in WHEAT_IN_CELL:
+	for k: int in PARTS_REMOVE[dir]:
 		var index := at.x * size.y * WHEAT_IN_CELL + at.y * WHEAT_IN_CELL + k
 		var data := multimesh2d.multimesh.get_instance_custom_data(index)
 		data.a = 0

@@ -64,18 +64,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7d4w5"]
 size = Vector2(16, 16)
 
-[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line", "parts_to_remove")]
+[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line")]
 position = Vector2(-8, -8)
 script = ExtResource("1_4iwym")
 sprite = NodePath("Good/Bg")
 debug_line = NodePath("Line2D")
-parts_to_remove = {
-0: null,
-1: null,
-2: null,
-3: null,
-4: null
-}
 
 [node name="Bad" type="Node2D" parent="."]
 z_index = -1

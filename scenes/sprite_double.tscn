@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cakwtn5ap0dii"]
+
+[ext_resource type="Script" uid="uid://u62xrmh6x1kw" path="res://scripts/sprite_double.gd" id="1_o5e4j"]
+
+[sub_resource type="Gradient" id="Gradient_tuyoq"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fjrip"]
+gradient = SubResource("Gradient_tuyoq")
+width = 16
+height = 8
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[node name="SpriteDouble" type="Sprite2D" node_paths=PackedStringArray("from", "to")]
+clip_children = 1
+z_index = 15
+texture = SubResource("GradientTexture2D_fjrip")
+script = ExtResource("1_o5e4j")
+from = NodePath("")
+to = NodePath("")
