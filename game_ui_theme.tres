@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://p3ir6myc7law" path="res://fonts/CompassGold.ttf" id="1_r6d4f"]
 
 [resource]
+Button/fonts/font = ExtResource("1_r6d4f")
 Label/colors/font_color = Color(0.901961, 0.270588, 0.223529, 1)
 Label/colors/font_outline_color = Color(0.105882, 0.121569, 0.129412, 1)
 Label/constants/outline_size = 3

@@ -75,7 +75,7 @@ region = Rect2(48, 0, 48, 16)
 atlas = ExtResource("1_fyqef")
 region = Rect2(0, 0, 48, 16)
 
-[node name="UI" type="Control" node_paths=PackedStringArray("player_hp_progress", "level_label", "score_label", "level_change_label", "level_change_animation")]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("player_hp_progress", "level_label", "score_label", "level_change_label", "level_change_animation")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
