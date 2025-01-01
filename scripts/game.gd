@@ -10,9 +10,6 @@ const DIG_OFFSET: float = 4
 
 const MAX_HP: int = 3
 
-@export var field_size: Vector2i = Vector2i(11, 12)
-
-
 @export var skip_intro: bool = true
 
 var player_health: int = 0:
@@ -84,14 +81,14 @@ func start_level() -> void:
 	for node in enemies + bulls:
 		node.queue_free()
 		
-	for i in field_size.x + 1:
-		for j in field_size.y + 1:
+	for i in field.size.x + 1:
+		for j in field.size.y + 1:
 			var block := field.get_block_at_coords(Vector2i(i, j))
 			if is_instance_valid(block):
 				block.reset_sides()
 	get_tree().call_group("wheat_part", "reset")
 	
-	Navigation.field_size = field_size
+	Navigation.field_size = field.size
 	Navigation.navigation.clear()
 	Navigation.visualisation_paths.clear()
 	spawn_enemies.call_deferred()
@@ -407,4 +404,4 @@ func _draw() -> void:
 	draw_circle(to_local(field.coords_to_global(player.grid_coords.at)), 2, Color.GREEN, true)
 	draw_circle(to_local(field.coords_to_global(player.get_target())), 2, Color.RED, true)
 	draw_set_transform(Vector2(206, 112))
-	Navigation.draw(self)
+	#Navigation.draw(self)

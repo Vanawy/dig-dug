@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://co7upfeaq8e5w"]
+[gd_scene load_steps=13 format=3 uid="uid://co7upfeaq8e5w"]
 
 [ext_resource type="Script" uid="uid://bsaeqicad5dlm" path="res://scripts/wheat_block.gd" id="1_4iwym"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://sprites/wheat_sheet.png" id="2_lhof2"]
 [ext_resource type="Texture2D" uid="uid://det35oga5utbx" path="res://sprites/wheat.png" id="2_o35ox"]
-[ext_resource type="PackedScene" uid="uid://kpahxsscvbxs" path="res://scenes/wheat_part.tscn" id="4_sge4t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u242n"]
 atlas = ExtResource("2_lhof2")
@@ -65,20 +64,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7d4w5"]
 size = Vector2(16, 16)
 
-[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line", "parts", "parts_to_remove")]
-y_sort_enabled = true
+[node name="WheatBlock" type="Node2D" node_paths=PackedStringArray("sprite", "debug_line")]
 position = Vector2(-8, -8)
 script = ExtResource("1_4iwym")
 sprite = NodePath("Good/Bg")
 debug_line = NodePath("Line2D")
-parts = NodePath("Good/Parts")
-parts_to_remove = {
-0: NodePath("Good/Parts/mid"),
-1: NodePath("Good/Parts/up"),
-2: NodePath("Good/Parts/down"),
-3: NodePath("Good/Parts/left"),
-4: NodePath("Good/Parts/right")
-}
 
 [node name="Bad" type="Node2D" parent="."]
 z_index = -1
@@ -96,98 +86,6 @@ y_sort_enabled = true
 z_index = -5
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_otxsm")
-
-[node name="Parts" type="Node2D" parent="Good"]
-process_priority = 1
-process_physics_priority = 1
-y_sort_enabled = true
-
-[node name="up" type="Node2D" parent="Good/Parts"]
-y_sort_enabled = true
-
-[node name="Node2D9" parent="Good/Parts/up" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(8, 3)
-frame = 1
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="Node2D10" parent="Good/Parts/up" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(11, 2)
-frame = 3
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="right" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(15, 8)
-frame = 2
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="down" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(5, 15)
-frame = 1
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="left" parent="Good/Parts" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(2, 9)
-frame = 1
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="mid" type="Node2D" parent="Good/Parts"]
-y_sort_enabled = true
-
-[node name="Node2D6" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(12, 11)
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="Node2D3" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(9, 12)
-frame = 1
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="Node2D4" parent="Good/Parts/mid" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(6, 8)
-frame = 1
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="keep" type="Node2D" parent="Good/Parts"]
-y_sort_enabled = true
-
-[node name="Node2D" parent="Good/Parts/keep" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(2, 16)
-frame = 2
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
-
-[node name="Node2D8" parent="Good/Parts/keep" node_paths=PackedStringArray("sprites") instance=ExtResource("4_sge4t")]
-position = Vector2(14, 1)
-sprites = {
-0: NodePath("SpriteContainer/wheat"),
-1: NodePath("SpriteContainer/corn")
-}
 
 [node name="Hitbox" type="Area2D" parent="."]
 visible = false

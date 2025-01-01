@@ -1,0 +1,19 @@
+[gd_resource type="AnimatedTexture" load_steps=6 format=3 uid="uid://7ea1ia1g1fp4"]
+
+[ext_resource type="Texture2D" uid="uid://cmmj71qwxxm37" path="res://sprites/whaet_variants/wheat_atlas_1.tres" id="1_fu6oc"]
+[ext_resource type="Texture2D" uid="uid://c1p7i7es3suyb" path="res://sprites/whaet_variants/wheat_atlas_2.tres" id="2_d0w0l"]
+[ext_resource type="Texture2D" uid="uid://b7teivng0f48v" path="res://sprites/whaet_variants/wheat_atlas_3.tres" id="3_f1xsg"]
+[ext_resource type="Texture2D" uid="uid://blurna1k6n6kg" path="res://sprites/whaet_variants/wheat_atlas_4.tres" id="4_5m57m"]
+[ext_resource type="Texture2D" uid="uid://dwipbdiun54xd" path="res://sprites/whaet_variants/wheat_atlas_5.tres" id="5_xi4t2"]
+
+[resource]
+frames = 5
+frame_0/texture = ExtResource("1_fu6oc")
+frame_1/texture = ExtResource("2_d0w0l")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_f1xsg")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_5m57m")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_xi4t2")
+frame_4/duration = 1.0

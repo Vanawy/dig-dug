@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=36 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://scripts/enemy.gd" id="1_4gyqm"]
 [ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_epg4t"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://42bgu7k3hyu5" path="res://sprites/ghost.png" id="3_iifgy"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="3_qi2p4"]
 [ext_resource type="Texture2D" uid="uid://dvtsd1koa5t4f" path="res://icon.svg" id="3_w8i8w"]
+[ext_resource type="PackedScene" uid="uid://cakwtn5ap0dii" path="res://scenes/sprite_double.tscn" id="5_wtq4b"]
 [ext_resource type="AudioStream" uid="uid://cw4n5ovwwiy5u" path="res://sfx/impactPlank_medium_000.ogg" id="6_8qclf"]
 [ext_resource type="AudioStream" uid="uid://1u5t6dkhqr27" path="res://sfx/impactPlank_medium_001.ogg" id="7_w8i8w"]
 [ext_resource type="AudioStream" uid="uid://dpvbw3c2xn5vd" path="res://sfx/impactPlank_medium_002.ogg" id="8_otmr2"]
@@ -190,7 +191,17 @@ grid_coords = NodePath("GridCoordinates")
 material = SubResource("ShaderMaterial_epg4t")
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_iifgy")
-animation = &"death"
+animation = &"left_right"
+autoplay = "left_right"
+
+[node name="SpriteDouble" parent="Sprite" node_paths=PackedStringArray("from", "to") instance=ExtResource("5_wtq4b")]
+from = NodePath("..")
+to = NodePath("Sprite")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Sprite/SpriteDouble"]
+material = SubResource("ShaderMaterial_epg4t")
+sprite_frames = SubResource("SpriteFrames_iifgy")
+animation = &"left_right"
 autoplay = "left_right"
 
 [node name="GhostSprite" type="AnimatedSprite2D" parent="."]
@@ -248,7 +259,7 @@ one_shot = true
 shape = SubResource("CircleShape2D_4gyqm")
 
 [node name="HitParticles" type="CPUParticles2D" parent="."]
-z_index = 2
+z_index = 25
 material = SubResource("CanvasItemMaterial_iifgy")
 position = Vector2(0, -8)
 amount = 1

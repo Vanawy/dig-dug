@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://bsu2vy1wgxv6o"]
+[gd_scene load_steps=27 format=3 uid="uid://bsu2vy1wgxv6o"]
 
 [ext_resource type="Script" uid="uid://c71swver3v5hg" path="res://scripts/player.gd" id="1_sweqy"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://sprites/vampire.png" id="2_2hs0m"]
 [ext_resource type="Texture2D" uid="uid://cvf5ecfx4aniy" path="res://sprites/impact1.png" id="3_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://cakwtn5ap0dii" path="res://scenes/sprite_double.tscn" id="3_fjrip"]
 [ext_resource type="Texture2D" uid="uid://cma4sbeu58bxd" path="res://sprites/scythe.png" id="4_dw050"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="5_b26j0"]
 [ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="6_tuyoq"]
@@ -267,6 +268,18 @@ grid_coords = NodePath("GridCoordinates")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
+sprite_frames = SubResource("SpriteFrames_0b6hk")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.800779
+
+[node name="SpriteDouble" parent="AnimatedSprite2D" node_paths=PackedStringArray("from", "to") instance=ExtResource("3_fjrip")]
+position = Vector2(0, -4)
+from = NodePath("..")
+to = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AnimatedSprite2D/SpriteDouble"]
+position = Vector2(0, 4)
 sprite_frames = SubResource("SpriteFrames_0b6hk")
 animation = &"idle"
 autoplay = "idle"

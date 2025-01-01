@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dwipbdiun54xd"]
+
+[ext_resource type="Texture2D" uid="uid://b8hx4vriccnhj" path="res://sprites/wheat_variants_long.png" id="1_g7ejk"]
+
+[resource]
+atlas = ExtResource("1_g7ejk")
+region = Rect2(13, 3, 2, 12)
