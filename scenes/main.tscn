@@ -220,7 +220,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_o6xl0")
 }
 
-[node name="GameOverUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "restart_button", "score", "pb", "is_new_pb")]
+[node name="GameOverUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "restart_button", "score", "pb_container", "pb", "is_new_pb")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -229,9 +229,10 @@ theme = ExtResource("4_tefeu")
 script = ExtResource("5_o6xl0")
 animation = NodePath("AnimationPlayer")
 restart_button = NodePath("MarginContainer/VBoxContainer/restart")
-score = NodePath("MarginContainer/VBoxContainer/Score/ScoreLabel")
-pb = NodePath("MarginContainer/VBoxContainer/PB/PBLabel")
-is_new_pb = NodePath("MarginContainer/VBoxContainer/PB/NewBest")
+score = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score/ScoreLabel")
+pb_container = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB")
+pb = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB/PBLabel")
+is_new_pb = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/NewBest")
 
 [node name="BG" type="TextureRect" parent="UI/GameOverUI"]
 modulate = Color(1, 1, 1, 0.588235)
@@ -266,31 +267,36 @@ text = "Game Over"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Score" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/Score"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Score" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score"]
 layout_mode = 2
 text = "Score: "
 
-[node name="ScoreLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/Score"]
+[node name="ScoreLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score"]
 layout_mode = 2
 text = "999999"
 
-[node name="PB" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+[node name="PB" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/PB"]
+[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB"]
 layout_mode = 2
 text = "Best:"
 
-[node name="PBLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/PB"]
+[node name="PBLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB"]
 layout_mode = 2
-text = "999"
+text = "99999999"
 
-[node name="NewBest" type="RichTextLabel" parent="UI/GameOverUI/MarginContainer/VBoxContainer/PB"]
+[node name="NewBest" type="RichTextLabel" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
 clip_contents = false
-custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
@@ -300,10 +306,11 @@ theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/normal_font_size = 16
 theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
-autowrap_mode = 2
+fit_content = true
+autowrap_mode = 0
 custom_effects = [SubResource("RichTextEffect_choun")]
 script = ExtResource("10_choun")
-bbcode = "[gold][sin]New![][]"
+bbcode = "[gold][sin]New best score![][]"
 effects = 2
 alignment = 0
 color = Color(1, 1, 1, 1)
