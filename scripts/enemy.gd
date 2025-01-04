@@ -32,6 +32,7 @@ var is_ghost = false
 @export var ghost_sprite: AnimatedSprite2D
 
 @export var hit_sfx: AudioStreamPlayer2D
+@export var ghost_sfx: AudioStreamPlayer2D
 
 @export var grid_coords: GridCoordinates
 
@@ -83,7 +84,7 @@ func _ready() -> void:
 	stun_indicator.visible = false
 	turn_normal()
 	normal_sprite.material.set("shader_parameter/hp_ratio", 1.0)
-	current_roam_direction = PATROL_ORDER.pick_random()
+	current_roam_direction = PATROL_ORDER[Global.rng.randi_range(0, PATROL_ORDER.size() - 1)]
 	
 	hitbox.body_entered.connect(func(player: Player):
 		if stun_lock.is_stopped():
@@ -96,6 +97,7 @@ func _ready() -> void:
 		current_speed = speed
 		stun_indicator.visible = false
 		normal_sprite.play()
+		ghost_sfx.stream_paused = false
 	)
 	
 	update_path_timer.timeout.connect(update_path)
@@ -117,6 +119,7 @@ func hit(dir: Game.Direction) -> bool:
 	stun_lock.start()
 	normal_sprite.pause()
 	stun_indicator.visible = true
+	ghost_sfx.stream_paused = true
 	hit_particles.restart()
 	hit_sfx.play()
 	
@@ -146,9 +149,11 @@ func turn_into_ghost() -> void:
 	is_ghost = true
 	normal_sprite.visible = false
 	ghost_sprite.visible = true
+	ghost_sfx.play()
 	collision_mask = Global.clear_mask_bit(collision_mask, Global.Layers.WALLS)
 	
 func turn_normal() -> void:
+	ghost_sfx.stop()
 	is_ghost = false
 	normal_sprite.visible = true
 	ghost_sprite.visible = false

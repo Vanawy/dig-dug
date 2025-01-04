@@ -1,0 +1,15 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bn3fpdjbg7h01"]
+
+[ext_resource type="Texture2D" uid="uid://tk1njxgtccav" path="res://sprites/checkbox.png" id="1_3gsui"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ludu0"]
+atlas = ExtResource("1_3gsui")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nrbu1"]
+atlas = ExtResource("1_3gsui")
+region = Rect2(16, 0, 16, 16)
+
+[resource]
+CheckBox/icons/checked = SubResource("AtlasTexture_ludu0")
+CheckBox/icons/unchecked = SubResource("AtlasTexture_nrbu1")

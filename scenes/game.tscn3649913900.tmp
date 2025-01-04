@@ -1,8 +1,7 @@
-[gd_scene load_steps=21 format=4 uid="uid://bwbdtfwl1b3qo"]
+[gd_scene load_steps=19 format=4 uid="uid://bwbdtfwl1b3qo"]
 
 [ext_resource type="Texture2D" uid="uid://dlt4vhymsaj3y" path="res://sprites/reference.png" id="1_gwt3q"]
 [ext_resource type="Script" uid="uid://j85fr62piwcd" path="res://scripts/game.gd" id="1_wu4la"]
-[ext_resource type="Script" uid="uid://6ea0nkr7tjkq" path="res://scripts/free_on_ready.gd" id="2_ir15t"]
 [ext_resource type="Texture2D" uid="uid://ddyko8j1oylsd" path="res://sprites/wheat_sheet.png" id="2_wfkkd"]
 [ext_resource type="Texture2D" uid="uid://ywwjhnwtppkw" path="res://sprites/bull.png" id="3_p12mw"]
 [ext_resource type="Texture2D" uid="uid://cey73h3u23eil" path="res://sprites/vampire.png" id="4_igo6k"]
@@ -14,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://cbwt38v1guinm" path="res://scenes/ui.tscn" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://ca5s7sw626gnh" path="res://scripts/ui_zoom.gd" id="15_e8heu"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://scripts/spawn_point.gd" id="16_80cx4"]
-[ext_resource type="AudioStream" uid="uid://c6oedtysk2qbc" path="res://music/wheat-in-the-wind-7159.mp3" id="16_ca42v"]
 [ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://scenes/spawn_point.tscn" id="16_e8heu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]
@@ -183,11 +181,9 @@ field = NodePath("Field")
 player = NodePath("Player")
 game_camera = NodePath("GameCamera")
 game_ui = NodePath("UI/UI")
-ghost_probability = null
 
 [node name="res" type="Node2D" parent="."]
 position = Vector2(-32, 0)
-script = ExtResource("2_ir15t")
 
 [node name="Reference" type="Sprite2D" parent="res"]
 position = Vector2(-205, 175)
@@ -346,10 +342,3 @@ script = ExtResource("15_e8heu")
 camera = NodePath("../GameCamera")
 
 [node name="UI" parent="UI" instance=ExtResource("15_80cx4")]
-
-[node name="BackgroundSounds" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_ca42v")
-volume_db = -10.0
-autoplay = true
-bus = &"Background"
-parameters/looping = true

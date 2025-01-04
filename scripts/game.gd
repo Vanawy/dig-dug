@@ -109,8 +109,7 @@ func respawn_player() -> void:
 		enemy.respawn()
 
 func spawn_enemies() -> void:
-	var spawns := bull_spawns.duplicate()
-	spawns.shuffle()
+	var spawns := Global.seeded_shuffle(bull_spawns.duplicate())
 	for i in bulls_amount:
 		var spawn := spawns.pop_back() as SpawnPoint
 		var coords = field.global_to_coords(spawn.global_position)
@@ -121,16 +120,15 @@ func spawn_enemies() -> void:
 		player.add_sibling(bull) 
 		bulls.append(bull)
 		
-	spawns = enemy_spawns.duplicate()
-	spawns.shuffle()
+	spawns = Global.seeded_shuffle(enemy_spawns.duplicate())
 	for i in enemies_amount:
 		var spawn := spawns.pop_back() as SpawnPoint
 		var coords = field.global_to_coords(spawn.global_position)
 		var type := spawn.type
 		if type == SpawnPoint.Type.ANY:
-			type = [SpawnPoint.Type.HORIZONTAL, SpawnPoint.Type.VERTICAL].pick_random()
+			type = [SpawnPoint.Type.HORIZONTAL, SpawnPoint.Type.VERTICAL][Global.rng.randi_range(0, 1)]
 			
-		var offset: int = floor(randf() * spawn.size) - ceil(spawn.size / 2)
+		var offset: int = floor(Global.rng.randf() * spawn.size) - ceil(spawn.size / 2)
 		var pos_offset: Vector2 = Vector2.ZERO
 		if type == SpawnPoint.Type.HORIZONTAL:
 			pos_offset.x = offset
@@ -163,6 +161,7 @@ func spawn_enemies() -> void:
 		
 func game_over() -> void:
 	print("game over")
+	Global.reset_rng()
 	get_tree().reload_current_scene()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -310,7 +309,7 @@ func move_enemies(delta: float) -> void:
 				var pos := field.coords_to_global(target)
 				enemy.global_target_pos = pos
 			else:
-				if randf() < ghost_probability:
+				if Global.rng.randf() < ghost_probability:
 					enemy.turn_into_ghost()
 				enemy.current_path.clear()
 				var next_point := enemy.grid_coords.at + Vector2i(dir_to_vec(enemy.current_roam_direction))
@@ -356,10 +355,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	
 	if event.as_text() == 'F1' and event.is_pressed():
-		start_level()
+		next_level()
 		
 	if event.as_text() == 'F2' and event.is_pressed():
-		get_tree().reload_current_scene()
+		game_over()
 		
 	if event.as_text() == 'F3' and event.is_pressed():
 		Global.draw_debug = !Global.draw_debug
