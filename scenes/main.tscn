@@ -83,7 +83,6 @@ pause_ui = NodePath("UI/PauseUI")
 
 [node name="game" parent="." instance=ExtResource("1_o5qli")]
 process_mode = 1
-ghost_probability = null
 
 [node name="UI" type="CanvasLayer" parent="."]
 layer = 2

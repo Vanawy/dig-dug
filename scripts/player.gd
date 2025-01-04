@@ -47,11 +47,11 @@ func death() -> void:
 		return
 	is_dead = true
 	speed = 0
+	collision_layer = Global.clear_mask_bit(collision_layer, Global.Layers.PLAYER)
 	sprite.play("death")
 	death_sound.play()
 	await sprite.animation_finished
 	on_death.emit()
-	#collision_layer = Global.clear_mask_bit(collision_layer, Global.Layers.PLAYER)
 	
 func respawn() -> void:
 	if not is_dead:
@@ -60,7 +60,7 @@ func respawn() -> void:
 	death_sound.stop()
 	speed = SPEED
 	is_dead = false
-	#collision_layer = Global.set_mask_bit(collision_layer, Global.Layers.PLAYER)
+	collision_layer = Global.set_mask_bit(collision_layer, Global.Layers.PLAYER)
 	
 	
 func attack() -> void:

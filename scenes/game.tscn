@@ -183,7 +183,6 @@ field = NodePath("Field")
 player = NodePath("Player")
 game_camera = NodePath("GameCamera")
 game_ui = NodePath("UI/UI")
-ghost_probability = null
 
 [node name="res" type="Node2D" parent="."]
 position = Vector2(-32, 0)

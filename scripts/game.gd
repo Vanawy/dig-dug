@@ -47,7 +47,7 @@ var bulls_amount: int = 3
 var enemies_amount: int = 3
 
 var enemies_additional_speed: float = 0
-var enemies_additional_speed_increase: float = 4
+var enemies_additional_speed_increase: float = 2
 
 @export var ghost_probability: float = 0.03
 
