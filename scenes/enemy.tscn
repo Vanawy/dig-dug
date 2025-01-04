@@ -1,11 +1,11 @@
-[gd_scene load_steps=37 format=3 uid="uid://be3bvcv7nyjow"]
+[gd_scene load_steps=38 format=3 uid="uid://be3bvcv7nyjow"]
 
 [ext_resource type="Script" uid="uid://dxqy6vek2ku1r" path="res://scripts/enemy.gd" id="1_4gyqm"]
 [ext_resource type="Shader" uid="uid://csh03q702kccb" path="res://enemy.gdshader" id="2_epg4t"]
 [ext_resource type="Texture2D" uid="uid://cj1pl0kbi5h5o" path="res://sprites/villager.png" id="2_iifgy"]
 [ext_resource type="Texture2D" uid="uid://42bgu7k3hyu5" path="res://sprites/ghost.png" id="3_iifgy"]
+[ext_resource type="Texture2D" uid="uid://dg0dt352h1pd6" path="res://sprites/dead_ghost.png" id="3_j0cyh"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="3_qi2p4"]
-[ext_resource type="Texture2D" uid="uid://dvtsd1koa5t4f" path="res://icon.svg" id="3_w8i8w"]
 [ext_resource type="PackedScene" uid="uid://cakwtn5ap0dii" path="res://scenes/sprite_double.tscn" id="5_wtq4b"]
 [ext_resource type="AudioStream" uid="uid://cw4n5ovwwiy5u" path="res://sfx/impactPlank_medium_000.ogg" id="6_8qclf"]
 [ext_resource type="AudioStream" uid="uid://1u5t6dkhqr27" path="res://sfx/impactPlank_medium_001.ogg" id="7_w8i8w"]
@@ -20,21 +20,25 @@ resource_local_to_scene = true
 shader = ExtResource("2_epg4t")
 shader_parameter/hp_ratio = 1.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_otmr2"]
-atlas = ExtResource("3_w8i8w")
-region = Rect2(32, 48, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wtq4b"]
-atlas = ExtResource("3_w8i8w")
-region = Rect2(32, 64, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j0cyh"]
-atlas = ExtResource("3_w8i8w")
-region = Rect2(48, 64, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_g0wcc"]
-atlas = ExtResource("3_w8i8w")
-region = Rect2(48, 48, 16, 16)
+atlas = ExtResource("3_j0cyh")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1ycm"]
+atlas = ExtResource("3_j0cyh")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shcg2"]
+atlas = ExtResource("3_j0cyh")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ile5s"]
+atlas = ExtResource("3_j0cyh")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1x4g4"]
+atlas = ExtResource("3_j0cyh")
+region = Rect2(16, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iifgy"]
 atlas = ExtResource("2_iifgy")
@@ -63,17 +67,23 @@ region = Rect2(16, 16, 16, 16)
 [sub_resource type="SpriteFrames" id="SpriteFrames_iifgy"]
 animations = [{
 "frames": [{
-"duration": 3.0,
-"texture": SubResource("AtlasTexture_otmr2")
-}, {
-"duration": 3.0,
-"texture": SubResource("AtlasTexture_wtq4b")
-}, {
-"duration": 3.0,
-"texture": SubResource("AtlasTexture_j0cyh")
-}, {
-"duration": 3.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_g0wcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s1ycm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shcg2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ile5s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1x4g4")
+}, {
+"duration": 1.0,
+"texture": null
 }],
 "loop": false,
 "name": &"death",
@@ -193,7 +203,7 @@ grid_coords = NodePath("GridCoordinates")
 material = SubResource("ShaderMaterial_epg4t")
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_iifgy")
-animation = &"left_right"
+animation = &"death"
 autoplay = "left_right"
 
 [node name="SpriteDouble" parent="Sprite" node_paths=PackedStringArray("from", "to") instance=ExtResource("5_wtq4b")]

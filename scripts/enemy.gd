@@ -138,7 +138,7 @@ func death() -> void:
 	turn_normal()
 	is_dead = true
 	current_speed = 0
-	#hitbox.position = Vector2(10000, 10000)
+	hitbox.position = Vector2(10000, 10000)
 	collision_layer = Global.clear_mask_bit(collision_layer, Global.Layers.ENEMIES)
 	print("enemy died")
 	on_death.emit()

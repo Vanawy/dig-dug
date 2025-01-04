@@ -38,6 +38,12 @@ window/vsync/vsync_mode=0
 
 enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://scripts/": "red"
+}
+
 [global_group]
 
 color_source=""

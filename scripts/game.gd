@@ -55,6 +55,8 @@ var enemies: Array[Enemy] = []
 var bulls: Array[Bull] = []
 
 
+signal on_game_over(score: int, pb: int)
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	level = 1
@@ -161,6 +163,9 @@ func spawn_enemies() -> void:
 		
 func game_over() -> void:
 	print("game over")
+	on_game_over.emit(score, 0)
+	
+func restart_game() -> void:
 	Global.reset_rng()
 	get_tree().reload_current_scene()
 
