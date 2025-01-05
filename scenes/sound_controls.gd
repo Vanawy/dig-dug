@@ -8,16 +8,16 @@ class_name SoundUI
 
 func _ready() -> void:
 	
-	sfx.button_pressed = (Global.sfx_volume > 0)
-	bg.button_pressed = (Global.bg_volume > 0)
-	music.button_pressed = (Global.music_volume > 0)
+	sfx.button_pressed = Global.settings.sfx_on
+	bg.button_pressed = Global.settings.bg_on
+	music.button_pressed = Global.settings.music_on
 	
 	sfx.toggled.connect(func(v: bool):
-		Global.sfx_volume = 1 if v else 0
+		Global.settings.sfx_on = v
 	)
 	bg.toggled.connect(func(v: bool):
-		Global.bg_volume = 1 if v else 0
+		Global.settings.bg_on = v
 	)
 	music.toggled.connect(func(v: bool):
-		Global.music_volume = 1 if v else 0
+		Global.settings.music_on = v
 	)

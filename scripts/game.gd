@@ -163,7 +163,8 @@ func spawn_enemies() -> void:
 		
 func game_over() -> void:
 	print("game over")
-	on_game_over.emit(score, 0)
+	Global.update_best_score(score)
+	on_game_over.emit(score, Global.best_score)
 	
 func restart_game() -> void:
 	Global.reset_rng()
