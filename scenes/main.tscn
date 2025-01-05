@@ -100,10 +100,10 @@ variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
 base_font = ExtResource("9_jbj1t")
 variation_embolden = 1.5
 
-[sub_resource type="RichTextEffect" id="RichTextEffect_a8y0u"]
+[sub_resource type="RichTextEffect" id="RichTextEffect_muem4"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 27811070969171
+metadata/rt = 1949579677279
 
 [sub_resource type="FontVariation" id="FontVariation_yc10j"]
 base_font = ExtResource("12_muem4")
@@ -364,7 +364,7 @@ theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
-custom_effects = [SubResource("RichTextEffect_a8y0u")]
+custom_effects = [SubResource("RichTextEffect_muem4")]
 script = ExtResource("10_choun")
 bbcode = "[gold][sin]New best score![][]"
 effects = 2
@@ -526,15 +526,19 @@ offset_bottom = 23.0
 theme = ExtResource("4_tefeu")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("12_muem4")
-text = "v0.0.0"
+text = "v0.1.3"
 script = ExtResource("13_muem4")
+version = "0.1.3"
 
 [node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_ya4ey")
 bus = &"Music"
+playback_type = 1
 parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_ya4ey")
+volume_db = -10.0
 autoplay = true
 bus = &"Music"
+playback_type = 1
