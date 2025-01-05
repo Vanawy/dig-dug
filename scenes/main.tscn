@@ -83,10 +83,10 @@ _data = {
 &"pause": SubResource("Animation_tbgi4")
 }
 
-[sub_resource type="RichTextEffect" id="RichTextEffect_muem4"]
+[sub_resource type="RichTextEffect" id="RichTextEffect_a8y0u"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 25375841305125
+metadata/rt = 29367828856065
 
 [sub_resource type="Animation" id="Animation_o6xl0"]
 resource_name = "game_over"
@@ -329,7 +329,7 @@ theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
-custom_effects = [SubResource("RichTextEffect_muem4")]
+custom_effects = [SubResource("RichTextEffect_a8y0u")]
 script = ExtResource("10_choun")
 bbcode = "[gold][sin]New best score![][]"
 effects = 2

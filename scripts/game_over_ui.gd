@@ -29,7 +29,7 @@ func _ready() -> void:
 		credits_container.visible = false
 	)
 	
-	var file := FileAccess.open("res://CREDITS.txt", FileAccess.READ)
+	var file := FileAccess.open(ProjectSettings.globalize_path("res://CREDITS.txt"), FileAccess.READ)
 	credits_label.bbcode = file.get_as_text()
 	return
 	

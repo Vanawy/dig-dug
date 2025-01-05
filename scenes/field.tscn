@@ -1,14 +1,12 @@
-[gd_scene load_steps=17 format=4 uid="uid://ch507o0be7vsq"]
+[gd_scene load_steps=16 format=4 uid="uid://ch507o0be7vsq"]
 
-[ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://scenes/wheat_block.tscn" id="1_7156t"]
-[ext_resource type="PackedScene" uid="uid://b50613lc4jxmv" path="res://scenes/corn_block.tscn" id="2_pn4dk"]
+[ext_resource type="PackedScene" uid="uid://co7upfeaq8e5w" path="res://scenes/wheat_block.tscn" id="2_pn4dk"]
 [ext_resource type="Script" uid="uid://dsl80gc7pm7a8" path="res://scripts/field.gd" id="3_wnvii"]
 [ext_resource type="Shader" uid="uid://dnaal3dsy7hug" path="res://wheat.gdshader" id="4_pn4dk"]
 [ext_resource type="Texture2D" uid="uid://be6x26wvvefop" path="res://sprites/whaet_variants/wheat_packed.png" id="5_pn4dk"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ykb3o"]
-scenes/1/scene = ExtResource("1_7156t")
-scenes/2/scene = ExtResource("2_pn4dk")
+scenes/1/scene = ExtResource("2_pn4dk")
 
 [sub_resource type="TileSet" id="TileSet_tw16u"]
 sources/0 = SubResource("TileSetScenesCollectionSource_ykb3o")
