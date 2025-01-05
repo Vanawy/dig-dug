@@ -1,3 +1,18 @@
-Assets by Kenney.nl
+Game by Ilya [gold][sin]Vanawy[][] Sakharchuk
+
+Scenery assets by [gold][sin]Kenney.nl[][]
 Sound files from pixabay.com
-Sound files from www.zapsplat.com
+Sound files from zapsplat.com
+
+Music:
+'Vanishing' Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+http://creativecommons.org/licenses/by/4.0/
+
+'Unnatural Situation' Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+http://creativecommons.org/licenses/by/4.0/
+
+'Evening Fall (Piano)' Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+http://creativecommons.org/licenses/by/4.0/

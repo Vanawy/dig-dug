@@ -5,6 +5,7 @@ extends Node2D
 @export var game_over_ui: GameOverUI
 @export var game: Game
 @export var game_over_music: AudioStreamPlayer
+@export var music: AudioStreamPlayer
 
 @onready var tree: SceneTree = get_tree()
 
@@ -47,6 +48,7 @@ func restart() -> void:
 func game_over(score: int, pb: int) -> void:
 	tree.paused = true
 	game_over_music.play()
+	music.stop()
 	game_over_ui.game_over(score, pb)
 	
 func _unhandled_input(event: InputEvent) -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwqtd33l6csiq"]
+[gd_scene load_steps=24 format=3 uid="uid://bwqtd33l6csiq"]
 
 [ext_resource type="Script" uid="uid://crrkgo3x48ihj" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bwbdtfwl1b3qo" path="res://scenes/game.tscn" id="1_o5qli"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://d0i8lm8ljooxe" path="res://addons/richtext2/text_effects/effects/rte_sin.gd" id="9_choun"]
 [ext_resource type="Script" uid="uid://daw0bfnm5ia0d" path="res://addons/richtext2/richer_text_label.gd" id="10_choun"]
 [ext_resource type="AudioStream" uid="uid://bs1cdvd2udmn6" path="res://music/GameOverLoop.ogg" id="11_ya4ey"]
+[ext_resource type="AudioStream" uid="uid://cn8cw8f2enlom" path="res://music/Evening Fall - Piano.mp3" id="12_a8y0u"]
+[ext_resource type="AudioStream" uid="uid://d0srrmmhkv25m" path="res://music/Unnatural Situation.mp3" id="13_jkv2x"]
+[ext_resource type="AudioStream" uid="uid://du0r6g7u6l2xg" path="res://music/Vanishing.mp3" id="14_jbj1t"]
 
 [sub_resource type="Gradient" id="Gradient_tbgi4"]
 colors = PackedColorArray(0.24, 0.24, 0.24, 1, 0.1, 0.1, 0.1, 1)
@@ -80,10 +83,10 @@ _data = {
 &"pause": SubResource("Animation_tbgi4")
 }
 
-[sub_resource type="RichTextEffect" id="RichTextEffect_ya4ey"]
+[sub_resource type="RichTextEffect" id="RichTextEffect_muem4"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 1948472380973
+metadata/rt = 25375841305125
 
 [sub_resource type="Animation" id="Animation_o6xl0"]
 resource_name = "game_over"
@@ -119,13 +122,20 @@ _data = {
 &"game_over": SubResource("Animation_o6xl0")
 }
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("pause_ui", "game_over_ui", "game", "game_over_music")]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ya4ey"]
+streams_count = 3
+stream_0/stream = ExtResource("12_a8y0u")
+stream_1/stream = ExtResource("13_jkv2x")
+stream_2/stream = ExtResource("14_jbj1t")
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("pause_ui", "game_over_ui", "game", "game_over_music", "music")]
 process_mode = 3
 script = ExtResource("1_0wfyh")
 pause_ui = NodePath("UI/PauseUI")
 game_over_ui = NodePath("UI/GameOverUI")
 game = NodePath("game")
 game_over_music = NodePath("GameOverMusic")
+music = NodePath("Music")
 
 [node name="game" parent="." instance=ExtResource("1_o5qli")]
 process_mode = 1
@@ -222,7 +232,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_o6xl0")
 }
 
-[node name="GameOverUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "restart_button", "score", "pb_container", "pb", "is_new_pb")]
+[node name="GameOverUI" type="Control" parent="UI" node_paths=PackedStringArray("animation", "restart_button", "score", "pb_container", "pb", "is_new_pb", "credits_button", "back_button", "main_container", "credits_container", "credits_label")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -230,11 +240,16 @@ offset_bottom = 40.0
 theme = ExtResource("4_tefeu")
 script = ExtResource("5_o6xl0")
 animation = NodePath("AnimationPlayer")
-restart_button = NodePath("MarginContainer/VBoxContainer/restart")
-score = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score/ScoreLabel")
-pb_container = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB")
-pb = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB/PBLabel")
-is_new_pb = NodePath("MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/NewBest")
+restart_button = NodePath("MarginContainer/VBoxContainer/base/restart")
+score = NodePath("MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/Score/ScoreLabel")
+pb_container = NodePath("MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/PB")
+pb = NodePath("MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/PB/PBLabel")
+is_new_pb = NodePath("MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/NewBest")
+credits_button = NodePath("MarginContainer/VBoxContainer/base/credits")
+back_button = NodePath("MarginContainer/VBoxContainer/Credits/HideCredits")
+main_container = NodePath("MarginContainer/VBoxContainer/base")
+credits_container = NodePath("MarginContainer/VBoxContainer/Credits")
+credits_label = NodePath("MarginContainer/VBoxContainer/Credits/ScrollContainer/RicherTextLabel")
 
 [node name="BG" type="TextureRect" parent="UI/GameOverUI"]
 modulate = Color(1, 1, 1, 0.588235)
@@ -262,42 +277,45 @@ layout_mode = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="gameOver" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+[node name="base" type="VBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="gameOver" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 text = "Game Over"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CenterContainer" type="CenterContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer"]
 layout_mode = 2
 
-[node name="Score" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+[node name="Score" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score"]
+[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/Score"]
 layout_mode = 2
 text = "Score:"
 
-[node name="ScoreLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/Score"]
+[node name="ScoreLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/Score"]
 layout_mode = 2
 text = "999999"
 
-[node name="PB" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+[node name="PB" type="HBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB"]
+[node name="text" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/PB"]
 layout_mode = 2
 text = "Best:"
 
-[node name="PBLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer/PB"]
+[node name="PBLabel" type="Label" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer/PB"]
 layout_mode = 2
 text = "99999999"
 
-[node name="NewBest" type="RichTextLabel" parent="UI/GameOverUI/MarginContainer/VBoxContainer/CenterContainer/VBoxContainer"]
+[node name="NewBest" type="RichTextLabel" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base/CenterContainer/VBoxContainer"]
 clip_contents = false
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
@@ -311,7 +329,7 @@ theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
-custom_effects = [SubResource("RichTextEffect_ya4ey")]
+custom_effects = [SubResource("RichTextEffect_muem4")]
 script = ExtResource("10_choun")
 bbcode = "[gold][sin]New best score![][]"
 effects = 2
@@ -363,9 +381,87 @@ fit_width = false
 fit_width_padding = 10
 metadata/_custom_type_script = ExtResource("10_choun")
 
-[node name="restart" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+[node name="restart" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
 layout_mode = 2
 text = "Restart"
+
+[node name="credits" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
+layout_mode = 2
+text = "Credits"
+
+[node name="Credits" type="VBoxContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HideCredits" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer/Credits"]
+layout_mode = 2
+text = "Back"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/GameOverUI/MarginContainer/VBoxContainer/Credits"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+
+[node name="RicherTextLabel" type="RichTextLabel" parent="UI/GameOverUI/MarginContainer/VBoxContainer/Credits/ScrollContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+fit_content = true
+script = ExtResource("10_choun")
+bbcode = ""
+effects = 2
+alignment = 1
+color = Color(1, 1, 1, 1)
+emoji_scale = 1.0
+font = "SinsGold"
+font_auto_setup = true
+font_size = 16
+font_bold_weight = 1.5
+font_italics_slant = 0.25
+font_italics_weight = -0.25
+shadow_enabled = false
+shadow_offset = 0.08
+shadow_alpha = 0.25
+shadow_outline_size = 0.1
+outline_size = 0
+outline_mode = 1
+outline_adjust = 0.8
+outline_hue_adjust = 0.0125
+nicer_quotes_enabled = true
+nicer_quotes_format = "“%s”"
+markdown_enabled = true
+markdown_format_bold = "[b]%s[]"
+markdown_format_italics = "[i]%s[]"
+markdown_format_bold_italics = "[bi]%s[]"
+markdown_format_highlight = "[green;sin]%s[]"
+markdown_format_bold2 = "[b]*%s*[]"
+markdown_format_italics2 = "[i;gray]*%s*[]"
+markdown_format_bold_italics2 = "%s"
+context_enabled = true
+context_path = NodePath("/root/State")
+context_state = {}
+context_rich_objects = true
+context_rich_ints = true
+context_rich_array = true
+autostyle_numbers = true
+autostyle_numbers_tag = "[salmon]%s[]"
+autostyle_numbers_pad_decimals = true
+autostyle_numbers_decimals = 2
+autostyle_emojis = true
+effect_weight = 0.0
+meta_auto_https = true
+meta_cursor = 2
+override_bbcodeEnabled = true
+override_clipContents = false
+override_fitContent = true
+fit_width = false
+fit_width_padding = 10
+metadata/_custom_type_script = ExtResource("10_choun")
 
 [node name="LinkButton" type="LinkButton" parent="UI/GameOverUI/MarginContainer"]
 layout_mode = 2
@@ -389,6 +485,7 @@ stream = ExtResource("11_ya4ey")
 bus = &"Music"
 parameters/looping = true
 
-[node name="BGMusic" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_ya4ey")
 autoplay = true
 bus = &"Music"
