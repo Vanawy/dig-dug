@@ -1,0 +1,1 @@
+butler push %~dp0\build\win vanawy/dig-dug:win --userversion-file %~dp0\version.txt --if-changed 
