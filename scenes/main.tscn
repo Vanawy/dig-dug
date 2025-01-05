@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bwqtd33l6csiq"]
+[gd_scene load_steps=33 format=3 uid="uid://bwqtd33l6csiq"]
 
 [ext_resource type="Script" uid="uid://crrkgo3x48ihj" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://bwbdtfwl1b3qo" path="res://scenes/game.tscn" id="1_o5qli"]
@@ -9,10 +9,13 @@
 [ext_resource type="Theme" uid="uid://bn3fpdjbg7h01" path="res://sound_ui-theme.tres" id="6_tefeu"]
 [ext_resource type="Script" uid="uid://dksiv6pfya53i" path="res://scenes/sound_controls.gd" id="7_o6xl0"]
 [ext_resource type="Script" uid="uid://d0i8lm8ljooxe" path="res://addons/richtext2/text_effects/effects/rte_sin.gd" id="9_choun"]
+[ext_resource type="FontFile" uid="uid://p3ir6myc7law" path="res://fonts/CompassGold.ttf" id="9_jbj1t"]
 [ext_resource type="Script" uid="uid://daw0bfnm5ia0d" path="res://addons/richtext2/richer_text_label.gd" id="10_choun"]
 [ext_resource type="AudioStream" uid="uid://bs1cdvd2udmn6" path="res://music/GameOverLoop.ogg" id="11_ya4ey"]
 [ext_resource type="AudioStream" uid="uid://cn8cw8f2enlom" path="res://music/Evening Fall - Piano.mp3" id="12_a8y0u"]
+[ext_resource type="FontFile" uid="uid://fk8rm7c3nfk8" path="res://fonts/SinsGold.ttf" id="12_muem4"]
 [ext_resource type="AudioStream" uid="uid://d0srrmmhkv25m" path="res://music/Unnatural Situation.mp3" id="13_jkv2x"]
+[ext_resource type="Script" uid="uid://ch4l7jhgc34pd" path="res://scripts/version.gd" id="13_muem4"]
 [ext_resource type="AudioStream" uid="uid://du0r6g7u6l2xg" path="res://music/Vanishing.mp3" id="14_jbj1t"]
 
 [sub_resource type="Gradient" id="Gradient_tbgi4"]
@@ -83,10 +86,38 @@ _data = {
 &"pause": SubResource("Animation_tbgi4")
 }
 
+[sub_resource type="FontVariation" id="FontVariation_dp3eg"]
+base_font = ExtResource("9_jbj1t")
+variation_embolden = -0.25
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_0ld40"]
+base_font = ExtResource("9_jbj1t")
+variation_embolden = 1.5
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_gqmmt"]
+base_font = ExtResource("9_jbj1t")
+variation_embolden = 1.5
+
 [sub_resource type="RichTextEffect" id="RichTextEffect_a8y0u"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 29367828856065
+metadata/rt = 27811070969171
+
+[sub_resource type="FontVariation" id="FontVariation_yc10j"]
+base_font = ExtResource("12_muem4")
+variation_embolden = -0.25
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_jscy8"]
+base_font = ExtResource("12_muem4")
+variation_embolden = 1.5
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_pm3ni"]
+base_font = ExtResource("12_muem4")
+variation_embolden = 1.5
 
 [sub_resource type="Animation" id="Animation_o6xl0"]
 resource_name = "game_over"
@@ -321,6 +352,10 @@ custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_fonts/normal_font = ExtResource("9_jbj1t")
+theme_override_fonts/italics_font = SubResource("FontVariation_dp3eg")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_0ld40")
+theme_override_fonts/bold_font = SubResource("FontVariation_gqmmt")
 theme_override_font_sizes/bold_italics_font_size = 16
 theme_override_font_sizes/italics_font_size = 16
 theme_override_font_sizes/mono_font_size = 16
@@ -337,7 +372,7 @@ alignment = 0
 color = Color(1, 1, 1, 1)
 emoji_scale = 1.0
 font = "CompassGold"
-font_auto_setup = true
+font_auto_setup = false
 font_size = 16
 font_bold_weight = 1.5
 font_italics_slant = 0.25
@@ -405,6 +440,10 @@ clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_fonts/normal_font = ExtResource("12_muem4")
+theme_override_fonts/italics_font = SubResource("FontVariation_yc10j")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_jscy8")
+theme_override_fonts/bold_font = SubResource("FontVariation_pm3ni")
 theme_override_font_sizes/bold_italics_font_size = 16
 theme_override_font_sizes/italics_font_size = 16
 theme_override_font_sizes/mono_font_size = 16
@@ -419,7 +458,7 @@ alignment = 1
 color = Color(1, 1, 1, 1)
 emoji_scale = 1.0
 font = "SinsGold"
-font_auto_setup = true
+font_auto_setup = false
 font_size = 16
 font_bold_weight = 1.5
 font_italics_slant = 0.25
@@ -479,6 +518,16 @@ libraries = {
 [node name="Marker2D" type="Marker2D" parent="UI"]
 position = Vector2(272, 240)
 gizmo_extents = 825.0
+
+[node name="version" type="Label" parent="UI"]
+offset_left = 5.0
+offset_right = 45.0
+offset_bottom = 23.0
+theme = ExtResource("4_tefeu")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_muem4")
+text = "v0.0.0"
+script = ExtResource("13_muem4")
 
 [node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_ya4ey")

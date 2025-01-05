@@ -4,3 +4,4 @@ extends CanvasLayer
 
 func _ready() -> void:
 	scale = target_scale
+	

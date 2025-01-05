@@ -11,11 +11,10 @@ config_version=5
 [application]
 
 config/name="dig dug"
-config/version="0.1.1"
+config/version="0.1.2"
 config/tags=PackedStringArray("20_games_challange")
 run/main_scene="uid://bwqtd33l6csiq"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-boot_splash/bg_color=Color(0.0974964, 0.22974, 0.366024, 1)
 config/icon="res://icon.svg"
 
 [autoload]

@@ -404,8 +404,11 @@ func set_font(id: String):
 	_update_subfonts()
 
 func _update_subfonts():
-	if font_auto_setup:
-		FontHelper.set_fonts(self, font, font_bold_weight, font_italics_slant, font_italics_weight, FontHelper.cache)
+	## Weird hack to make fonts work in build:
+	## https://github.com/chairfull/GodotRichTextLabel2/issues/18
+	#if font_auto_setup:
+		#FontHelper.set_fonts(self, font, font_bold_weight, font_italics_slant, font_italics_weight, FontHelper.cache)
+	pass
 
 func get_normal_font() -> Font:
 	return get_theme_font(&"normal_font")
