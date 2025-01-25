@@ -284,7 +284,7 @@ streams_count = 2
 stream_0/stream = ExtResource("8_ur7pv")
 stream_1/stream = ExtResource("9_y4r1p")
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles", "grid_coords", "hit_sound", "miss_sound", "death_sound", "cut_sound")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("rays", "scythe_animation", "sprite", "scythe_pivot", "attack_lock", "attack_particles", "miss_particles", "grid_coords", "hit_sound", "miss_sound", "death_sound", "cut_sound")]
 y_sort_enabled = true
 collision_layer = 8
 motion_mode = 1
@@ -300,6 +300,7 @@ sprite = NodePath("AnimatedSprite2D")
 scythe_pivot = NodePath("ScythePivot")
 attack_lock = NodePath("AttackLock")
 attack_particles = NodePath("AttackParticles")
+miss_particles = NodePath("MissParticles")
 grid_coords = NodePath("GridCoordinates")
 hit_sound = NodePath("AttackHitSound")
 miss_sound = NodePath("AttackMissSound")
@@ -362,17 +363,39 @@ one_shot = true
 material = SubResource("CanvasItemMaterial_80cx4")
 emitting = false
 amount = 3
+texture = ExtResource("5_b26j0")
 lifetime = 0.4
 explosiveness = 0.7
 lifetime_randomness = 0.1
 local_coords = true
-texture = ExtResource("5_b26j0")
 spread = 10.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 350.0
 initial_velocity_max = 500.0
 linear_accel_min = -4497.95
 linear_accel_max = -4497.95
+angle_min = -10.0
+angle_max = -10.0
+scale_amount_curve = SubResource("Curve_7sc4i")
+anim_speed_min = 5.0
+anim_speed_max = 5.0
+anim_offset_max = 0.2
+
+[node name="MissParticles" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_80cx4")
+emitting = false
+amount = 1
+texture = ExtResource("5_b26j0")
+lifetime = 0.4
+explosiveness = 0.7
+lifetime_randomness = 0.1
+local_coords = true
+spread = 10.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 94.59
+initial_velocity_max = 146.51
+angular_velocity_min = -175.13
+angular_velocity_max = 126.49
 angle_min = -10.0
 angle_max = -10.0
 scale_amount_curve = SubResource("Curve_7sc4i")

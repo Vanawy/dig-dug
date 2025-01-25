@@ -20,6 +20,7 @@ var move_input: Vector2 = Vector2.ZERO
 @export var scythe_pivot: Node2D
 @export var attack_lock: Timer
 @export var attack_particles: CPUParticles2D
+@export var miss_particles: CPUParticles2D
 @export var grid_coords: GridCoordinates
 @export_category("Audio")
 @export var hit_sound: AudioStreamPlayer2D
@@ -40,6 +41,8 @@ func _ready() -> void:
 	)
 	attack_particles.one_shot = true
 	attack_particles.emitting = false
+	miss_particles.one_shot = true
+	miss_particles.emitting = false
 	respawn()
 	
 func death() -> void:
@@ -73,14 +76,12 @@ func attack() -> void:
 		return
 	var attack_ray := rays.get(look_direction) as RayCast2D
 	if not attack_ray.is_colliding():
-		#print("miss - " + str(Game.Direction.find_key(look_direction)))
-		miss_sound.play()
+		play_miss_effects()
 		return
 		
 	var enemy := attack_ray.get_collider().get_parent() as Enemy
 	if not enemy is Enemy:
-		#print("Hit (not enemy) - " + str(Game.Direction.find_key(look_direction)))
-		miss_sound.play()
+		play_miss_effects()
 		return
 	
 	if enemy.hit(look_direction):
@@ -91,8 +92,13 @@ func attack() -> void:
 		attack_particles.restart()
 		hit_sound.play()
 	else:
-		miss_sound.play()
+		play_miss_effects()
 		
+func play_miss_effects() -> void:
+	sprite.play("attack")
+	miss_particles.direction = Game.dir_to_vec(look_direction)
+	miss_particles.restart()
+	miss_sound.play()
 	
 
 func get_target() -> Vector2i:
