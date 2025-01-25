@@ -11,7 +11,7 @@ var opened := {}
 var pipes: Array
 var stack: Array
 
-func reset(rt: RicherTextLabel):
+func reset(rt: Object):
 	color = rt.color
 	color_bg = null
 	color_fg = null

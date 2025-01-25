@@ -25,6 +25,11 @@ signal wait_finished()
 signal hold_started()
 signal hold_finished()
 
+static var REGEX_SIGNAL_QUOTES := RegEx.create_from_string(r'"([^"]*)"')
+static var REGEX_SIGNAL_STARS := RegEx.create_from_string(r'\*([^*]+)\*')
+static var REGEX_CODE_PATTERN := RegEx.create_from_string(r"<([^>]+)>")
+static var REGEX_BOOKMARK := RegEx.create_from_string(r"(?<!#)(?<!\[)#\w*[^_\W](?!\])")
+
 enum {
 	TRIG_NONE = 1000, # Offset because it's built on the enum of the RicherTextLabel class.
 	TRIG_WAIT,	## [wait] or [w]: Delays animation for a time.
@@ -165,21 +170,21 @@ func get_wait_delta() -> float:
 	return 0.0 if _wait_max == 0.0 else 1.0 - (_wait / _wait_max)
 
 ## Animation played all the way through.
-func is_finished() -> bool:
+func is_anim_finished() -> bool:
 	return progress == 0 if fade_out else progress == 1.0
 
 ## Waiting for a timer.
-func is_waiting() -> bool:
+func is_anim_waiting() -> bool:
 	return _wait > 0.0
 
 ## Waiting for user to advance().
-func is_holding() -> bool:
-	return not _play and not is_finished()
+func is_anim_holding() -> bool:
+	return not _play and not is_anim_finished()
 
 ## User should call this to advance the animation if it is paused.
 ## Returns true if still playing.
 func advance() -> bool:
-	if is_waiting():
+	if is_anim_waiting():
 		_wait = 0.0
 		_wait_max = 0.0
 		wait_finished.emit()
@@ -188,7 +193,7 @@ func advance() -> bool:
 			hold_finished.emit()
 		_continued()
 		return true
-	elif is_holding():
+	elif is_anim_holding():
 		_play = true
 		_hold = false
 		hold_finished.emit()
@@ -206,10 +211,10 @@ func advance() -> bool:
 						return true
 	
 	# Otherwise we will force finished.
-	if not is_finished():
+	if not is_anim_finished():
 		_forced_finish = true
 		_forced_finish_delay = FORCED_FINISH_DELAY
-		finish()
+		finish_anim()
 		return true
 	
 	if _forced_finish_delay > 0.0:
@@ -246,7 +251,7 @@ func _hide_ctc():
 		ctc_tween = ctc_node.create_tween()
 		ctc_tween.tween_property(ctc_node, "modulate:a", 0.0, 0.01)
 
-func finish():
+func finish_anim():
 	set_progress(1.0)
 	_triggers.clear()
 	_wait = 0.0
@@ -255,18 +260,18 @@ func finish():
 
 func _preparse(btext: String) -> String:
 	if signal_quotes:
-		btext = _replace(btext, r'"([^"]*)"', func(strings):
+		btext = _replace(btext, REGEX_SIGNAL_QUOTES, func(strings):
 			var a = strings[0]
 			return "\"[quote %s]%s[]\"" % [a, unwrap(a, '""')])
 	
 	if signal_stars:
-		btext = _replace(btext, r'\*([^*]+)\*', func(strings):
+		btext = _replace(btext, REGEX_SIGNAL_STARS, func(strings):
 			var a = strings[0]
 			return "[stars %s]*%s*[]" % [unwrap(a, "**"), unwrap(a, "**")])
 	
 	# Converts <code pattern> into [$code pattern].
 	if shortcut_expression:
-		btext = _replace(btext, r"<([^>]+)>", func(strings):
+		btext = _replace(btext, REGEX_CODE_PATTERN, func(strings):
 			var a = strings[0]
 			if a.begins_with("<<"):
 				return a.replace("<<", "<")
@@ -274,7 +279,7 @@ func _preparse(btext: String) -> String:
 	
 	# Converts #bookmark into [#bookmark].
 	if shortcut_bookmark:
-		btext = _replace(btext, r"(?<!#)(?<!\[)#\w*[^_\W](?!\])", func(strings):
+		btext = _replace(btext, REGEX_BOOKMARK, func(strings):
 			return "[%s]" % strings[0])
 		btext = btext.replace("##", "#")
 	
@@ -366,18 +371,18 @@ func set_progress(p: float):
 		for i in range(last_visible_character, next_visible_character):
 			
 			if i in _triggers:
-				if not is_waiting():
+				if not is_anim_waiting():
 					for t in _triggers[i]:
 						_trigger(t[0], t[1])
 				
 				# Break at next trigger, unless being forced.
-				if is_waiting() and not _forced_finish:
+				if is_anim_waiting() and not _forced_finish:
 					next_progress = (i+1) / float(len(_alpha))
 					next_visible_character = (i+1)
 					break
 			
 			# Breaking on trigger, unless being forced.
-			if is_waiting() and not _forced_finish:
+			if is_anim_waiting() and not _forced_finish:
 				break
 	
 	progress = next_progress
@@ -401,10 +406,10 @@ func set_progress(p: float):
 	
 	if fade_out:
 		if progress == 0.0:
-			finish()
+			finish_anim()
 	else:
 		if progress == 1.0:
-			finish()
+			finish_anim()
 	
 	_update_ctc_position()
 

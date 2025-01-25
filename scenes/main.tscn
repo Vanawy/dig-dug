@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://b6efssvjts634" path="res://scripts/game_over_ui.gd" id="5_o6xl0"]
 [ext_resource type="Theme" uid="uid://bn3fpdjbg7h01" path="res://sound_ui-theme.tres" id="6_tefeu"]
 [ext_resource type="Script" uid="uid://dksiv6pfya53i" path="res://scenes/sound_controls.gd" id="7_o6xl0"]
-[ext_resource type="Script" uid="uid://d0i8lm8ljooxe" path="res://addons/richtext2/text_effects/effects/rte_sin.gd" id="9_choun"]
+[ext_resource type="Script" uid="uid://i8bg2nawwnn0" path="res://addons/richtext2/text_effects/effects/rte_sin.gd" id="9_choun"]
 [ext_resource type="FontFile" uid="uid://p3ir6myc7law" path="res://fonts/CompassGold.ttf" id="9_jbj1t"]
-[ext_resource type="Script" uid="uid://daw0bfnm5ia0d" path="res://addons/richtext2/richer_text_label.gd" id="10_choun"]
+[ext_resource type="Script" uid="uid://2f4fi75scxes" path="res://addons/richtext2/richer_text_label.gd" id="10_choun"]
 [ext_resource type="AudioStream" uid="uid://bs1cdvd2udmn6" path="res://music/GameOverLoop.ogg" id="11_ya4ey"]
 [ext_resource type="AudioStream" uid="uid://cn8cw8f2enlom" path="res://music/Evening Fall - Piano.mp3" id="12_a8y0u"]
 [ext_resource type="FontFile" uid="uid://fk8rm7c3nfk8" path="res://fonts/SinsGold.ttf" id="12_muem4"]
@@ -86,24 +86,24 @@ _data = {
 &"pause": SubResource("Animation_tbgi4")
 }
 
-[sub_resource type="FontVariation" id="FontVariation_dp3eg"]
+[sub_resource type="FontVariation" id="FontVariation_muem4"]
 base_font = ExtResource("9_jbj1t")
 variation_embolden = -0.25
+variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_dp3eg"]
+base_font = ExtResource("9_jbj1t")
+variation_embolden = 1.5
 variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
 
 [sub_resource type="FontVariation" id="FontVariation_0ld40"]
 base_font = ExtResource("9_jbj1t")
 variation_embolden = 1.5
-variation_transform = Transform2D(1, 0.25, 0, 1, 0, 0)
 
-[sub_resource type="FontVariation" id="FontVariation_gqmmt"]
-base_font = ExtResource("9_jbj1t")
-variation_embolden = 1.5
-
-[sub_resource type="RichTextEffect" id="RichTextEffect_muem4"]
+[sub_resource type="RichTextEffect" id="RichTextEffect_gqmmt"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 1949579677279
+metadata/rt = 8175973650115
 
 [sub_resource type="FontVariation" id="FontVariation_yc10j"]
 base_font = ExtResource("12_muem4")
@@ -353,9 +353,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_fonts/normal_font = ExtResource("9_jbj1t")
-theme_override_fonts/italics_font = SubResource("FontVariation_dp3eg")
-theme_override_fonts/bold_italics_font = SubResource("FontVariation_0ld40")
-theme_override_fonts/bold_font = SubResource("FontVariation_gqmmt")
+theme_override_fonts/italics_font = SubResource("FontVariation_muem4")
+theme_override_fonts/bold_italics_font = SubResource("FontVariation_dp3eg")
+theme_override_fonts/bold_font = SubResource("FontVariation_0ld40")
 theme_override_font_sizes/bold_italics_font_size = 16
 theme_override_font_sizes/italics_font_size = 16
 theme_override_font_sizes/mono_font_size = 16
@@ -364,7 +364,7 @@ theme_override_font_sizes/bold_font_size = 16
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
-custom_effects = [SubResource("RichTextEffect_muem4")]
+custom_effects = [SubResource("RichTextEffect_gqmmt")]
 script = ExtResource("10_choun")
 bbcode = "[gold][sin]New best score![][]"
 effects = 2
@@ -407,13 +407,14 @@ autostyle_numbers_pad_decimals = true
 autostyle_numbers_decimals = 2
 autostyle_emojis = true
 effect_weight = 0.0
+image_path = "res://"
+image_resize_to_font_size = true
+image_scale = 1.0
 meta_auto_https = true
 meta_cursor = 2
 override_bbcodeEnabled = true
 override_clipContents = false
 override_fitContent = true
-fit_width = false
-fit_width_padding = 10
 metadata/_custom_type_script = ExtResource("10_choun")
 
 [node name="restart" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
@@ -493,13 +494,14 @@ autostyle_numbers_pad_decimals = true
 autostyle_numbers_decimals = 2
 autostyle_emojis = true
 effect_weight = 0.0
+image_path = "res://"
+image_resize_to_font_size = true
+image_scale = 1.0
 meta_auto_https = true
 meta_cursor = 2
 override_bbcodeEnabled = true
 override_clipContents = false
 override_fitContent = true
-fit_width = false
-fit_width_padding = 10
 metadata/_custom_type_script = ExtResource("10_choun")
 
 [node name="LinkButton" type="LinkButton" parent="UI/GameOverUI/MarginContainer"]
