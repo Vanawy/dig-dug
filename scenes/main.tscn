@@ -103,7 +103,7 @@ variation_embolden = 1.5
 [sub_resource type="RichTextEffect" id="RichTextEffect_gqmmt"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 8175973650115
+metadata/rt = 16172045128465
 
 [sub_resource type="FontVariation" id="FontVariation_yc10j"]
 base_font = ExtResource("12_muem4")
@@ -528,9 +528,9 @@ offset_bottom = 23.0
 theme = ExtResource("4_tefeu")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("12_muem4")
-text = "v0.1.3"
+text = "v0.2.0"
 script = ExtResource("13_muem4")
-version = "0.1.3"
+version = "0.2.0"
 
 [node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_ya4ey")

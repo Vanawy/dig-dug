@@ -4,19 +4,21 @@ extends Label
 const VERSION_FILE: String = "res://version.txt"
 const SETTING_PATH: String = "application/config/version"
 
-@export_tool_button("patch++")
-var patch = _increment_patch
-@export_tool_button("minor++")
-var minor = _increment_minor
+@export var version_text: String = "v"
+
+@export_tool_button("minor *.+.0")
+var minor: Callable = _increment_minor
+@export_tool_button("patch *.*.+")
+var patch: Callable = _increment_patch
 @export_tool_button("Update file")
-var update_file = _update_file
+var update_file: Callable = _update_file
 
 
 @export var version: String = "0.0.0"
 @export_tool_button("Set")
-var set_v = _set_version
+var set_v: Callable = _set_version
 @export_tool_button("Get")
-var get_v = _get_version
+var get_v: Callable = _get_version
 
 
 func get_current_version() -> String:
@@ -35,11 +37,11 @@ func _increment(is_minor: bool) -> void:
 	var v_str := get_current_version()
 	var parts := v_str.split(".")
 	
-	var i := 2
 	if is_minor:
-		i = 1
-		
-	parts[i] = str(int(parts[i]) + 1)
+		parts[1] = str(int(parts[1]) + 1)
+		parts[2] = str(0)
+	else:
+		parts[2] = str(int(parts[2]) + 1)
 	
 	ProjectSettings.set_setting(SETTING_PATH, ".".join(parts))
 	_update_file()
@@ -50,7 +52,7 @@ func _set_version() -> void:
 	
 func _get_version() -> void:
 	version = get_current_version()
-	text = "v" + version
+	text = version_text + version
 
 func _update_file() -> void:
 	var file = FileAccess.open(VERSION_FILE, FileAccess.WRITE)
