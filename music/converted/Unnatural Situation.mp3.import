@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyki8x4fts4mq"
+path="res://.godot/imported/Unnatural Situation.mp3-abb77a31e7b11f97798f9bef5aefae60.mp3str"
+
+[deps]
+
+source_file="res://music/converted/Unnatural Situation.mp3"
+dest_files=["res://.godot/imported/Unnatural Situation.mp3-abb77a31e7b11f97798f9bef5aefae60.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

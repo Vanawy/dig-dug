@@ -7,13 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://dg0dt352h1pd6" path="res://sprites/dead_ghost.png" id="3_j0cyh"]
 [ext_resource type="Texture2D" uid="uid://3negsx261260" path="res://sprites/bat.png" id="3_qi2p4"]
 [ext_resource type="PackedScene" uid="uid://cakwtn5ap0dii" path="res://scenes/sprite_double.tscn" id="5_wtq4b"]
-[ext_resource type="AudioStream" uid="uid://cw4n5ovwwiy5u" path="res://sfx/impactPlank_medium_000.ogg" id="6_8qclf"]
-[ext_resource type="AudioStream" uid="uid://1u5t6dkhqr27" path="res://sfx/impactPlank_medium_001.ogg" id="7_w8i8w"]
-[ext_resource type="AudioStream" uid="uid://dpvbw3c2xn5vd" path="res://sfx/impactPlank_medium_002.ogg" id="8_otmr2"]
-[ext_resource type="AudioStream" uid="uid://dtn2y2sy8qnw3" path="res://sfx/impactPlank_medium_003.ogg" id="9_wtq4b"]
-[ext_resource type="AudioStream" uid="uid://dcuo0uvhyl5jt" path="res://sfx/impactPlank_medium_004.ogg" id="10_j0cyh"]
+[ext_resource type="AudioStream" uid="uid://dfdqb8a36x4r" path="res://sfx/converted/impactPlank_medium_000.mp3" id="8_j0cyh"]
+[ext_resource type="AudioStream" uid="uid://cqf8r2lx5xyj4" path="res://sfx/converted/impactPlank_medium_001.mp3" id="9_g0wcc"]
+[ext_resource type="AudioStream" uid="uid://capjsawjmausv" path="res://sfx/converted/impactPlank_medium_002.mp3" id="10_s1ycm"]
+[ext_resource type="AudioStream" uid="uid://dwvcgsakka2xy" path="res://sfx/converted/impactPlank_medium_003.mp3" id="11_shcg2"]
+[ext_resource type="AudioStream" uid="uid://bftjfpgwt547v" path="res://sfx/converted/impactPlank_medium_004.mp3" id="12_ile5s"]
 [ext_resource type="PackedScene" uid="uid://h6mu4ycywy2u" path="res://grid_coordinates.tscn" id="12_otmr2"]
-[ext_resource type="AudioStream" uid="uid://dy3nxqxxh5dtt" path="res://sfx/country-man-walk-in-a-field-32270.wav" id="13_j0cyh"]
+[ext_resource type="AudioStream" uid="uid://ddir6ipnwgyha" path="res://sfx/converted/country-man-walk-in-a-field-32270.mp3" id="13_j0cyh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epg4t"]
 resource_local_to_scene = true
@@ -175,11 +175,11 @@ point_count = 4
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_g0wcc"]
 streams_count = 5
-stream_0/stream = ExtResource("6_8qclf")
-stream_1/stream = ExtResource("7_w8i8w")
-stream_2/stream = ExtResource("8_otmr2")
-stream_3/stream = ExtResource("9_wtq4b")
-stream_4/stream = ExtResource("10_j0cyh")
+stream_0/stream = ExtResource("8_j0cyh")
+stream_1/stream = ExtResource("9_g0wcc")
+stream_2/stream = ExtResource("10_s1ycm")
+stream_3/stream = ExtResource("11_shcg2")
+stream_4/stream = ExtResource("12_ile5s")
 
 [node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("hitbox", "stun_lock", "stun_indicator", "hp_indicator", "hit_particles", "update_path_timer", "normal_sprite", "ghost_sprite", "hit_sfx", "ghost_sfx", "grid_coords")]
 y_sort_enabled = true

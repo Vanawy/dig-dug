@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cbwt38v1guinm" path="res://scenes/ui.tscn" id="15_80cx4"]
 [ext_resource type="Script" uid="uid://ca5s7sw626gnh" path="res://scripts/ui_zoom.gd" id="15_e8heu"]
 [ext_resource type="Script" uid="uid://dtby328akvgjm" path="res://scripts/spawn_point.gd" id="16_80cx4"]
-[ext_resource type="AudioStream" uid="uid://c6oedtysk2qbc" path="res://music/wheat-in-the-wind-7159.mp3" id="16_ca42v"]
+[ext_resource type="AudioStream" uid="uid://dkhuqj78utrt4" path="res://music/converted/wheat-in-the-wind-7159.mp3" id="16_ca42v"]
 [ext_resource type="PackedScene" uid="uid://bljhqnf8pg4w3" path="res://scenes/spawn_point.tscn" id="16_e8heu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mfdv2"]

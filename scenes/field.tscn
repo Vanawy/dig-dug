@@ -65,8 +65,8 @@ shader_parameter/maxStrength = 0.01
 shader_parameter/strengthScale = 10.0
 shader_parameter/interval = 1.8
 shader_parameter/detail = 2.0
-shader_parameter/distortion = null
-shader_parameter/heightOffset = null
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.0
 shader_parameter/timeOffsetScale = 1.5
 shader_parameter/col = 5.0
 

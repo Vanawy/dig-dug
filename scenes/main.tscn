@@ -11,12 +11,12 @@
 [ext_resource type="Script" uid="uid://i8bg2nawwnn0" path="res://addons/richtext2/text_effects/effects/rte_sin.gd" id="9_choun"]
 [ext_resource type="FontFile" uid="uid://p3ir6myc7law" path="res://fonts/CompassGold.ttf" id="9_jbj1t"]
 [ext_resource type="Script" uid="uid://2f4fi75scxes" path="res://addons/richtext2/richer_text_label.gd" id="10_choun"]
-[ext_resource type="AudioStream" uid="uid://bs1cdvd2udmn6" path="res://music/GameOverLoop.ogg" id="11_ya4ey"]
-[ext_resource type="AudioStream" uid="uid://cn8cw8f2enlom" path="res://music/Evening Fall - Piano.mp3" id="12_a8y0u"]
 [ext_resource type="FontFile" uid="uid://fk8rm7c3nfk8" path="res://fonts/SinsGold.ttf" id="12_muem4"]
-[ext_resource type="AudioStream" uid="uid://d0srrmmhkv25m" path="res://music/Unnatural Situation.mp3" id="13_jkv2x"]
 [ext_resource type="Script" uid="uid://ch4l7jhgc34pd" path="res://scripts/version.gd" id="13_muem4"]
-[ext_resource type="AudioStream" uid="uid://du0r6g7u6l2xg" path="res://music/Vanishing.mp3" id="14_jbj1t"]
+[ext_resource type="AudioStream" uid="uid://thecamhcjnrr" path="res://music/converted/GameOverLoop.mp3" id="14_muem4"]
+[ext_resource type="AudioStream" uid="uid://cswi4mkwcayji" path="res://music/converted/Evening Fall - Piano.mp3" id="15_dp3eg"]
+[ext_resource type="AudioStream" uid="uid://cyki8x4fts4mq" path="res://music/converted/Unnatural Situation.mp3" id="16_0ld40"]
+[ext_resource type="AudioStream" uid="uid://dy00jkchhgijg" path="res://music/converted/Vanishing.mp3" id="17_gqmmt"]
 
 [sub_resource type="Gradient" id="Gradient_tbgi4"]
 colors = PackedColorArray(0.24, 0.24, 0.24, 1, 0.1, 0.1, 0.1, 1)
@@ -103,7 +103,7 @@ variation_embolden = 1.5
 [sub_resource type="RichTextEffect" id="RichTextEffect_gqmmt"]
 resource_name = "sin"
 script = ExtResource("9_choun")
-metadata/rt = 16172045128465
+metadata/rt = 9735080369537
 
 [sub_resource type="FontVariation" id="FontVariation_yc10j"]
 base_font = ExtResource("12_muem4")
@@ -155,9 +155,9 @@ _data = {
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ya4ey"]
 streams_count = 3
-stream_0/stream = ExtResource("12_a8y0u")
-stream_1/stream = ExtResource("13_jkv2x")
-stream_2/stream = ExtResource("14_jbj1t")
+stream_0/stream = ExtResource("15_dp3eg")
+stream_1/stream = ExtResource("16_0ld40")
+stream_2/stream = ExtResource("17_gqmmt")
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("pause_ui", "game_over_ui", "game", "game_over_music", "music")]
 process_mode = 3
@@ -415,7 +415,7 @@ meta_cursor = 2
 override_bbcodeEnabled = true
 override_clipContents = false
 override_fitContent = true
-metadata/_custom_type_script = ExtResource("10_choun")
+metadata/_custom_type_script = "uid://2f4fi75scxes"
 
 [node name="restart" type="Button" parent="UI/GameOverUI/MarginContainer/VBoxContainer/base"]
 layout_mode = 2
@@ -502,7 +502,7 @@ meta_cursor = 2
 override_bbcodeEnabled = true
 override_clipContents = false
 override_fitContent = true
-metadata/_custom_type_script = ExtResource("10_choun")
+metadata/_custom_type_script = "uid://2f4fi75scxes"
 
 [node name="LinkButton" type="LinkButton" parent="UI/GameOverUI/MarginContainer"]
 layout_mode = 2
@@ -528,14 +528,13 @@ offset_bottom = 23.0
 theme = ExtResource("4_tefeu")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("12_muem4")
-text = "v0.2.0"
+text = "v0.1.3"
 script = ExtResource("13_muem4")
-version = "0.2.0"
+version = "0.1.3"
 
 [node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("11_ya4ey")
+stream = ExtResource("14_muem4")
 bus = &"Music"
-playback_type = 1
 parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
@@ -543,4 +542,3 @@ stream = SubResource("AudioStreamRandomizer_ya4ey")
 volume_db = -10.0
 autoplay = true
 bus = &"Music"
-playback_type = 1
