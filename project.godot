@@ -10,12 +10,12 @@ config_version=5
 
 [application]
 
-config/name="dig dug"
-config/version="0.1.3"
+config/name="Deadly Harvest"
+config/version="0.1.4"
 config/tags=PackedStringArray("20_games_challange")
 run/main_scene="uid://bwqtd33l6csiq"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://gtxu5smr15f5"
 
 [autoload]
 
@@ -36,7 +36,7 @@ window/vsync/vsync_mode=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/richtext2/plugin.cfg")
 
 [file_customization]
 
@@ -116,3 +116,11 @@ textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.0974964, 0.22974, 0.366024, 1)
+
+[richer_text_label]
+
+fonts={
+&"CompassGold": "res://fonts/CompassGold.ttf",
+&"Inkbit": "res://fonts/Inkbit.ttf",
+&"SinsGold": "res://fonts/SinsGold.ttf"
+}

@@ -13,6 +13,7 @@ class_name GameOverUI
 @export var main_container: Control
 @export var credits_container: Control
 @export var credits_label: RicherTextLabel
+@export var logo: TextureRect
 
 func _ready() -> void:
 	visible = false
@@ -21,12 +22,14 @@ func _ready() -> void:
 	main_container.visible = true
 	credits_container.visible = false
 	credits_button.pressed.connect(func():
-		main_container.visible = false
-		credits_container.visible = true
+		main_container.hide()
+		credits_container.show()
+		logo.hide()
 	)
 	back_button.pressed.connect(func():
-		main_container.visible = true
-		credits_container.visible = false
+		main_container.show()
+		credits_container.hide()
+		logo.show()
 	)
 	
 	var file := FileAccess.open(ProjectSettings.globalize_path("res://CREDITS.txt"), FileAccess.READ)

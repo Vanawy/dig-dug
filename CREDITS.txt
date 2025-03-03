@@ -1,3 +1,4 @@
+[red]Deadly Harvest[]
 Game by Ilya [gold][sin]Vanawy[][] Sakharchuk
 
 Scenery assets by [gold][sin]Kenney.nl[][]
@@ -16,3 +17,10 @@ http://creativecommons.org/licenses/by/4.0/
 'Evening Fall (Piano)' Kevin MacLeod (incompetech.com)
 Licensed under Creative Commons: By Attribution 4.0 License
 http://creativecommons.org/licenses/by/4.0/
+
+Fonts:
+'Inkbit' (CC BY-ND 4.0)
+https://bsl.itch.io/inkbit
+
+'SinsGold', 'CompassGold'
+https://somepx.itch.io/humble-fonts-gold
