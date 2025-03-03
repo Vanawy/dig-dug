@@ -49,6 +49,7 @@ func _ready() -> void:
 		AudioServer.set_bus_volume_db(_music_bus, linear_to_db(int(settings.music_on)))
 		save_settings()
 	)
+	settings.on_update.emit()
 	load_pb()
 	reset_rng()
 	
