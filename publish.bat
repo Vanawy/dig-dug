@@ -1,1 +1,1 @@
-butler push %~dp0\build\web vanawy/dig-dug:web --userversion-file %~dp0\version.txt --if-changed 
+butler push %~dp0\build\web vanawy/deadly-harvest:web --userversion-file %~dp0\version.txt --if-changed 
